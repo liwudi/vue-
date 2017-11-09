@@ -5,9 +5,10 @@
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  import commonService from './services/commonService';
+  export default {
+    name: 'app'
+  }
 </script>
 
 <style>

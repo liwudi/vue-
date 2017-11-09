@@ -4,9 +4,8 @@
 import axios from 'axios'
 import Qs from 'qs'
 import config from '../index.config';
-import router from '../router/index';
 
-let userInfo = {}
+let userInfo = null;
 let serviceUrl = config.serviceBaseUrl;
 
 function urlEncode (param, key, encode) {
@@ -26,12 +25,8 @@ function urlEncode (param, key, encode) {
 
 function resultProcessor (result) {
   if (result.status === 200 || result.code === 200 || result.resultCode === 200) {
-    return Promise.resolve(result.data || {noResult: true})
+    return Promise.resolve(result.data)
   } else {
-    console.log(result)
-    if(result.data.code === 20107){
-      router.replace('home');
-    }
     result.message = result.message || '服务器错误'
     return Promise.reject(result)
   }
@@ -45,8 +40,7 @@ function request (opts, processor, isUpload) {
       cache: false,
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'token': window.localStorage.getItem('token')
+        'Content-Type': 'application/json;charset=utf-8'
       }
     },
     queryString, formData
@@ -133,10 +127,19 @@ export default {
   },
   request: request,
 
-  userInfo : userInfo,
+  getUserInfo : userInfo,
 
   setUserInfo: function (user) {
-    userInfo.token = user.token
-    userInfo.userId = user.userId
+    let info = {};
+    info.token = user.token;
+    info.userId = user.userId;
+    userInfo = info;
+  },
+
+  setInterceptors : function (sucessInterceptor,failInterceptor) {
+    if(!sucessInterceptor) sucessInterceptor = (response)=> Promise.resolve(response);
+    if(!failInterceptor) failInterceptor = (err)=> Promise.reject(err) ;
+    axios.interceptors.response.use(sucessInterceptor,failInterceptor)
   }
+
 }

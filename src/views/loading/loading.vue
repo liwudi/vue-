@@ -6,6 +6,8 @@
 <script>
   import { Loading } from 'element-ui'
   import ssoService from '../../services/sso.service';
+  import commonService from '../../services/commonService';
+  import config from '../../index.config';
   export default {
     name: 'loading',
     data () {
@@ -19,7 +21,8 @@
     mounted: function () {
       ssoService.logged()
         .then((data)=>{
-          console.log(data);
+          commonService.setUserInfo(data);
+          this.$router.replace('home');
         })
         .catch((err)=>{
           console.log(err);
