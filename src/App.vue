@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="flex1" :ndd="" v-if="ready" >
+    <div class="flex1" v-if="ready" >
       <router-view/>
     </div>
     <div v-if="!ready" class="flex1" v-loading="true"></div>
