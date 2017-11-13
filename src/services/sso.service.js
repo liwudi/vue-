@@ -20,6 +20,10 @@ export default {
         url: makeUrl('/validateSSOLogin'),
         withCredentials: true
       }
-    )
+    ).then((data) => {
+      RequestService.setUserInfo(data)
+      return Promise.resolve(data)
+    })
+      .catch((err)=> Promise.reject(err))
   }
 }

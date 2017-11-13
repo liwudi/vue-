@@ -3,6 +3,9 @@
         <div class="logo">后台管理系统</div>
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
+              <span class="el-dropdown-link">
+                    {{name}}
+                </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="loginout">退出</el-dropdown-item>
                 </el-dropdown-menu>
@@ -12,17 +15,15 @@
 </template>
 
 <script>
+    import commonService from '../services/commonService';
     export default {
         data() {
             return {
-                name: 'linyao'
+                name: ''
             }
         },
-        computed:{
-            username(){
-                let username = localStorage.getItem('ms_username');
-                return username ? username : this.name;
-            }
+        mounted(){
+          this.name = commonService.getUserInfo().email;
         },
         methods:{
             handleCommand(command) {

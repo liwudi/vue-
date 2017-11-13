@@ -5,7 +5,7 @@ import axios from 'axios'
 import Qs from 'qs'
 import config from '../index.config';
 
-let userInfo = null;
+let userInfo = {};
 let serviceUrl = config.serviceBaseUrl;
 
 function urlEncode (param, key, encode) {
@@ -127,13 +127,12 @@ export default {
   },
   request: request,
 
-  getUserInfo : userInfo,
+  getUserInfo : function () {
+    return userInfo;
+  },
 
   setUserInfo: function (user) {
-    let info = {};
-    info.token = user.token;
-    info.userId = user.userId;
-    userInfo = info;
+    userInfo = user;
   },
 
   setInterceptors : function (sucessInterceptor,failInterceptor) {
