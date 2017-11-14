@@ -40,8 +40,9 @@
         const self = this;
         self.$refs[formName].validate((valid) => {
           if (valid) {
-            self.$router.push('/home');
+            self.$router.push('home');
           } else {
+//            console.log(self)
             console.log('error submit!!');
             return false;
           }
