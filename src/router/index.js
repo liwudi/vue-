@@ -5,6 +5,8 @@ import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
 
+import RouterUserManagement from './RouterUserManagement';
+
 Vue.use(Router)
 
 let router = new Router({
@@ -31,10 +33,10 @@ let router = new Router({
       name: 'login',
       component: Login
     },
-    { path: '*', redirect: '/basetable' }
+    // { path: '*', redirect: '/basetable' }
   ]
 })
-
+RouterUserManagement.setRouter(router);
 
 export default router
 

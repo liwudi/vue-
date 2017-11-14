@@ -1,0 +1,106 @@
+<template>
+  <div class="user-wrapper">
+    <h3>修改信息</h3>
+    <el-form ref="userForm" :rules="rules" :model="userForm" label-width="80px" class="demo-ruleForm">
+      <el-form-item label="用户名" prop="userName">
+        <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop="loginName">
+        <el-input v-model="userForm.loginName" placeholder="请输入姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-select v-model="userForm.sex" placeholder="请选择性别">
+          <el-option
+            v-for="item in sex"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input v-model="userForm.phone" placeholder="请输入手机号"></el-input>
+      </el-form-item>
+
+      <el-form-item label="用户状态">
+        <el-select v-model="userForm.state" placeholder="请选择用户状态">
+          <el-option
+            v-for="item in state"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+
+      <el-form-item>
+        <el-button type="primary" @click="submitForm">修改</el-button>
+        <el-button @click="goToList">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<script>
+  import {sex, state, rules} from './UserConfig';
+  import {updateUser, getUser} from '../../services/UserManagementService';
+  export default {
+    data() {
+      return {
+        formName: 'userForm',
+        sex, state,
+        userForm: {
+          userName: 'liufang',
+          loginName: '',
+          sex: 3,
+          phone: '',
+          state: 1,
+        },
+        rules: rules
+      }
+    },
+    created () {
+      this.requestUserInfo();
+    },
+    methods: {
+      requestUserInfo () {
+        getUser().then((result) => {
+          let data = result.data;
+          console.info(data)
+          this.$data.userForm = data;
+        });
+      },
+      request () {
+        let params = this.$data.userForm;
+        updateUser(params).then(() => {
+          console.info('success');
+          this.openMessage();
+        });
+      },
+      openMessage() {
+        this.$alert('信息修改成功！', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.goToList();
+          }
+        });
+      },
+      submitForm() {
+        let formName = this.$data.formName;
+        this.$refs[formName].validate((valid) => {
+          if(valid) this.request();
+          return valid;
+        });
+      },
+      goToList() {
+        this.$router.back();
+      }
+    }
+  }
+</script>
+<style lang="scss" scoped rel="stylesheet/scss">
+  .user-wrapper {
+    width: 400px;
+  }
+</style>

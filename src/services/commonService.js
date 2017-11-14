@@ -23,7 +23,7 @@ function urlEncode (param, key, encode) {
   return paramStr
 }
 
-function resultProcessor (result) {
+function resultProcessor (result={}) {
   if (result.status === 200 || result.code === 200 || result.resultCode === 200) {
     return Promise.resolve(result.data)
   } else {
