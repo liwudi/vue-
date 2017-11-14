@@ -4,7 +4,7 @@
 
     <label>
       套餐类型
-      <el-select v-model="queryParams.type" clearable placeholder="请选择">
+      <el-select v-model="queryParams.type" clearable placeholder="请选择" style="width: 120px">
         <el-option
           v-for="item in types"
           :key="item.value"
@@ -16,7 +16,7 @@
 
     <label>
       供应商
-      <el-select v-model="queryParams.distributorId" clearable placeholder="请选择">
+      <el-select v-model="queryParams.distributorId" clearable placeholder="请选择" style="width: 120px">
         <el-option
           v-for="item in distributors"
           :key="item.id"
@@ -29,6 +29,7 @@
     <label>
       创建时间
       <el-date-picker
+        style="width: 250px"
         v-model="startEndDate"
         type="daterange"
         @change="query"
@@ -50,7 +51,7 @@
       <el-table-column prop="newGoodsName" label="新套餐名称"/>
       <el-table-column prop="distributor" label="分销商"/>
       <el-table-column prop="iccid" label="iccid"/>
-      <el-table-column prop="updateDate" label="创建时间" />
+      <el-table-column prop="updateDate" label="创建时间"/>
       <el-table-column prop="difference" label="订单金额"/>
     </el-table>
     <el-pagination
@@ -61,14 +62,14 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="resultData.total">
     </el-pagination>
-    {{resultData}}
   </el-main>
 </template>
 
 <script>
-  import BillsService from '../../services/BillsService';
+  import BillsService from '../../services/BillsService'
+
   export default {
-    data() {
+    data () {
       return {
         types: [{
           value: '1',
@@ -83,44 +84,40 @@
         distributors: [{
           id: '2016-05-02',
           name: '王小虎'
-        },{
+        }, {
           id: '2016-05-021',
           name: '王小虎2'
         }],
-        startEndDate:[],
+        startEndDate: [],
         queryParams: {
-          type:'',
-          distributorId:'',
-          timeStart:'',
-          timeEnd:'',
+          type: '',
+          distributorId: '',
+          timeStart: '',
+          timeEnd: '',
           pageNum: 1,
           pageSize: 10
         },
         resultData: {
-          total:0,
+          total: 0,
           list: []
         }
       }
     },
     methods: {
-      dateFormat(row, column, cellValue) {
-          return cellValue;
+      dateFormat (row, column, cellValue) {
+        return cellValue
       },
-      dateChange() {
-        console.log(this.queryParams)
-        this.query();
-      },
-      query() {
+      query () {
         BillsService.searchBillForDistributor(
           this.queryParams
         ).then(rs => {
           console.log(rs)
-          this.resultData = rs;
-        });
+          this.resultData = rs
+        })
       }
     },
-    mounted() {
-      this.query();
+    mounted () {
+      this.query()
     }
   }
 </script>

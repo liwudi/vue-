@@ -17,7 +17,10 @@
         <template slot="title"><i class="el-icon-menu"></i>账单查询</template>
         <el-menu-item index="Reconciliation">对账查询</el-menu-item>
       </el-submenu>
-
+      <el-submenu index="3">
+        <template slot="title"><i class="el-icon-menu"></i>用户管理</template>
+        <el-menu-item index="userList">用户列表</el-menu-item>
+      </el-submenu>
     </el-menu>
 </template>
 <script>
