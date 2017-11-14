@@ -23,7 +23,7 @@
             }
         },
         mounted(){
-          this.name = commonService.getUserInfo().email;
+          this.name = commonService.getUserInfo().email || '';
         },
         methods:{
             handleCommand(command) {
