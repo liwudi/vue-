@@ -1,6 +1,5 @@
 <template>
-  <div class="sidebar">
-    <el-menu class="el-menu-vertical-demo"
+    <el-menu
              default-active="basetable"
              @open="handleOpen"
              @close="handleClose"
@@ -10,8 +9,11 @@
         <template slot="title"><i class="el-icon-menu"></i>表格</template>
         <el-menu-item index="basetable">基础表格</el-menu-item>
       </el-submenu>
+      <el-submenu index="2">
+        <template slot="title"><i class="el-icon-menu"></i>账单查询</template>
+        <el-menu-item index="Reconciliation">对账查询</el-menu-item>
+      </el-submenu>
     </el-menu>
-  </div>
 </template>
 <script>
   export default {

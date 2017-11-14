@@ -1,0 +1,10 @@
+/**
+用来配置elementUi样式
+ */
+/* 改变主题色变量 */
+$--color-primary: #3A3F51;
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '../../node_modules/element-ui/lib/theme-chalk/fonts';
+
+@import "../../node_modules/element-ui/packages/theme-chalk/src/index";
