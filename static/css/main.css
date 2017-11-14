@@ -121,3 +121,14 @@ a{text-decoration: none}
 .flex1{
   flex: 1;
 }
+.el-header{
+  height: 50px !important;
+  padding: 0 0 !important;
+}
+.el-menu{
+  height: 100%;
+}
+
+.main-title{
+  margin-bottom: 10px;
+}
