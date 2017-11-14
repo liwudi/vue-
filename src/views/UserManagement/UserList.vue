@@ -47,11 +47,8 @@
         :data="tableData">
         <el-table-column
           align="center"
-          label="序号">4
+          label="序号">
         </el-table-column>
-      <!--  <el-table-column
-          align="center"
-          label="序号">-->
         <el-table-column
           align="center"
           prop="userName"
@@ -96,7 +93,7 @@
         </el-table-column>
       </el-table>
     </div>
-\    <div class="block">
+    <div class="block">
       <el-pagination
         @size-change="pageSizeChange"
         @current-change="pageCurrentChange"

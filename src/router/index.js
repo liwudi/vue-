@@ -4,6 +4,8 @@ import HelloWorld from '../components/HelloWorld.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
 
+import RouterUserManagement from './RouterUserManagement';
+
 Vue.use(Router)
 
 let router = new Router({
@@ -18,6 +20,7 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
+        //...RouterUserManagement.routers
       ]
     },
     {
@@ -28,7 +31,7 @@ let router = new Router({
     { path: '*', redirect: '/basetable' }
   ]
 })
-
+RouterUserManagement.setRouter(router);
 
 export default router
 
