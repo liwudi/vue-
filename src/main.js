@@ -5,7 +5,9 @@ import App from './App'
 import moment from 'moment'
 import router from './router'
 import ElementUI from 'element-ui'
-import '../static/css/element-variables.scss'
+
+import '../static/css/main.scss'
+
 import commonService from './services/commonService';
 import config from './index.config';
 
