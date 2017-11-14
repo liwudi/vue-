@@ -14,17 +14,17 @@ const routers = [
     children:[
       {
         path: `${rootPath}UserList`,
-        name: 'userList',
+        name: 'UserList',
         component: UserList
       },
       {
         path: `${rootPath}UserAdd`,
-        name: 'userAdd',
+        name: 'UserAdd',
         component: UserAdd
       },
       {
         path: `${rootPath}UserUpdate`,
-        name: 'userUpdate',
+        name: 'UserUpdate',
         component: UserUpdate
       }
     ]

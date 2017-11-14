@@ -10,14 +10,14 @@ let Config =  {
   **/
   sucessInterceptor : (response) => {
     if(response.data.code === 1015){
-      //Config.toLogin();
+      Config.toLogin();
       return Promise.resolve({data:{code:200}});
     }
     return Promise.resolve(response);
   },
   failInterceptor :  (error) => {
     if(error.response.data.code === 1015){
-      //Config.toLogin();
+      Config.toLogin();
       return Promise.resolve({data:{code:200}});
     }
     return Promise.reject(error.response);

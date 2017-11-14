@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
-            <router-link :to="{name: 'userUpdate', params: { userId: 111 }}">
+            <router-link :to="{name: 'UserUpdate', params: { userId: 111 }}">
               <el-button size="mini">修改</el-button>
             </router-link>
 
