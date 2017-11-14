@@ -5,31 +5,31 @@ import Home from '../views/Home.vue';
 const UserAdd = () => import ('../views/UserManagement/UserAdd.vue');
 const UserList = () => import ('../views/UserManagement/UserList.vue');
 const UserUpdate = () => import ('../views/UserManagement/UserUpdate.vue');
-const rootPath = '/um/';
+const rootPath = '';
 const routers = [
   {
-    path: '/',
+    path: '',
     name: 'home',
     component: Home,
     children:[
       {
-        path: `${rootPath}list`,
-        name: 'UserList',
+        path: `${rootPath}UserList`,
+        name: 'userList',
         component: UserList
       },
       {
-        path: `${rootPath}add`,
-        name: 'UserAdd',
+        path: `${rootPath}UserAdd`,
+        name: 'userAdd',
         component: UserAdd
       },
       {
-        path: `${rootPath}update`,
-        name: 'UserModify',
+        path: `${rootPath}UserUpdate`,
+        name: 'userUpdate',
         component: UserUpdate
       }
     ]
   }
-]
+];
 function setRouter (router) {
   window.r = router;
   console.info('router', router);

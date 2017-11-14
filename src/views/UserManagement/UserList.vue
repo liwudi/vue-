@@ -39,7 +39,7 @@
       </el-form>
     </div>
     <div>
-      <router-link :to="{name: 'UserAdd'}"><el-button type="primary">创建用户</el-button></router-link>
+      <router-link :to="{name: 'userAdd'}"><el-button type="primary">创建用户</el-button></router-link>
       <el-tag type="info">默认密码：{{defaultPassword}}</el-tag>
     </div>
     <div>
@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
-            <router-link :to="{name: 'UserUpdate', params: { userId: 111 }}">
+            <router-link :to="{name: 'userUpdate', params: { userId: 111 }}">
               <el-button size="mini">修改</el-button>
             </router-link>
 
