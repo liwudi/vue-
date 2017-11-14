@@ -10,7 +10,6 @@ let Config =  {
   **/
   sucessInterceptor : (response) => {
     if(response.data.code === 1015){
-      //router.replace('hello');
       Config.toLogin();
       return Promise.resolve({data:{code:200}});
     }
@@ -18,7 +17,6 @@ let Config =  {
   },
   failInterceptor :  (error) => {
     if(error.response.data.code === 1015){
-      //router.replace('hello');
       Config.toLogin();
       return Promise.resolve({data:{code:200}});
     }
@@ -31,7 +29,8 @@ let Config =  {
       *return
   **/
   toLogin :  () => {
-    window.location.href = Config.loginUrl + encodeURIComponent(window.location.href);
+    //window.location.href = Config.loginUrl + encodeURIComponent(window.location.href);
+    router.replace('login');
   },
 
   loginUrl : 'http://wdpassport.mapbar.com/#/login?redirect=',

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue';
+import Login from '../views/login/Login.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
 
@@ -21,9 +21,9 @@ let router = new Router({
       ]
     },
     {
-      path: '/hello',
-      name: 'hello',
-      component: HelloWorld
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     { path: '*', redirect: '/basetable' }
   ]
