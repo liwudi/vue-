@@ -5,7 +5,9 @@ import App from './App'
 import moment from 'moment'
 import router from './router'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+
+import '../static/css/main.scss'
+
 import commonService from './services/commonService';
 import config from './index.config';
 

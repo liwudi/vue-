@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="flex1" v-if="ready" >
+    <div class="wrapper flex1" v-if="ready" >
       <router-view/>
     </div>
     <div v-if="!ready" class="flex1" v-loading="true"></div>
@@ -18,14 +18,15 @@
       }
     },
     beforeCreate : function () {
-      ssoService.logged()
+      ssoService.logined()
         .then((data)=>{
-
+            return;
         })
         .catch(()=>{
           //window.location.href = `${window.location.origin}/#hello`;
+          return;
         })
-        .finally(()=>{
+        .then(()=>{
           this.ready = true;
         })
     }
@@ -33,6 +34,5 @@
 </script>
 
 <style>
-  @import "../static/css/main.css";
-  @import "../static/css/color-dark.css";
+
 </style>

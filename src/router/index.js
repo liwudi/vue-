@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue';
+import Login from '../views/login/Login.vue';
+import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
+
 import SimManage from '../views/SimManage/SimManage.vue';
+
+const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
+import RouterUserManagement from './RouterUserManagement';
+
 
 Vue.use(Router)
 
@@ -20,22 +26,33 @@ let router = new Router({
           component: BaseTable
         },
         {
-          path: '/sim',
-          name: 'sim',
+          path: '/SimManage',
+          name: 'SimManage',
           component: SimManage
         },
+        {
+          path: '/GoodsManagement',
+          name: 'GoodsManagement',
+          component: GoodsManagement
+        },
+        {
+          path: '/Reconciliation',
+          name: 'Reconciliation',
+          component: Reconciliation
+        }
       ]
     },
     {
-      path: '/hello',
-      name: 'hello',
-      component: HelloWorld
+      path: '/login',
+      name: 'login',
+      component: Login
     },
 
-   { path: '*', redirect: '/basetable' }
+     { path: '*', redirect: '/basetable' }
+
   ]
 })
-
+RouterUserManagement.setRouter(router);
 
 export default router
 
