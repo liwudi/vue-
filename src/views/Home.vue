@@ -16,7 +16,7 @@
             vHead, vSidebar
         },
         mounted(){
-          this.$router.replace('basetable');
+          this.$router.replace('sim');
         }
     }
 </script>

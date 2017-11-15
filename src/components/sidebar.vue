@@ -10,6 +10,12 @@
         <template slot="title"><i class="el-icon-menu"></i>表格</template>
         <el-menu-item index="basetable">基础表格</el-menu-item>
       </el-submenu>
+
+      <el-menu-item index="5">
+        <i class="el-icon-menu"></i>
+        <span slot="simManage">SIM卡信息管理</span>
+      </el-menu-item>
+
     </el-menu>
   </div>
 </template>
