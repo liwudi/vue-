@@ -45,9 +45,10 @@
     <div>
       <el-table
         :data="tableData">
-        <el-table-column
-          align="center"
-          label="序号">
+        <el-table-column label="序号" align="center">
+          <template slot-scope="scope">
+            {{scope.$index + 1}}
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -68,12 +69,17 @@
           align="center"
           prop="sex"
           label="性别">
+          <template slot-scope="scope">
+            {{sex[scope.row.sex - 1].label}}
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
           prop="state"
           label="用户状态">
-        </el-table-column>
+          <template slot-scope="scope">
+            {{state[scope.row.sex - 1].label}}
+          </template>        </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
             <router-link :to="{name: 'UserUpdate', params: { userId: 111 }}">
