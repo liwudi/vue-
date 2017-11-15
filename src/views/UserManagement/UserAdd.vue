@@ -43,7 +43,9 @@
 </template>
 
 <script>
-  import {sex, state, rules} from './UserConfig';
+  import {sex, state} from './UserConfig';
+  import {getRules} from './UserRules';
+  const rules = getRules();
   import {addUser} from '../../services/UserManagementService';
   export default {
     data() {
@@ -55,7 +57,7 @@
           loginName: '',
           sex: 3,
           phone: '',
-          state: 1,
+          state: 1
         },
         rules: rules
       }

@@ -43,7 +43,9 @@
 </template>
 
 <script>
-  import {sex, state, rules} from './UserConfig';
+  import {sex, state} from './UserConfig';
+  import {getRules} from './UserRules';
+  const rules = getRules();
   import {updateUser, getUser} from '../../services/UserManagementService';
   export default {
     data() {
@@ -81,9 +83,7 @@
       openMessage() {
         this.$alert('信息修改成功！', '提示', {
           confirmButtonText: '确定',
-          callback: action => {
-            this.goToList();
-          }
+          callback: action => {this.goToList();}
         });
       },
       submitForm() {

@@ -29,7 +29,7 @@
       </el-form>
     </div>
     <div>
-      <router-link :to="{name: 'userAdd'}"><el-button type="primary">创建用户</el-button></router-link>
+      <router-link :to="{name: 'UserAdd'}"><el-button type="primary">创建用户</el-button></router-link>
       <el-tag type="info">默认密码：{{defaultPassword}}</el-tag>
     </div>
     <div>
@@ -72,8 +72,11 @@
 </template>
 
 <script>
-  import {sex, state, rules} from './UserConfig';
+  import {sex, state} from './UserConfig';
+  import {getRules} from './UserRules';
+  const rules = getRules(false);
   import {searchUser, deleteUser, resetUserPassword} from '../../services/UserManagementService';
+
   export default {
     data() {
       return {
@@ -81,7 +84,7 @@
         formName: 'userForm',
         sex, state,
         userForm: {
-          userName: 'liufang',
+          userName: '',
           loginName: '',
           sex: 3,
           phone: '',
@@ -108,16 +111,10 @@
           cancelButtonText: '取消',
           confirmButtonText: confirmText
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '操作成功!'
-          });
+          this.$message({type: 'success', message: '操作成功!'});
           this.request();
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消操作'
-          });
+          this.$message({type: 'info', message: '已取消操作'});
         });
       },
       userDelete(index, row) {
@@ -142,7 +139,6 @@
       },
       request () {
         let params = this.$data.userForm;
-        console.info(params)
         searchUser(params).then((result) => {
           let data = result.data;
           this.$data.tableData = data.list;
