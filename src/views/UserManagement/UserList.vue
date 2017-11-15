@@ -29,7 +29,7 @@
       </el-form>
     </div>
     <div>
-      <router-link :to="{name: 'UserAdd'}"><el-button type="primary">创建用户</el-button></router-link>
+      <el-button type="primary" @click="userAddVisible(true)">创建用户</el-button>
       <el-tag type="info">默认密码：{{defaultPassword}}</el-tag>
     </div>
     <div>
@@ -48,9 +48,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
-            <router-link :to="{name: 'UserUpdate', params: { userId: 111 }}">
-              <el-button size="mini">修改</el-button>
-            </router-link>
+            <el-button size="mini" @click="userUpdateVisible(true)">修改</el-button>
             <el-button size="mini" type="danger" @click="userDelete(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini" type="danger" @click="userPasswordReset(scope.$index, scope.row)">密码重置</el-button>
           </template>
@@ -68,18 +66,29 @@
         :total="page.total">
       </el-pagination>
     </div>
+    <el-dialog title="创建用户" :visible.sync="userDialog.addVisible"><user-add></user-add></el-dialog>
+    <el-dialog title="修改信息" :visible.sync="userDialog.updateVisible"><user-update></user-update></el-dialog>
   </el-main>
 </template>
 
 <script>
-  import {sex, state} from './UserConfig';
+  import {sex, state, event} from './UserConfig';
   import {getRules} from './UserRules';
   const rules = getRules(false);
   import {searchUser, deleteUser, resetUserPassword} from '../../services/UserManagementService';
+  import userAdd from './UserAdd.vue';
+  import userUpdate from './UserUpdate.vue';
 
   export default {
+    components:{
+      userAdd, userUpdate
+    },
     data() {
       return {
+        userDialog: {
+          addVisible: false,
+          updateVisible: false
+        },
         defaultPassword: 'yx8888',
         formName: 'userForm',
         sex, state,
@@ -104,8 +113,26 @@
     },
     created() {
       this.request();
+      this.$root.$on(event.CLOSE_ADD_USER, (refresh) => {
+        this.userAddVisible(false);
+        if(refresh) {
+          this.pageCurrentChange(1);
+        }
+      });
+      this.$root.$on(event.CLOSE_UPDATE_USER, (refresh) => {
+        this.userUpdateVisible(false);
+        if(refresh) {
+          this.request();
+        }
+      });
     },
     methods: {
+      userAddVisible (visible) {
+        this.$data.userDialog.addVisible = visible;
+      },
+      userUpdateVisible (visible) {
+        this.$data.userDialog.updateVisible = visible;
+      },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
           cancelButtonText: '取消',
@@ -133,6 +160,7 @@
         this.request();
       },
       pageCurrentChange(val) {
+        console.info('current-page', val);
         let params = this.$data.userForm;
         params.pageNum = val;
         this.request();

@@ -36,14 +36,14 @@
 
       <el-form-item>
         <el-button type="primary" @click="submitForm">立即创建</el-button>
-        <el-button @click="goToList">取消</el-button>
+        <el-button @click="cancelForm">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-  import {sex, state} from './UserConfig';
+  import {sex, state, event} from './UserConfig';
   import {getRules} from './UserRules';
   const rules = getRules();
   import {addUser} from '../../services/UserManagementService';
@@ -75,7 +75,8 @@
         this.$alert('用户创建成功，密码为默认密码！', '提示', {
           confirmButtonText: '确定',
           callback: action => {
-            this.goToList();
+            this.close(true);
+            //this.goToList();
           }
         });
       },
@@ -85,6 +86,12 @@
           if(valid) this.request();
           return valid;
         });
+      },
+      cancelForm () {
+        this.close();
+      },
+      close (refresh=false) {
+        this.$root.$emit(event.CLOSE_ADD_USER, refresh);
       },
       goToList() {
         this.$router.back();

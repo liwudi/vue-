@@ -36,14 +36,14 @@
 
       <el-form-item>
         <el-button type="primary" @click="submitForm">修改</el-button>
-        <el-button @click="goToList">取消</el-button>
+        <el-button @click="cancelForm">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-  import {sex, state} from './UserConfig';
+  import {sex, state, event} from './UserConfig';
   import {getRules} from './UserRules';
   const rules = getRules();
   import {updateUser, getUser} from '../../services/UserManagementService';
@@ -69,7 +69,6 @@
       requestUserInfo () {
         getUser().then((result) => {
           let data = result.data;
-          console.info(data)
           this.$data.userForm = data;
         });
       },
@@ -83,7 +82,7 @@
       openMessage() {
         this.$alert('信息修改成功！', '提示', {
           confirmButtonText: '确定',
-          callback: action => {this.goToList();}
+          callback: action => {this.close(true);}
         });
       },
       submitForm() {
@@ -92,6 +91,12 @@
           if(valid) this.request();
           return valid;
         });
+      },
+      cancelForm () {
+        this.close();
+      },
+      close (refresh=false) {
+        this.$root.$emit(event.CLOSE_UPDATE_USER, refresh);
       },
       goToList() {
         this.$router.back();
