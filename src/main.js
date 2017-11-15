@@ -7,6 +7,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 
 import '../static/css/main.scss'
+import '../static/css/template.scss'
 
 import commonService from './services/commonService';
 import config from './index.config';
