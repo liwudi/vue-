@@ -1,6 +1,6 @@
 import RequestService from './commonService'
 
-let serviceUrl = ''
+let serviceUrl = '';
 
 function makeUrl (path) {
   return serviceUrl + path

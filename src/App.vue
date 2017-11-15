@@ -20,12 +20,13 @@
     beforeCreate : function () {
       ssoService.logged()
         .then((data)=>{
-
+          return;
         })
         .catch(()=>{
           //window.location.href = `${window.location.origin}/#hello`;
+          return;
         })
-        .finally(()=>{
+        .then(()=>{
           this.ready = true;
         })
     }

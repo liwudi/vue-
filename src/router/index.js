@@ -1,8 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 import HelloWorld from '../components/HelloWorld.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
+const ChannelManage = () => import('../views/ChannelManage/ChannelManage.vue');
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
+        {
+          path: '/ChannelManage',
+          name : 'ChannelManage',
+          component: ChannelManage
+        }
       ]
     },
     {
@@ -27,7 +33,7 @@ let router = new Router({
     },
     { path: '*', redirect: '/basetable' }
   ]
-})
+});
 
 
 export default router
