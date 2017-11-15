@@ -35,11 +35,12 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="query">查询</el-button>
+          <el-button>重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="tpl-mg-b">
-      <el-button type="primary" @click="query">导出EXCEL</el-button>
+      <el-button type="primary" @click="query" size="medium">导出EXCEL</el-button>
     </div>
     <el-table
       :data="resultData.list"
