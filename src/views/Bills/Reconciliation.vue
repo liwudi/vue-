@@ -1,60 +1,62 @@
 <template>
   <el-main>
-    <h3 class="main-title">对账查询</h3>
-
-    <label>
-      套餐类型
-      <el-select v-model="queryParams.type" clearable placeholder="请选择" style="width: 120px">
-        <el-option
-          v-for="item in types"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </label>
-
-    <label>
-      供应商
-      <el-select v-model="queryParams.distributorId" clearable placeholder="请选择" style="width: 120px">
-        <el-option
-          v-for="item in distributors"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id">
-        </el-option>
-      </el-select>
-    </label>
-
-    <label>
-      创建时间
-      <el-date-picker
-        style="width: 250px"
-        v-model="startEndDate"
-        type="daterange"
-        @change="query"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期">
-      </el-date-picker>
-    </label>
-
-    <el-button type="primary" icon="el-icon-search" @click="query">查询</el-button>
+    <div class="tpl-title">对账查询</div>
+    <div class="tpl-mg-t">
+      <el-form :inline="true" :model="queryParams" class="tpl-form-inline" size="medium">
+        <el-form-item label="套餐类型">
+          <el-select v-model="queryParams.type" clearable placeholder="请选择">
+            <el-option
+              v-for="item in types"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="供应商">
+          <el-select v-model="queryParams.distributorId" clearable placeholder="请选择">
+            <el-option
+              v-for="item in distributors"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+            v-model="startEndDate"
+            type="daterange"
+            @change="query"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="query">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="tpl-mg-b">
+      <el-button type="primary" @click="query">导出EXCEL</el-button>
+    </div>
     <el-table
       :data="resultData.list"
-      stripe
-      style="width: 100%">
-      <el-table-column prop="orderId" label="订单号"/>
-      <el-table-column prop="oldGoodsId" label="原套餐ID"/>
-      <el-table-column prop="oldGoodsName" label="原套餐名称"/>
-      <el-table-column prop="newGoodsId" label="新套餐ID"/>
-      <el-table-column prop="newGoodsName" label="新套餐名称"/>
-      <el-table-column prop="distributor" label="分销商"/>
-      <el-table-column prop="iccid" label="iccid"/>
-      <el-table-column prop="updateDate" label="创建时间"/>
-      <el-table-column prop="difference" label="订单金额"/>
+      stripe border>
+      <el-table-column align="center" prop="orderId" label="订单号"/>
+      <el-table-column align="center" prop="oldGoodsId" label="原套餐ID"/>
+      <el-table-column align="center" prop="oldGoodsName" label="原套餐名称"/>
+      <el-table-column align="center" prop="newGoodsId" label="新套餐ID"/>
+      <el-table-column align="center" prop="newGoodsName" label="新套餐名称"/>
+      <el-table-column align="center" prop="distributor" label="分销商"/>
+      <el-table-column align="center" prop="iccid" label="iccid"/>
+      <el-table-column align="center" prop="updateDate" label="创建时间"/>
+      <el-table-column align="center" prop="difference" label="订单金额"/>
     </el-table>
+    <p class="tpl-p" style="float:right">总金额：123456.225元</p>
     <el-pagination
+      style="float:left"
       @size-change="query"
       @current-change="query"
       :current-page="queryParams.pageNum"
