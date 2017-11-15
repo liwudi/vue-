@@ -14,22 +14,12 @@
         </el-form-item>
         <el-form-item label="性别">
           <el-select v-model="userForm.sex" placeholder="请选择性别">
-            <el-option
-              v-for="item in sex"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
+            <el-option v-for="item in sex" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户状态">
           <el-select v-model="userForm.state" placeholder="请选择用户状态">
-            <el-option
-              v-for="item in state"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
+            <el-option v-for="item in state" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -43,58 +33,26 @@
       <el-tag type="info">默认密码：{{defaultPassword}}</el-tag>
     </div>
     <div>
-      <el-table
-        :data="tableData">
-        <el-table-column label="序号" align="center">
-          <template slot-scope="scope">
-            {{scope.$index + 1}}
-          </template>
+      <el-table :data="tableData">
+        <el-table-column label="序号" align="center" width="96">
+          <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="userName"
-          label="用户名">
+        <el-table-column align="center" prop="userName" label="用户名"></el-table-column>
+        <el-table-column align="center" prop="loginName" label="姓名"></el-table-column>
+        <el-table-column align="center" prop="phone" label="手机号"></el-table-column>
+        <el-table-column align="center" prop="sex" label="性别">
+          <template slot-scope="scope">{{sex[scope.row.sex - 1].label}}</template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="loginName"
-          label="姓名">
+        <el-table-column align="center" prop="state" label="用户状态">
+          <template slot-scope="scope">{{state[scope.row.sex - 1].label}}</template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="phone"
-          label="手机号">
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="sex"
-          label="性别">
-          <template slot-scope="scope">
-            {{sex[scope.row.sex - 1].label}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="state"
-          label="用户状态">
-          <template slot-scope="scope">
-            {{state[scope.row.sex - 1].label}}
-          </template>        </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
             <router-link :to="{name: 'UserUpdate', params: { userId: 111 }}">
               <el-button size="mini">修改</el-button>
             </router-link>
-
-            <el-button
-              size="mini"
-              type="danger"
-              @click="userDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="userPasswordReset(scope.$index, scope.row)">密码重置</el-button>
-
+            <el-button size="mini" type="danger" @click="userDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="userPasswordReset(scope.$index, scope.row)">密码重置</el-button>
           </template>
         </el-table-column>
       </el-table>
