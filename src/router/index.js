@@ -21,6 +21,7 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
+        ...RouterUserManagement.routers,
         {
           path: '/GoodsManagement',
           name: 'GoodsManagement',
@@ -41,7 +42,6 @@ let router = new Router({
      { path: '*', redirect: '/basetable' }
   ]
 })
-RouterUserManagement.setRouter(router);
 
 export default router
 
