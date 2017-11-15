@@ -78,6 +78,15 @@
   import {searchUser, deleteUser, resetUserPassword} from '../../services/UserManagementService';
   import userAdd from './UserAdd.vue';
   import userUpdate from './UserUpdate.vue';
+  const defaultUserForm = {
+    userName: '',
+    loginName: '',
+    sex: 3,
+    phone: '',
+    state: 3,
+    pageNum: 1,
+    pageSize: 10
+  };
 
   export default {
     components:{
@@ -93,13 +102,7 @@
         formName: 'userForm',
         sex, state,
         userForm: {
-          userName: '',
-          loginName: '',
-          sex: 3,
-          phone: '',
-          state: 3,
-          pageNum: 1,
-          pageSize: 10
+          ...defaultUserForm
         },
         rules: rules,
         tableData: [],
@@ -115,15 +118,11 @@
       this.request();
       this.$root.$on(event.CLOSE_ADD_USER, (refresh) => {
         this.userAddVisible(false);
-        if(refresh) {
-          this.pageCurrentChange(1);
-        }
+        refresh && this.pageCurrentChange(1);
       });
       this.$root.$on(event.CLOSE_UPDATE_USER, (refresh) => {
         this.userUpdateVisible(false);
-        if(refresh) {
-          this.request();
-        }
+        refresh && this.request();
       });
     },
     methods: {
@@ -182,17 +181,13 @@
         });
       },
       resetForm() {
-        let formName = this.$data.formName;
-        this.$refs[formName].resetFields();
+        this.$data.userForm = {
+          ...defaultUserForm
+        }
       }
     }
   }
 </script>
 
 <style lang="scss" scoped rel="stylesheet/scss">
-  .user-wrapper {
-    >div {
-      margin: 5px 0;
-    }
-  }
 </style>
