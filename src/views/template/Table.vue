@@ -3,23 +3,23 @@
     :data="tableData"
     style="width: 100%">
     <el-table-column
-      header-align="center"
+      align="center"
       prop="date"
       label="日期"
       width="180">
     </el-table-column>
     <el-table-column
-      header-align="center"
+      align="center"
       prop="name"
       label="姓名"
       width="180">
     </el-table-column>
     <el-table-column
-      header-align="center"
+      align="center"
       prop="address"
       label="地址">
     </el-table-column>
-    <el-table-column label="操作" header-align="center" align="center">
+    <el-table-column label="操作" align="center">
       <template slot-scope="scope">
         <el-button-group>
           <el-button
