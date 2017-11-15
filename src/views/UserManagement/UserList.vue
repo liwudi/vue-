@@ -46,7 +46,7 @@
         <el-table-column align="center" prop="state" label="用户状态">
           <template slot-scope="scope">{{state[scope.row.sex - 1].label}}</template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="220">
+        <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button-group>
               <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true)"><i class="el-icon-edit"></i></el-button>
