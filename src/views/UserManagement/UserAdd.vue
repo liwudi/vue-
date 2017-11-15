@@ -1,6 +1,5 @@
 <template>
-  <div class="user-wrapper">
-    <h3>创建用户</h3>
+  <el-main>
     <el-form ref="userForm" :rules="rules" :model="userForm" label-width="80px" class="demo-ruleForm">
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
@@ -39,7 +38,7 @@
         <el-button @click="cancelForm">取消</el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </el-main>
 </template>
 
 <script>
@@ -100,7 +99,4 @@
   }
 </script>
 <style lang="scss" scoped rel="stylesheet/scss">
-  .user-wrapper {
-    width: 400px;
-  }
 </style>
