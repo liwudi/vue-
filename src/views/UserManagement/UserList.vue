@@ -1,8 +1,8 @@
 <template>
   <el-main>
-    <h3>用户管理</h3>
-    <div>
-      <el-form ref="userForm" :inline="true" :rules="rules" :model="userForm" class="demo-form-inline demo-ruleForm">
+    <div class="tpl-title">用户管理</div>
+    <div class="tpl-mg-t">
+      <el-form ref="userForm" :inline="true" :rules="rules" :model="userForm" class="tpl-form-inline" size="medium">
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
         </el-form-item>
@@ -29,11 +29,11 @@
       </el-form>
     </div>
     <div>
-      <el-button type="primary" @click="userAddVisible(true)">创建用户</el-button>
-      <el-tag type="info">默认密码：{{defaultPassword}}</el-tag>
+      <el-button type="primary" @click="userAddVisible(true)" size="medium">创建用户</el-button>
+      <p class="tpl-p">默认密码：{{defaultPassword}}</p>
     </div>
-    <div>
-      <el-table :data="tableData">
+    <div class="tpl-mg">
+      <el-table :data="tableData" stripe border>
         <el-table-column label="序号" align="center" width="96">
           <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
@@ -48,14 +48,14 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
-            <el-button size="mini" @click="userUpdateVisible(true)">修改</el-button>
-            <el-button size="mini" type="danger" @click="userDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button size="mini" type="danger" @click="userPasswordReset(scope.$index, scope.row)">密码重置</el-button>
+            <el-button-group>
+              <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
+              <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.$index, scope.row)"><i class="el-icon-more"></i></el-button>
+            </el-button-group>
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div class="block">
       <el-pagination
         @size-change="pageSizeChange"
         @current-change="pageCurrentChange"

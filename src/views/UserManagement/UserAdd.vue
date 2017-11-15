@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-form ref="userForm" :rules="rules" :model="userForm" label-width="80px" class="demo-ruleForm">
+    <el-form ref="userForm" :rules="rules" :model="userForm" label-width="80px" size="medium">
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
       </el-form-item>
