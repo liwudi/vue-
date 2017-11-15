@@ -7,34 +7,22 @@ const UserList = () => import ('../views/UserManagement/UserList.vue');
 const UserUpdate = () => import ('../views/UserManagement/UserUpdate.vue');
 const rootPath = '';
 const routers = [
-  {
-    path: '',
-    name: 'home',
-    component: Home,
-    children:[
       {
         path: `${rootPath}UserList`,
-        name: 'userList',
+        name: 'UserList',
         component: UserList
       },
       {
         path: `${rootPath}UserAdd`,
-        name: 'userAdd',
+        name: 'UserAdd',
         component: UserAdd
       },
       {
         path: `${rootPath}UserUpdate`,
-        name: 'userUpdate',
+        name: 'UserUpdate',
         component: UserUpdate
       }
-    ]
-  }
-];
-function setRouter (router) {
-  window.r = router;
-  console.info('router', router);
-  router.addRoutes(routers);
-  console.info(123)
-}
+    ];
 
-export default {setRouter}
+
+export default {routers}

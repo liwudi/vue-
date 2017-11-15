@@ -14,22 +14,12 @@
         </el-form-item>
         <el-form-item label="性别">
           <el-select v-model="userForm.sex" placeholder="请选择性别">
-            <el-option
-              v-for="item in sex"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
+            <el-option v-for="item in sex" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户状态">
           <el-select v-model="userForm.state" placeholder="请选择用户状态">
-            <el-option
-              v-for="item in state"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
+            <el-option v-for="item in state" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -39,56 +29,28 @@
       </el-form>
     </div>
     <div>
-      <router-link :to="{name: 'userAdd'}"><el-button type="primary">创建用户</el-button></router-link>
+      <el-button type="primary" @click="userAddVisible(true)">创建用户</el-button>
       <el-tag type="info">默认密码：{{defaultPassword}}</el-tag>
     </div>
     <div>
-      <el-table
-        :data="tableData">
-        <el-table-column
-          align="center"
-          label="序号">
+      <el-table :data="tableData">
+        <el-table-column label="序号" align="center" width="96">
+          <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="userName"
-          label="用户名">
+        <el-table-column align="center" prop="userName" label="用户名"></el-table-column>
+        <el-table-column align="center" prop="loginName" label="姓名"></el-table-column>
+        <el-table-column align="center" prop="phone" label="手机号"></el-table-column>
+        <el-table-column align="center" prop="sex" label="性别">
+          <template slot-scope="scope">{{sex[scope.row.sex - 1].label}}</template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="loginName"
-          label="姓名">
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="phone"
-          label="手机号">
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="sex"
-          label="性别">
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="state"
-          label="用户状态">
+        <el-table-column align="center" prop="state" label="用户状态">
+          <template slot-scope="scope">{{state[scope.row.sex - 1].label}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template slot-scope="scope">
-            <router-link :to="{name: 'userUpdate', params: { userId: 111 }}">
-              <el-button size="mini">修改</el-button>
-            </router-link>
-
-            <el-button
-              size="mini"
-              type="danger"
-              @click="userDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="userPasswordReset(scope.$index, scope.row)">密码重置</el-button>
-
+            <el-button size="mini" @click="userUpdateVisible(true)">修改</el-button>
+            <el-button size="mini" type="danger" @click="userDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="userPasswordReset(scope.$index, scope.row)">密码重置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -104,20 +66,34 @@
         :total="page.total">
       </el-pagination>
     </div>
+    <el-dialog title="创建用户" :visible.sync="userDialog.addVisible"><user-add></user-add></el-dialog>
+    <el-dialog title="修改信息" :visible.sync="userDialog.updateVisible"><user-update></user-update></el-dialog>
   </el-main>
 </template>
 
 <script>
-  import {sex, state, rules} from './UserConfig';
+  import {sex, state, event} from './UserConfig';
+  import {getRules} from './UserRules';
+  const rules = getRules(false);
   import {searchUser, deleteUser, resetUserPassword} from '../../services/UserManagementService';
+  import userAdd from './UserAdd.vue';
+  import userUpdate from './UserUpdate.vue';
+
   export default {
+    components:{
+      userAdd, userUpdate
+    },
     data() {
       return {
+        userDialog: {
+          addVisible: false,
+          updateVisible: false
+        },
         defaultPassword: 'yx8888',
         formName: 'userForm',
         sex, state,
         userForm: {
-          userName: 'liufang',
+          userName: '',
           loginName: '',
           sex: 3,
           phone: '',
@@ -137,23 +113,35 @@
     },
     created() {
       this.request();
+      this.$root.$on(event.CLOSE_ADD_USER, (refresh) => {
+        this.userAddVisible(false);
+        if(refresh) {
+          this.pageCurrentChange(1);
+        }
+      });
+      this.$root.$on(event.CLOSE_UPDATE_USER, (refresh) => {
+        this.userUpdateVisible(false);
+        if(refresh) {
+          this.request();
+        }
+      });
     },
     methods: {
+      userAddVisible (visible) {
+        this.$data.userDialog.addVisible = visible;
+      },
+      userUpdateVisible (visible) {
+        this.$data.userDialog.updateVisible = visible;
+      },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
           cancelButtonText: '取消',
           confirmButtonText: confirmText
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '操作成功!'
-          });
+          this.$message({type: 'success', message: '操作成功!'});
           this.request();
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消操作'
-          });
+          this.$message({type: 'info', message: '已取消操作'});
         });
       },
       userDelete(index, row) {
@@ -172,13 +160,13 @@
         this.request();
       },
       pageCurrentChange(val) {
+        console.info('current-page', val);
         let params = this.$data.userForm;
         params.pageNum = val;
         this.request();
       },
       request () {
         let params = this.$data.userForm;
-        console.info(params)
         searchUser(params).then((result) => {
           let data = result.data;
           this.$data.tableData = data.list;

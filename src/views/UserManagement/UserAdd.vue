@@ -1,6 +1,5 @@
 <template>
-  <div class="user-wrapper">
-    <h3>创建用户</h3>
+  <el-main>
     <el-form ref="userForm" :rules="rules" :model="userForm" label-width="80px" class="demo-ruleForm">
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
@@ -36,14 +35,16 @@
 
       <el-form-item>
         <el-button type="primary" @click="submitForm">立即创建</el-button>
-        <el-button @click="goToList">取消</el-button>
+        <el-button @click="cancelForm">取消</el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </el-main>
 </template>
 
 <script>
-  import {sex, state, rules} from './UserConfig';
+  import {sex, state, event} from './UserConfig';
+  import {getRules} from './UserRules';
+  const rules = getRules();
   import {addUser} from '../../services/UserManagementService';
   export default {
     data() {
@@ -55,7 +56,7 @@
           loginName: '',
           sex: 3,
           phone: '',
-          state: 1,
+          state: 1
         },
         rules: rules
       }
@@ -73,7 +74,8 @@
         this.$alert('用户创建成功，密码为默认密码！', '提示', {
           confirmButtonText: '确定',
           callback: action => {
-            this.goToList();
+            this.close(true);
+            //this.goToList();
           }
         });
       },
@@ -84,6 +86,12 @@
           return valid;
         });
       },
+      cancelForm () {
+        this.close();
+      },
+      close (refresh=false) {
+        this.$root.$emit(event.CLOSE_ADD_USER, refresh);
+      },
       goToList() {
         this.$router.back();
       }
@@ -91,7 +99,4 @@
   }
 </script>
 <style lang="scss" scoped rel="stylesheet/scss">
-  .user-wrapper {
-    width: 400px;
-  }
 </style>

@@ -25,6 +25,7 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
+        ...RouterUserManagement.routers,
         {
           path: '/SimManage',
           name: 'SimManage',
@@ -52,7 +53,6 @@ let router = new Router({
 
   ]
 })
-RouterUserManagement.setRouter(router);
 
 export default router
 
