@@ -5,7 +5,7 @@ import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
-import RouterUserManagement from './RouterUserManagement';
+const UserManagement = () => import ('../views/UserManagement/UserList.vue');
 
 Vue.use(Router)
 
@@ -21,7 +21,11 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
-        ...RouterUserManagement.routers,
+        {
+          path: '/UserManagement',
+          name: 'UserManagement',
+          component: UserManagement
+        },
         {
           path: '/GoodsManagement',
           name: 'GoodsManagement',
