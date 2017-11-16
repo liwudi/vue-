@@ -6,6 +6,7 @@ import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 import RouterUserManagement from './RouterUserManagement';
+const SupplierManagement = () => import('../views/SupplierManagement/SupplierManagement.vue');
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ let router = new Router({
           path: '/Reconciliation',
           name: 'Reconciliation',
           component: Reconciliation
+        },
+        {
+          path: '/SupplierManagement',
+          name: 'SupplierManagement',
+          component: SupplierManagement
         }
       ]
     },
