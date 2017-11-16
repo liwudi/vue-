@@ -14,11 +14,11 @@
 </template>
 
 <script>
-  import FormInLine from './template/FormInLine.vue';
-  import FormInBlock from './template/FormInBlock.vue';
-  import TableList from './template/Table.vue';
-  import Pagination from './template/Page.vue';
-  import ButtonInLine from './template/ButtonInLine.vue';
+  import FormInLine from './FormInLine.vue';
+  import FormInBlock from './FormInBlock.vue';
+  import TableList from './Table.vue';
+  import Pagination from './Page.vue';
+  import ButtonInLine from './ButtonInLine.vue';
   export default {
     components: {
       FormInLine, FormInBlock, TableList, Pagination, ButtonInLine

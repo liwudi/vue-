@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Login from '../views/login/Login.vue';
 import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
-const BaseTable = () => import('../views/BaseTable.vue');
+const BaseTable = () => import('../views/template/BaseTable.vue');
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 const UserManagement = () => import ('../views/UserManagement/UserList.vue');
 
