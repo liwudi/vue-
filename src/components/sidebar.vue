@@ -25,8 +25,10 @@
         <template slot="title"><i class="el-icon-menu"></i>用户管理</template>
         <el-menu-item index="UserList">用户列表</el-menu-item>
       </el-submenu>
-
-
+	    <el-menu-item index="DistributorManage">
+        <i class="el-icon-menu"></i>
+        <span slot="title">渠道管理</span>
+      </el-menu-item>
     </el-menu>
 </template>
 <script>

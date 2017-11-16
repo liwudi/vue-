@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 import Login from '../views/login/Login.vue';
 import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
@@ -11,6 +11,7 @@ import SimDetail from '../views/SimManage/SimDetail.vue';
 
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 import RouterUserManagement from './RouterUserManagement';
+const DistributorManage = () => import('../views/DistributorManage/DistributorManage.vue');
 
 
 Vue.use(Router)
@@ -52,6 +53,11 @@ let router = new Router({
           path: '/Reconciliation',
           name: 'Reconciliation',
           component: Reconciliation
+        },
+		        {
+          path: '/DistributorManage',
+          name : 'DistributorManage',
+          component: DistributorManage
         }
       ]
     },
@@ -64,7 +70,7 @@ let router = new Router({
      { path: '*', redirect: '/basetable' }
 
   ]
-})
+});
 
 export default router
 
