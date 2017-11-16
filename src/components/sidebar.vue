@@ -13,6 +13,10 @@
         <i class="el-icon-menu"></i>
         <span slot="title">商品管理</span>
       </el-menu-item>
+      <el-menu-item index="SimManage">
+        <i class="el-icon-menu"></i>
+        <span slot="title">SIM卡信息管理</span>
+      </el-menu-item>
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-menu"></i>账单查询</template>
         <el-menu-item index="Reconciliation">对账查询</el-menu-item>
@@ -21,10 +25,7 @@
         <template slot="title"><i class="el-icon-menu"></i>用户管理</template>
         <el-menu-item index="UserList">用户列表</el-menu-item>
       </el-submenu>
-      <el-submenu index="4">
-        <template slot="title"><i class="el-icon-menu"></i>SIM卡信息管理</template>
-        <el-menu-item index="SimManage">SIM卡信息管理</el-menu-item>
-      </el-submenu>
+
 
     </el-menu>
 </template>

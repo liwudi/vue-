@@ -1,7 +1,7 @@
 <template>
     <el-main>
-      <h3>SIM卡信息管理</h3>
-      <div>
+      <div class="tpl-title">SIM卡信息管理</div>
+      <div class="tpl-mg-t">
         <el-form ref="queryForm" :inline="true" :model="queryForm" class="demo-form-inline">
           <el-form-item label="服务到期时间">
             <el-date-picker
@@ -38,61 +38,27 @@
             <el-button type="primary" @click="onSubmit">查询</el-button>
           </el-form-item>
         </el-form>
-
       </div>
 
-      <div>
       <el-table
         :data="tableData"
-        style="width: 100%">
-        <el-table-column
-          prop="iccid"
-          label="ICCID"
-          align="center"
-          >
-        </el-table-column>
-        <el-table-column
-          prop="distributorId"
-          label="渠道"
-          align="center"
-          >
-        </el-table-column>
-        <el-table-column
-          prop="supplierId"
-          label="供应商"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="activationDate"
-          label="卡激活日期"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="updateDate"
-          label="套餐修改日期"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="expirationDate"
-          label="服务到期日期"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          width="220">
+        stripe border>
+        <el-table-column prop="iccid" label="ICCID" align="center"></el-table-column>
+        <el-table-column prop="distributorId" label="渠道" align="center"></el-table-column>
+        <el-table-column prop="supplierId" label="供应商" align="center"></el-table-column>
+        <el-table-column prop="activationDate" label="卡激活日期" align="center"></el-table-column>
+        <el-table-column prop="updateDate" label="套餐修改日期" align="center"></el-table-column>
+        <el-table-column prop="expirationDate" label="服务到期日期" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="SimEditVisible(true)">编辑</el-button>
-            <el-button
-              size="mini"
-              @click="SimDetailVisible(true)">查看详情</el-button>
+            <el-button-group>
+              <el-button size="mini" type="info" title="编辑" @click="SimEditVisible(true)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="default" title="查看详情" @click="SimDetailVisible(true)"><i class="el-icon-more"></i></el-button>
+            </el-button-group>
           </template>
 
         </el-table-column>
       </el-table>
-      </div>
       <div class="block page">
         <el-pagination
           @size-change="handleSizeChange"
