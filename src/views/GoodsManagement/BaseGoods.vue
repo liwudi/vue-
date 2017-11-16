@@ -2,18 +2,29 @@
     <div>
       <div class="tpl-mg">
         <el-table :data="tableData" stripe border>
-          <el-table-column label="序号" align="center" width="96">
-            <template slot-scope="scope">{{scope.$index + 1}}</template>
+          <el-table-column align="center" prop="userName" label="商品Id"></el-table-column>
+          <el-table-column align="center" prop="loginName" label="商品名称"></el-table-column>
+          <el-table-column align="center" prop="phone" label="商品规格"></el-table-column>
+          <el-table-column align="center" prop="phone" label="商品类型"></el-table-column>
+          <el-table-column align="center" prop="phone" label="周期值"></el-table-column>
+          <el-table-column align="center" prop="phone" label="周期"></el-table-column>
+          <el-table-column align="center" prop="phone" label="商品价格"></el-table-column>
+          <el-table-column align="center" prop="phone" label="促销价格"></el-table-column>
+          <el-table-column align="center" prop="phone" label="商品介绍"></el-table-column>
+          <el-table-column align="center" prop="phone" label="分销商"></el-table-column>
+          <el-table-column label="关联商品" align="center" width="70">
+            <template slot-scope="scope">
+              <el-button-group>
+                <el-button size="mini" type="info" title="查看" ><i class="el-icon-edit"></i></el-button>
+              </el-button-group>
+            </template>
           </el-table-column>
-          <el-table-column align="center" prop="userName" label="用户名"></el-table-column>
-          <el-table-column align="center" prop="loginName" label="姓名"></el-table-column>
-          <el-table-column align="center" prop="phone" label="手机号"></el-table-column>
           <el-table-column label="操作" align="center" width="220">
             <template slot-scope="scope">
               <el-button-group>
-                <el-button size="mini" type="info" title="修改" ><i class="el-icon-edit"></i></el-button>
-                <el-button size="mini" type="danger" title="删除" ><i class="el-icon-delete"></i></el-button>
-                <el-button size="mini" type="default" title="密码重置" ><i class="el-icon-more"></i></el-button>
+                <el-button size="mini" type="info" title="启用" ><i class="el-icon-edit"></i></el-button>
+                <el-button size="mini" type="danger" title="停用" ><i class="el-icon-delete"></i></el-button>
+                <el-button size="mini" type="default" title="删除" ><i class="el-icon-more"></i></el-button>
               </el-button-group>
             </template>
           </el-table-column>
