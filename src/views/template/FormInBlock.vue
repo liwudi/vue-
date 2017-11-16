@@ -68,7 +68,7 @@
           this.close();
         },
         close () {
-          this.$root.$emit('close');
+          this.$emit('closeDialog');
         }
       }
     }

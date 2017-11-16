@@ -50,8 +50,8 @@
           <template slot-scope="scope">
             <el-button-group>
               <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true)"><i class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
-              <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.$index, scope.row)"><i class="el-icon-more"></i></el-button>
+              <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
+              <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.row)"><i class="el-icon-more"></i></el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -66,8 +66,8 @@
         :total="page.total">
       </el-pagination>
     </div>
-    <el-dialog title="创建用户" :visible.sync="userDialog.addVisible" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-add></user-add></el-dialog>
-    <el-dialog title="修改信息" :visible.sync="userDialog.updateVisible" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-update></user-update></el-dialog>
+    <el-dialog title="创建用户" :visible.sync="dialog.visible.add" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-add v-on="dialog.event.add"></user-add></el-dialog>
+    <el-dialog title="修改信息" :visible.sync="dialog.visible.update" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-update v-on="dialog.event.update"></user-update></el-dialog>
   </el-main>
 </template>
 
@@ -94,16 +94,14 @@
     },
     data() {
       return {
-        userDialog: {
-          addVisible: false,
-          updateVisible: false
+        dialog: {
+          visible: {add: false, update: false},
+          event: {add: {}, update: {}}
         },
         defaultPassword: 'yx8888',
         formName: 'userForm',
         sex, state,
-        userForm: {
-          ...defaultUserForm
-        },
+        userForm: {...defaultUserForm},
         rules: rules,
         tableData: [],
         page: {/*
@@ -116,21 +114,21 @@
     },
     created() {
       this.request();
-      this.$root.$on(event.CLOSE_ADD_USER, (refresh) => {
+      this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
         this.userAddVisible(false);
         refresh && this.pageCurrentChange(1);
-      });
-      this.$root.$on(event.CLOSE_UPDATE_USER, (refresh) => {
+      };
+      this.$data.dialog.event.update[event.CLOSE_DIALOG] = (refresh) => {
         this.userUpdateVisible(false);
         refresh && this.request();
-      });
+      };
     },
     methods: {
       userAddVisible (visible) {
-        this.$data.userDialog.addVisible = visible;
+        this.$data.dialog.visible.add = visible;
       },
       userUpdateVisible (visible) {
-        this.$data.userDialog.updateVisible = visible;
+        this.$data.dialog.visible.update = visible;
       },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
@@ -143,12 +141,12 @@
           this.$message({type: 'info', message: '已取消操作'});
         });
       },
-      userDelete(index, row) {
+      userDelete(row) {
         deleteUser({userId: row.userId}).then(() => {
           this.openMessage('您确定要删除该用户吗？', '删除');
         });
       },
-      userPasswordReset(index, row) {
+      userPasswordReset(row) {
         resetUserPassword({password: row.password, useId: row.userId}).then(() => {
           this.openMessage('您确定要将该用户重置为默认密码吗？', '确定');
         });
