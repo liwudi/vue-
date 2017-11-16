@@ -21,7 +21,7 @@
         <template slot="title"><i class="el-icon-menu"></i>用户管理</template>
         <el-menu-item index="UserList">用户列表</el-menu-item>
       </el-submenu>
- 
+
       <el-submenu index="4">
         <template slot="title"><i class="el-icon-menu"></i>供应商管理</template>
         <el-menu-item index="SupplierManagement">供应商管理</el-menu-item>
