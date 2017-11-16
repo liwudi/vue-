@@ -1,0 +1,40 @@
+$sp: 20px;
+.tpl-mg-t {  margin-top: $sp;  }
+.tpl-mg-b {  margin-bottom: $sp;  }
+.tpl-mg {  margin: $sp 0;  }
+.tpl-mg-clear {  margin: 0;  }
+.tpl-pd-t {  padding-top: $sp;  }
+.tpl-pd-b {  padding-bottom: $sp;  }
+.tpl-pd {  padding: $sp 0;  }
+.tpl-pd-clear {  padding: 0;  }
+.el-header {padding: 0;}
+.tpl-title {
+  color: #1F2F3D;
+  font-weight: 400;
+  margin: 0;
+  font-size: $sp;
+  padding-bottom: $sp;
+  border-bottom: 1px solid #D8DCE5;
+}
+.tpl-form-inline {
+  .el-input {width: 140px;}
+}
+table {
+  //表格里的图标按钮
+.el-button--mini {padding: 7px;}
+}
+.tpl-p {
+  display: inline-block;
+  font-size: 14px;
+  color: #5E6D82;
+  line-height: 1.5;
+  padding: 5px 14px;
+}
+
+.el-aside {
+  background: #EDF2FC;
+  .el-menu {border: 0;background-color: rgba(255,255,255,0);
+    .el-submenu__title {border-bottom: 1px solid #DFE4ED;}
+  }
+}
+
