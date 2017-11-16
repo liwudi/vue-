@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '../components/HelloWorld.vue';
+import Login from '../views/login/Login.vue';
+import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
+const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
+import RouterUserManagement from './RouterUserManagement';
 const DistributorManage = () => import('../views/DistributorManage/DistributorManage.vue');
 
 Vue.use(Router)
@@ -19,7 +22,18 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
+        ...RouterUserManagement.routers,
         {
+          path: '/GoodsManagement',
+          name: 'GoodsManagement',
+          component: GoodsManagement
+        },
+        {
+          path: '/Reconciliation',
+          name: 'Reconciliation',
+          component: Reconciliation
+        },
+		        {
           path: '/DistributorManage',
           name : 'DistributorManage',
           component: DistributorManage
@@ -27,14 +41,13 @@ let router = new Router({
       ]
     },
     {
-      path: '/hello',
-      name: 'hello',
-      component: HelloWorld
+      path: '/login',
+      name: 'login',
+      component: Login
     },
-    { path: '*', redirect: '/basetable' }
+     { path: '*', redirect: '/basetable' }
   ]
 });
-
 
 export default router
 

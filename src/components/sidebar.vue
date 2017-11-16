@@ -1,6 +1,5 @@
 <template>
-  <div class="sidebar">
-    <el-menu class="el-menu-vertical-demo"
+    <el-menu
              default-active="basetable"
              @open="handleOpen"
              @close="handleClose"
@@ -10,12 +9,23 @@
         <template slot="title"><i class="el-icon-menu"></i>表格</template>
         <el-menu-item index="basetable">基础表格</el-menu-item>
       </el-submenu>
-      <el-menu-item index="DistributorManage">
+      <el-menu-item index="GoodsManagement">
+        <i class="el-icon-menu"></i>
+        <span slot="title">商品管理</span>
+      </el-menu-item>
+      <el-submenu index="2">
+        <template slot="title"><i class="el-icon-menu"></i>账单查询</template>
+        <el-menu-item index="Reconciliation">对账查询</el-menu-item>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title"><i class="el-icon-menu"></i>用户管理</template>
+        <el-menu-item index="UserList">用户列表</el-menu-item>
+      </el-submenu>
+	<el-menu-item index="DistributorManage">
         <i class="el-icon-menu"></i>
         <span slot="title">渠道管理</span>
       </el-menu-item>
     </el-menu>
-  </div>
 </template>
 <script>
   export default {

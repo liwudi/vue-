@@ -1,3 +1,7 @@
+@import './element-variables.scss';
+@import './color-dark.scss';
+
+
 *{margin:0;padding:0;}
 html,body{
     width:100%;
@@ -118,6 +122,35 @@ a{text-decoration: none}
 .editor-btn{
     margin-top: 20px;
 }
+
+.flex{
+  display: flex;
+}
 .flex1{
   flex: 1;
+}
+/*水平主轴 左到右*/
+.flex-row{
+  flex-direction: row;
+}
+/*垂直主轴 上到下*/
+.flex-col{
+  flex-direction: column;
+}
+/*超过宽度换行*/
+.flex-wrap{
+  flex-wrap: wrap;
+}
+/*水平居中*/
+.flex-jc-center{
+  justify-content: center;
+}
+/*垂直居中*/
+.flex-ai-center{
+  align-items: center;
+}
+/*水平垂直居中*/
+.flex-center{
+  justify-content: center;
+  align-items: center;
 }

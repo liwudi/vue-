@@ -15,7 +15,7 @@ function setServiceUrl (url) {
 export default {
   setServiceUrl: setServiceUrl,
 
-  logged: function () {
+  logined: function () {
     return RequestService.request({
         url: makeUrl('/validateSSOLogin'),
         withCredentials: true
@@ -24,6 +24,8 @@ export default {
       RequestService.setUserInfo(data)
       return Promise.resolve(data)
     })
-      .catch((err)=> Promise.reject(err))
+      .catch((err)=> {
+      return Promise.reject(err)
+    })
   }
 }

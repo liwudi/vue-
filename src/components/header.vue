@@ -23,7 +23,7 @@
             }
         },
         mounted(){
-          this.name = commonService.getUserInfo().email;
+          this.name = commonService.getUserInfo().email || '';
         },
         methods:{
             handleCommand(command) {
@@ -37,7 +37,7 @@
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 50px;
+        height: 100%;
         font-size: 22px;
         line-height: 50px;
         color: #fff;
