@@ -66,8 +66,8 @@
         :total="page.total">
       </el-pagination>
     </div>
-    <el-dialog title="创建用户" :visible.sync="userDialog.addVisible"><user-add></user-add></el-dialog>
-    <el-dialog title="修改信息" :visible.sync="userDialog.updateVisible"><user-update></user-update></el-dialog>
+    <el-dialog title="创建用户" :visible.sync="userDialog.addVisible" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-add></user-add></el-dialog>
+    <el-dialog title="修改信息" :visible.sync="userDialog.updateVisible" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-update></user-update></el-dialog>
   </el-main>
 </template>
 
