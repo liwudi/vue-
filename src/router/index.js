@@ -6,6 +6,7 @@ import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/template/BaseTable.vue');
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 const UserManagement = () => import ('../views/UserManagement/UserList.vue');
+const DistributorManage = () => import('../views/DistributorManage/DistributorManage.vue');
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ let router = new Router({
           path: '/Reconciliation',
           name: 'Reconciliation',
           component: Reconciliation
+        },
+		        {
+          path: '/DistributorManage',
+          name : 'DistributorManage',
+          component: DistributorManage
         }
       ]
     },
