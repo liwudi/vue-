@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import HelloWorld from '../components/HelloWorld.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
-const ChannelManage = () => import('../views/ChannelManage/ChannelManage.vue');
+const DistributorManage = () => import('../views/DistributorManage/DistributorManage.vue');
 
 Vue.use(Router)
 
@@ -20,9 +20,9 @@ let router = new Router({
           component: BaseTable
         },
         {
-          path: '/ChannelManage',
-          name : 'ChannelManage',
-          component: ChannelManage
+          path: '/DistributorManage',
+          name : 'DistributorManage',
+          component: DistributorManage
         }
       ]
     },
