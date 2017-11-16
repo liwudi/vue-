@@ -23,7 +23,7 @@
       </el-submenu>
 	<el-menu-item index="DistributorManage">
         <i class="el-icon-menu"></i>
-        <span slot="title">渠道管理</span>
+        <span slot="title">分销商管理</span>
       </el-menu-item>
     </el-menu>
 </template>
