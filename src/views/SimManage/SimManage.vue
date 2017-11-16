@@ -1,36 +1,46 @@
 <template>
     <el-main>
       <h3>SIM卡信息管理</h3>
-      <div class="tit">
-        <div class="tit-item">
-          <span>服务到期时间:</span>
-          <el-date-picker
-            v-model="value3"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
-          </el-date-picker>
-        </div>
-        <div class="tit-item">
-          <span>渠道:</span>
-          <select>
-            <option value="111">全部</option>
-            <option value="111">易鑫</option>
-          </select>
-        </div>
-        <div class="tit-item">
-          <span>供应商:</span>
-          <select>
-            <option value="111">全部</option>
-            <option value="111">翼卡</option>
-          </select>
-        </div>
-        <div class="tit-item">
-          <input type="text" placeholder="ICCID">
-          <el-button type="primary">查询</el-button>
-        </div>
+      <div>
+        <el-form ref="queryForm" :inline="true" :model="queryForm" class="demo-form-inline">
+          <el-form-item label="服务到期时间">
+            <el-date-picker
+              v-model="queryForm.startEndDateTime"
+              type="datetimerange"
+              @change="query"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="渠道">
+            <el-select v-model="queryForm.distributorId" placeholder="请选择">
+              <el-option v-for="item in distributors"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="供应商">
+            <el-select v-model="queryForm.supplierId" placeholder="请选择">
+              <el-option v-for="item in suppliers"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input v-model="queryForm.iccid" placeholder="ICCID"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+          </el-form-item>
+        </el-form>
+
       </div>
+
       <div>
       <el-table
         :data="tableData"
@@ -74,10 +84,10 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              @click="SimEditVisible(true)">编辑</el-button>
             <el-button
               size="mini"
-              @click="handleDetail(scope.$index, scope.row)">查看详情</el-button>
+              @click="SimDetailVisible(true)">查看详情</el-button>
           </template>
 
         </el-table-column>
@@ -87,23 +97,64 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :current-page="page.pageIndex"
+          :page-sizes="[10,20]"
+          :page-size="page.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :total="page.total">
         </el-pagination>
       </div>
+      <el-dialog title="SIM卡编辑" :visible.sync="simDialog.editVisible">
+          <sim-edit></sim-edit>
+      </el-dialog>
+      <el-dialog title="SIM卡详情" :visible.sync="simDialog.detailVisible">
+          <sim-detail></sim-detail>
+      </el-dialog>
     </el-main>
 </template>
 
 <script>
+  import SimEdit from './SimEdit.vue';
+  import SimDetail from './SimDetail.vue';
+  import { event } from './SimConfig';
+  import { querySimList } from  '../../services/SimManageService';
   export default {
-    name: '',
+    components:{
+        SimEdit,SimDetail
+    },
     data () {
       return {
-        currentPage4: 4,
-        value3: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+        formName:"queryForm",
+        queryForm:{
+            startEndDateTime: [new Date(2010,10,10,10),new Date(2020,10,10,10)],
+            distributorId:"1",
+            supplierId:"1",
+            iccid:''
+        },
+        distributors:[
+            { label:"全部",value:"1"},
+            { label:"易鑫",value:"2"},
+            { label:"双薪",value:"3"},
+            { label:"三薪",value:"4"}
+        ],
+        suppliers:[
+            { label:"全部",value:"1"},
+            { label:"翼卡",value:"2"},
+            { label:"善领",value:"3"}
+        ],
+        page:{
+            total:50,
+            pageIndex:1,
+            pageSize:10
+        },
+        simDialog:{
+            editVisible:false,
+            detailVisible:false
+        },
+        editData:{
+          iccid:'',
+          expirationDate:''
+        },
         tableData: [{
           iccid:"8986061501000338984",
           distributorId:"易鑫",
@@ -111,14 +162,8 @@
           activationDate:"2016-05-02",
           updateDate:"2016-04-10",
           expirationDate:"2016-11-11",
-        }, {
-          iccid:"8986061501000338984",
-          distributorId:"易鑫",
-          supplierId:"翼卡",
-          activationDate:"2016-05-02",
-          updateDate:"2016-04-10",
-          expirationDate:"2016-11-11",
-        }, {
+        },
+        {
           iccid:"8986061501000338984",
           distributorId:"易鑫",
           supplierId:"翼卡",
@@ -128,19 +173,53 @@
         }]
       }
     },
+    created(){
+        this.request();
+        this.$root.$on(event.CLOSE_EDIT_SIM, (refresh) => {
+          this.SimEditVisible(false);
+          if(refresh) {
+            this.request();
+          }
+        });
+        this.$root.$on(event.CLOSE_DETAIL_SIM, (refresh) => {
+          this.SimDetailVisible(false);
+          if(refresh) {
+            this.request();
+          }
+        });
+    },
     methods:{
-      handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDetail(index, row) {
-        console.log(index, row);
-      },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      }
+        request(){
+          let params = this.$data.queryForm;
+          querySimList(params).then((result) => {
+             // this.$data.tableData = result.data;
+             // console.log(result);
+          })
+        },
+        onSubmit() {
+          let formName = this.$data.formName;
+          this.$refs[formName].validate((valid) => {
+              if(valid) this.request();
+              return valid;
+           });
+        },
+        query() {
+            console.log(this.queryForm.startEndDateTime)
+        },
+        SimEditVisible(visible) {
+          this.$data.simDialog.editVisible = visible;
+        },
+        SimDetailVisible(visible) {
+          this.$data.simDialog.detailVisible = visible;
+        },
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+          this.page.pageSize = val;
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+          this.page.pageIndex = val;
+        }
     }
   }
 </script>

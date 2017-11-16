@@ -6,6 +6,8 @@ import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/BaseTable.vue');
 
 import SimManage from '../views/SimManage/SimManage.vue';
+import SimEdit from '../views/SimManage/SimEdit.vue';
+import SimDetail from '../views/SimManage/SimDetail.vue';
 
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 import RouterUserManagement from './RouterUserManagement';
@@ -30,6 +32,16 @@ let router = new Router({
           path: '/SimManage',
           name: 'SimManage',
           component: SimManage
+        },
+        {
+          path: '/SimEdit',
+          name: 'SimEdit',
+          component: SimEdit
+        },
+        {
+          path: '/SimDetail',
+          name: 'SimDetail',
+          component:SimDetail
         },
         {
           path: '/GoodsManagement',
