@@ -11,7 +11,7 @@
     },
     methods: {
       create () {
-        this.$root.$emit('open');
+        this.$emit('openDialog');
       }
     }
   }

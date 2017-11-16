@@ -90,7 +90,7 @@
         this.close();
       },
       close (refresh=false) {
-        this.$root.$emit(event.CLOSE_ADD_USER, refresh);
+        this.$emit(event.CLOSE_DIALOG, refresh);
       },
       goToList() {
         this.$router.back();
