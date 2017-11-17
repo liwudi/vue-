@@ -11,6 +11,9 @@ import SimDetail from '../views/SimManage/SimDetail.vue';
 
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 const UserManagement = () => import ('../views/UserManagement/UserList.vue');
+const SupplierManagement = () => import('../views/SupplierManagement/SupplierManagement.vue');
+
+
 const DistributorManage = () => import('../views/DistributorManage/DistributorManage.vue');
 
 
@@ -53,15 +56,24 @@ let router = new Router({
           name: 'GoodsManagement',
           component: GoodsManagement
         },
+
         {
           path: '/Reconciliation',
           name: 'Reconciliation',
           component: Reconciliation
+
+        },
+        {
+          path: '/SupplierManagement',
+          name: 'SupplierManagement',
+          component: SupplierManagement
+
         },
 		        {
           path: '/DistributorManage',
           name : 'DistributorManage',
           component: DistributorManage
+
         }
       ]
     },
