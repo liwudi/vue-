@@ -1,19 +1,18 @@
 <template>
   <el-main>
-    <h3>分销商管理</h3>
-    <!--<div class="tpl-title">分销商管理</div>-->
+    <div class="tpl-title">分销商管理</div>
     <!--分销商名称模糊查询表单-->
-    <div class="tpl-mg-t" style="display: flex">
+    <div class="tpl-mg-t">
       <el-form :inline="true" :rules="rules" ref="distributorQuery" :model="distributorQuery" class="tpl-form-inline" size="medium">
         <el-form-item label="分销商名称：" prop="distributorName">
-          <el-input v-model="distributorQuery.distributorName" placeholder="分销商名称"></el-input>
+          <el-input v-model="distributorQuery.distributorName" placeholder="请输入分销商名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
       </el-form>
       <div>
-        <el-button type="primary" @click="addFormVisible(true)" size="medium">创建</el-button>
+        <el-button type="primary" @click="addFormVisible(true)" size="medium">创建分销商</el-button>
       </div>
     </div>
     <!--分销商管理列表-->
@@ -30,8 +29,8 @@
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" @click="updateFormVisible(true)">修改</el-button>
-              <el-button size="mini" type="danger" @click="distributorDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button size="mini" type="info" @click="updateFormVisible(true)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="danger" @click="distributorDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
         </el-table-column>
