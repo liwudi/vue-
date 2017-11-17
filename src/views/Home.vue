@@ -2,7 +2,7 @@
   <el-container>
     <el-header><v-head></v-head></el-header>
     <el-container>
-      <el-aside width="200px"><v-sidebar></v-sidebar></el-aside>
+      <el-aside width="180px"><v-sidebar></v-sidebar></el-aside>
       <transition name="move" mode="out-in"><router-view></router-view></transition>
     </el-container>
   </el-container>
@@ -24,7 +24,7 @@
         },
         mounted(){
 
-          this.$router.replace('basetable');
+          //this.$router.replace('basetable');
 
         }
     }

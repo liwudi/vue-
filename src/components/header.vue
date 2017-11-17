@@ -32,8 +32,27 @@
         }
     }
 </script>
-<style scoped>
-    .header {
+<style lang="scss" scoped rel="stylesheet/scss">
+  $font-color: #ffffff;
+  .header {
+    width: 100%;  height: 100%;  box-sizing: border-box;  padding: 20px;
+    line-height: 1;  color: $font-color;
+
+    .logo {
+      font-size: 20px;
+      font-weight: 500;
+      float: left;
+    }
+
+    .user-info {
+      float: right;
+      margin-top: 3px;
+      .el-dropdown {
+        color: $font-color;
+      }
+    }
+  }
+   /* .header {
         position: relative;
         box-sizing: border-box;
         width: 100%;
@@ -71,5 +90,5 @@
     }
     .el-dropdown-menu__item{
         text-align: center;
-    }
+    }*/
 </style>

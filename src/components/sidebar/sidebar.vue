@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="menu">
     <el-menu
       @open="handleOpen"
       @close="handleClose"
@@ -8,51 +8,19 @@
       v-for="(item, index) in menuData"
     >{{item.sub}}
       <el-submenu v-if="item.sub" :index="item.index">
-<!--        <template slot="title">
-          <i :class="item.icon"></i><span>{{item.title}}</span>
-        </template>
-        <el-menu-item-group v-for="(sub, index) in item.sub">
-          <el-menu-item :index="sub.index">
-            <i :class="sub.icon"></i><span>{{sub.title}}</span>
-          </el-menu-item>
-        </el-menu-item-group>-->
+        <!--        <template slot="title">
+                  <i :class="item.icon"></i><span>{{item.title}}</span>
+                </template>
+                <el-menu-item-group v-for="(sub, index) in item.sub">
+                  <el-menu-item :index="sub.index">
+                    <i :class="sub.icon"></i><span>{{sub.title}}</span>
+                  </el-menu-item>
+                </el-menu-item-group>-->
       </el-submenu>
       <el-menu-item v-else :index="item.index">
         <i :class="item.icon"></i><span slot="title">{{item.title}}</span>
       </el-menu-item>
     </el-menu>
-<!--
-    <el-menu
-      default-active="2"
-      @open="handleOpen"
-      @close="handleClose">
-
-      <el-submenu index="1">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>导航一</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="1-1">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item index="1-3">选项3</el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="1-4">
-          <template slot="title">选项4</template>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航三</span>
-      </el-menu-item>
-    </el-menu>
--->
   </div>
 
 <!--    <el-menu
@@ -102,18 +70,13 @@
     }
   }
 </script>
-<style scoped>
-/*  .sidebar {
-    display: block;
-    position: absolute;
-    width: 250px;
-    left: 0;
-    top: 70px;
-    bottom: 0;
-    background: #2E363F;
+<style lang="scss" scoped rel="stylesheet/scss">
+  .menu {
+    width: 100%; height: 100%;
+    background-color: #FAFAFA;
+    .el-menu {
+      border: 0;background-color: rgba(255,255,255,0);
+      .el-menu-item {border-bottom: 1px solid #E6EBF5;}
+    }
   }
-
-  .sidebar > ul {
-    height: 100%;
-  }*/
 </style>
