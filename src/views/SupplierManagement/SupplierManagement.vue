@@ -1,6 +1,7 @@
 <template>
   <el-main>
-    <h3 class="main-title">供应商管理</h3>
+
+    <div class="tpl-title">供应商管理</div>
     <div class="search">
       <label>
         供应商名称:
@@ -17,19 +18,22 @@
 
       <el-table
         :data="resultData.list"
-        stripe
+        stripe border
         style="width: 100%">
-        <el-table-column prop="date" label="日期" width="150"></el-table-column>
-        <el-table-column prop="supplerName" label="供应商名称"></el-table-column>
-        <el-table-column prop="name" label="联系人"></el-table-column>
-        <el-table-column prop="phone" label="联系电话"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="180">
-          <template slot-scope="scope">
-            <el-button @click="submitUpdate(scope.row)" size="mini" style="float: left;margin-left: 5px">修改</el-button>
-            <el-button @click.native.prevent="deleteRow(scope.$index,resultData.list)" type="danger" size="mini"
-                       style="float: left;margin-left: 5px">删除
+        <el-table-column prop="date" label="日期" width="150" align="center"></el-table-column>
+        <el-table-column prop="supplerName" label="供应商名称" align="center"></el-table-column>
+        <el-table-column prop="name" label="联系人" align="center"></el-table-column>
+        <el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="180" align="center">
+          <template slot-scope="scope" >
+            <el-button-group>
+            <el-button @click="submitUpdate(scope.row)" size="mini" style="float: left;margin-left: 5px"><i class="el-icon-edit"></i>
             </el-button>
+            <el-button @click.native.prevent="deleteRow(scope.$index,resultData.list)" type="danger" size="mini"
+                       style="float: left;margin-left: 5px"><i class="el-icon-delete"></i>
+            </el-button>
+              </el-button-group>
           </template>
         </el-table-column>
       </el-table>

@@ -3,9 +3,14 @@ import Router from 'vue-router';
 import Login from '../views/login/Login.vue';
 import Reconciliation from '../views/Bills/Reconciliation.vue';
 import Home from '../views/Home.vue';
-const BaseTable = () => import('../views/BaseTable.vue');
+const BaseTable = () => import('../views/template/BaseTable.vue');
+
+import SimManage from '../views/SimManage/SimManage.vue';
+import SimEdit from '../views/SimManage/SimEdit.vue';
+import SimDetail from '../views/SimManage/SimDetail.vue';
+
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
-import RouterUserManagement from './RouterUserManagement';
+const UserManagement = () => import ('../views/UserManagement/UserList.vue');
 const SupplierManagement = () => import('../views/SupplierManagement/SupplierManagement.vue');
 
 
@@ -26,7 +31,26 @@ let router = new Router({
           name : 'basetable',
           component: BaseTable
         },
-        ...RouterUserManagement.routers,
+        {
+          path: '/UserManagement',
+          name: 'UserManagement',
+          component: UserManagement
+        },
+        {
+          path: '/SimManage',
+          name: 'SimManage',
+          component: SimManage
+        },
+        {
+          path: '/SimEdit',
+          name: 'SimEdit',
+          component: SimEdit
+        },
+        {
+          path: '/SimDetail',
+          name: 'SimDetail',
+          component:SimDetail
+        },
         {
           path: '/GoodsManagement',
           name: 'GoodsManagement',
