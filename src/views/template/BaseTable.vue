@@ -8,7 +8,7 @@
         <Pagination></Pagination>
       </div>
       <el-dialog title="创建新项" :visible.sync="visible" width="65%" :close-on-click-modal="false" :close-on-press-escape="false">
-        <FormInBlock v-on="event.close"></FormInBlock>
+        <FormInBlock v-on="event.close" :subKey="tValue"></FormInBlock>
       </el-dialog>
     </el-main>
 </template>
@@ -29,7 +29,8 @@
         visible: false,
         event: {
           open: {}, close: {}
-        }
+        },
+        tValue: 'tAbc'
       }
     },
     created () {
