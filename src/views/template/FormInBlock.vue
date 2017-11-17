@@ -46,6 +46,7 @@
 </template>
   <script>
     export default {
+      props: ['subKey'],
       data() {
         return {
           form: {
@@ -59,6 +60,9 @@
             desc: ''
           }
         }
+      },
+      created () {
+        console.info(this.$props.subKey)
       },
       methods: {
         submitForm () {
