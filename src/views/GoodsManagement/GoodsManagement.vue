@@ -5,16 +5,19 @@
         <base-goods></base-goods>
       </el-tab-pane>
       <el-tab-pane label="可选商品" name="second">配置管理</el-tab-pane>
-      <el-tab-pane label="供应商品" name="third">角色管理</el-tab-pane>
+      <el-tab-pane label="供应商品" name="third">
+        <supplier-goods></supplier-goods>
+      </el-tab-pane>
     </el-tabs>
   </el-main>
 </template>
 
 <script>
   import BaseGoods from './BaseGoods.vue';
+  import SupplierGoods from './SupplierGoods.vue';
   export default {
     components:{
-      BaseGoods
+      BaseGoods, SupplierGoods
     },
     data() {
       return {
