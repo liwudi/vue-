@@ -12,7 +12,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="当前基础套餐到期时间" >
-        <span style="padding-left: 10px;">{{simEditForm.endTime}}</span>
+        <span style="padding-left: 10px;">{{simEditForm.expirationDate}}</span>
       </el-form-item>
       <el-form-item>
           <el-button type="primary" @click="submitForm">保 存</el-button>
@@ -26,6 +26,7 @@
   import { editSim } from  '../../services/SimManageService';
   import { event } from './SimConfig';
   export default {
+    props:["editIccid","editDate"],
     data () {
       return {
         formName: 'simEditForm',
@@ -36,9 +37,12 @@
         ],
         simEditForm:{
           setMeal:"25G*1年套餐",
-          endTime:"2017-10-02 10:20:00"
+          expirationDate:""
         }
       }
+    },
+    created() {
+      this.$data.simEditForm.expirationDate =  this.$props.editDate;
     },
     methods:{
       mealChange() {
@@ -47,8 +51,7 @@
       request() {
           let params = this.$data.simEditForm;
           editSim(params).then(() => {
-            //console.info('success');
-            this.close(true);
+             this.close(true);
              this.openMessage();
           });
       },
