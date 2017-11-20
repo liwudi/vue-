@@ -64,8 +64,8 @@ function getUser(params) {
     }
   });
 }
-function searchUser(params) {
-  /*return cs.post(makeUrl('searchUser'), params).then((result) => {
+function searchNiGoods(params) {
+  /*return cs.get(makeUrl('searchUser'), params).then((result) => {
    console.info('searchUser-then', result);
    return result;
    }).catch((e) => {
@@ -78,42 +78,51 @@ function searchUser(params) {
       total: 50,
       pages: 3,
       list: [{
-        userId: 1,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
+        id:10000,
+        sort:2000,
+        name:"1G月包",
+        type:"充值套餐",
+        totalFlow:"1G",
+        cycle:"月",
+        cycleValue:1,
+        price:"20.00",
+        salePrice:12.00,
+        desc:123,
+        distributor:"易鑫222",
+        state:1
       },{
-        userId: 2,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
+        id:10000,
+        sort:2000,
+        name:"1G月包",
+        type:"充值套餐",
+        totalFlow:"89G",
+        cycle:"月",
+        cycleValue:1,
+        price:"20.00",
+        salePrice:12.00,
+        desc:123,
+        distributor:"易鑫33",
+        state:1
       },{
-        userId: 3,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
-      },{
-        userId: 4,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
+        id:10000,
+        sort:6000,
+        name:"5G月包",
+        type:"充值套餐",
+        totalFlow:"1G",
+        cycle:"月",
+        cycleValue:1,
+        price:"50.00",
+        salePrice:44.00,
+        desc:22123,
+        distributor:"易鑫44",
+        state:1
       }]
     }
   });
-}
+};
+
+
 
 export {
-  addUser, searchUser, deleteUser, resetUserPassword, updateUser, getUser
+  addUser, searchNiGoods, deleteUser, resetUserPassword, updateUser, getUser
 }

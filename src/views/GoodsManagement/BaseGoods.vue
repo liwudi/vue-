@@ -1,17 +1,18 @@
 <template>
-    <div>
-      <div class="tpl-mg">
-        <el-table :data="tableData" stripe border>
-          <el-table-column align="center" prop="userName" label="商品Id"></el-table-column>
-          <el-table-column align="center" prop="loginName" label="商品名称"></el-table-column>
-          <el-table-column align="center" prop="phone" label="商品规格"></el-table-column>
-          <el-table-column align="center" prop="phone" label="商品类型"></el-table-column>
-          <el-table-column align="center" prop="phone" label="周期值"></el-table-column>
-          <el-table-column align="center" prop="phone" label="周期"></el-table-column>
-          <el-table-column align="center" prop="phone" label="商品价格"></el-table-column>
-          <el-table-column align="center" prop="phone" label="促销价格"></el-table-column>
-          <el-table-column align="center" prop="phone" label="商品介绍"></el-table-column>
-          <el-table-column align="center" prop="phone" label="分销商"></el-table-column>
+    <el-main>
+      <el-button type="primary" @click="goodAddVisible(true)" size="medium">添加套餐</el-button>
+      <div class="tpl-mg-t">
+        <el-table :data="resultData.list" stripe border>
+          <el-table-column align="center" prop="id" label="商品Id"></el-table-column>
+          <el-table-column align="center" prop="name" label="商品名称"></el-table-column>
+          <el-table-column align="center" prop="totalFlow" label="商品规格"></el-table-column>
+          <el-table-column align="center" prop="type" label="商品类型"></el-table-column>
+          <el-table-column align="center" prop="cycleValue" label="周期值"></el-table-column>
+          <el-table-column align="center" prop="cycle" label="周期"></el-table-column>
+          <el-table-column align="center" prop="price" label="商品价格"></el-table-column>
+          <el-table-column align="center" prop="salePrice" label="促销价格"></el-table-column>
+          <el-table-column align="center" prop="desc" label="商品介绍"></el-table-column>
+          <el-table-column align="center" prop="distributor" label="分销商"></el-table-column>
           <el-table-column label="关联商品" align="center" width="70">
             <template slot-scope="scope">
               <el-button-group>
@@ -29,26 +30,33 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
+        <el-pagination class="page"
           @size-change="pageSizeChange"
           @current-change="pageCurrentChange"
-          :current-page="page.pageNum"
+          :current-page="queryParams.pageNum"
           :page-sizes="[10, 20]"
-          :page-size="100"
+          :page-size="queryParams.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="page.total">
+          :total="resultData.total">
         </el-pagination>
       </div>
-    </div>
+    </el-main>
 </template>
 
 <script>
-  import {searchUser, deleteUser, resetUserPassword} from '../../services/GoodsManagementService';
+  import {searchNiGoods, deleteUser, resetUserPassword} from '../../services/GoodsManagementService';
   export default {
     data () {
       return {
-        tableData: [],
-        page : {}
+        queryParams:{
+          type:1,
+          pageNum:1,
+          pageSize:10
+        },
+        resultData:{
+          total:0,
+          list:[]
+        },
       }
     },
     created() {
@@ -56,21 +64,17 @@
     },
     methods: {
       request () {
-        searchUser().then((result) => {
-          let data = result.data;
-          this.tableData = data.list;
-          delete data.list;
-          this.page = data;
+        searchNiGoods(this.queryParams).then((result) => {
+           this.resultData = result.data;
         });
       },
       pageSizeChange(val) {
-        let params = this.$data.userForm;
+        let params = this.$data.queryParams;
         params.pageSize = val;
         this.request();
       },
       pageCurrentChange(val) {
-        console.info('current-page', val);
-        let params = this.$data.userForm;
+        let params = this.$data.queryParams;
         params.pageNum = val;
         this.request();
       },
