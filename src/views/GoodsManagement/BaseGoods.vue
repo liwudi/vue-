@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import {searchNiGoods, deleteUser, resetUserPassword} from '../../services/GoodsManagementService';
+  import {searchSupplierGoods, deleteUser, resetUserPassword} from '../../services/GoodsManagementService';
   export default {
     data () {
       return {
@@ -64,7 +64,7 @@
     },
     methods: {
       request () {
-        searchNiGoods(this.queryParams).then((result) => {
+        searchSupplierGoods(this.queryParams).then((result) => {
            this.resultData = result.data;
         });
       },
