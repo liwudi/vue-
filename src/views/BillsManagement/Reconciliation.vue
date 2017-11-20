@@ -4,30 +4,31 @@
     <div class="tpl-mg-t">
       <el-form :inline="true" :model="queryParams" class="tpl-form-inline" size="medium">
         <el-form-item label="套餐类型">
-          <el-select v-model="queryParams.type" clearable placeholder="请选择">
-            <el-option
-              v-for="item in types"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+          <el-select v-model="queryParams.type" placeholder="请选择">
+            <el-option v-for="item in types" :key="item.value"
+                       :label="item.label" :value="item.value"
+                       @change="query"
+            >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="供应商">
-          <el-select v-model="queryParams.distributorId" clearable placeholder="请选择">
-            <el-option
-              v-for="item in distributors"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
+          <el-select v-model="queryParams.distributorId" placeholder="请选择">
+            <el-option v-for="item in distributors" :key="item.value"
+                       :label="item.label" :value="item.value"
+                       @change="query"
+            >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="创建时间">
           <el-date-picker
-            v-model="startEndDate"
+            v-model="timeStartEnd"
+            :editable="false"
             type="daterange"
-            @change="query"
+            format="yyyy-MM-dd"
+            value-format="yyyy年MM月dd"
+            @change="dataChange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
@@ -35,16 +36,13 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="query">查询</el-button>
-          <el-button>重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="tpl-mg-b">
-      <el-button type="primary" @click="query" size="medium">导出EXCEL</el-button>
+      <el-button type="primary" @click="excel" size="medium">导出EXCEL</el-button>
     </div>
-    <el-table
-      :data="resultData.list"
-      stripe border>
+    <el-table :data="resultData.list" stripe border>
       <el-table-column align="center" prop="orderId" label="订单号"/>
       <el-table-column align="center" prop="oldGoodsId" label="原套餐ID"/>
       <el-table-column align="center" prop="oldGoodsName" label="原套餐名称"/>
@@ -69,32 +67,18 @@
 </template>
 
 <script>
-  import BillsService from '../../services/BillsService'
+  import {searchBillForDistributor} from '../../services/BillsManagementService'
+  import {types, distributors} from './BillsConfig';
 
   export default {
     data () {
       return {
-        types: [{
-          value: '1',
-          label: '激活套餐'
-        }, {
-          value: '2',
-          label: '续费套餐'
-        }, {
-          value: '3',
-          label: '充值套餐'
-        }],
-        distributors: [{
-          id: '2016-05-02',
-          name: '王小虎'
-        }, {
-          id: '2016-05-021',
-          name: '王小虎2'
-        }],
-        startEndDate: [],
+        types: types,
+        distributors: distributors,
+        timeStartEnd: [],
         queryParams: {
-          type: '',
-          distributorId: '',
+          type: '0',
+          distributorId: '0',
           timeStart: '',
           timeEnd: '',
           pageNum: 1,
@@ -107,15 +91,16 @@
       }
     },
     methods: {
-      dateFormat (row, column, cellValue) {
-        return cellValue
+      excel () {},
+      dataChange () {
+        this.queryParams.timeStart = this.timeStartEnd[0];
+        this.queryParams.timeEnd = this.timeStartEnd[1];
+        this.query();
       },
       query () {
-        BillsService.searchBillForDistributor(
-          this.queryParams
+        searchBillForDistributor(this.queryParams
         ).then(rs => {
-          console.log(rs)
-          this.resultData = rs
+          this.resultData = rs.data;
         })
       }
     },

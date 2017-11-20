@@ -3,7 +3,7 @@
  */
 import CommonService from './commonService';
 const cs = CommonService;
-const rootPath = '';
+const rootPath = '/api-ni-flow/';
 function makeUrl (path) {
   return `${rootPath}${path}`;
 }

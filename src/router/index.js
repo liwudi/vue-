@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '../views/login/Login.vue';
-import Reconciliation from '../views/Bills/Reconciliation.vue';
+import BillsManagement from '../views/BillsManagement/Reconciliation.vue';
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/template/BaseTable.vue');
 
@@ -58,9 +58,9 @@ let router = new Router({
         },
 
         {
-          path: '/Reconciliation',
-          name: 'Reconciliation',
-          component: Reconciliation
+          path: '/BillsManagement',
+          name: 'BillsManagement',
+          component: BillsManagement
 
         },
         {
