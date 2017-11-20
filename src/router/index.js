@@ -42,16 +42,6 @@ let router = new Router({
           component: SimManage
         },
         {
-          path: '/SimEdit',
-          name: 'SimEdit',
-          component: SimEdit
-        },
-        {
-          path: '/SimDetail',
-          name: 'SimDetail',
-          component:SimDetail
-        },
-        {
           path: '/GoodsManagement',
           name: 'GoodsManagement',
           component: GoodsManagement

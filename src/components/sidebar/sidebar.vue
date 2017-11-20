@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <el-menu router :default-active="defaultActive">
-      <el-menu-item v-for="(item, index) in menuData" :index="item.index">
+      <el-menu-item v-for="(item, index) in menuData" :index="item.index" :key="item.index">
         <i :class="item.icon"></i><span slot="title">{{item.title}}</span>
       </el-menu-item>
     </el-menu>

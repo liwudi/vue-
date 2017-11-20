@@ -2,51 +2,51 @@
   <el-main>
     <div class="item-info">
         <label>ICCID : </label>
-        <span>{{simDetailForm.iccid}}</span>
+        <span>{{resultData.iccid}}</span>
     </div>
     <div class="item-info">
       <label>渠道 : </label>
-      <span>{{simDetailForm.distributor}}</span>
+      <span>{{resultData.distributor}}</span>
     </div>
     <div class="item-info">
       <label>供应商 : </label>
-      <span>{{simDetailForm.suppler}}</span>
+      <span>{{resultData.suppler}}</span>
     </div>
     <div class="item-info">
       <label>状态 : </label>
-      <span>{{simDetailForm.state}}</span>
+      <span>{{resultData.state}}</span>
     </div>
     <div class="item-info">
       <label>激活时间 : </label>
-      <span>{{simDetailForm.activationDate}}</span>
+      <span>{{resultData.activationDate}}</span>
     </div>
     <div class="item-info">
       <label>套餐修改时间 : </label>
-      <span>{{simDetailForm.updateDate}}</span>
+      <span>{{resultData.updateDate}}</span>
     </div>
     <div class="item-info">
       <label>服务到期时间 : </label>
-      <span>{{simDetailForm.expirationDate}}</span>
+      <span>{{resultData.expirationDate}}</span>
     </div>
     <div class="item-info">
       <label>当前计费周期内使用流量 : </label>
-      <span>{{simDetailForm.curResidualFlow}}</span>
+      <span>{{resultData.curResidualFlow}}</span>
     </div>
     <div class="item-info">
       <label>当前计费周期内总流量 : </label>
-      <span>{{simDetailForm.curResidualFlow}}</span>
+      <span>{{resultData.curResidualFlow}}</span>
     </div>
     <div class="item-info">
       <label>当前基础套餐 : </label>
-      <span>{{simDetailForm.curResidualFlow}}</span>
+      <span>{{resultData.curResidualFlow}}</span>
     </div>
     <div class="item-info">
       <label>当前基础套餐到期时间 : </label>
-      <span>{{simDetailForm.curResidualFlow}}</span>
+      <span>{{resultData.curResidualFlow}}</span>
     </div>
     <div class="item-info">
       <label>当前可选套餐 : </label>
-      <el-table :data="optionGoods">
+      <el-table :data="resultData.optionGoods">
           <el-table-column
             prop="goodsName"
             label="套餐名称"
@@ -73,34 +73,32 @@
         <label></label>
         <el-button type="primary" @click="cancelForm">关 闭</el-button>
     </div>
-
-
   </el-main>
 </template>
 
 <script>
   import { event } from './SimConfig';
+  import { detailSim } from  '../../services/SimManageService';
   export default {
+    props:["detailIccid"],
     data () {
       return {
-        formName: 'simDetailForm',
-        simDetailForm:{
-          iccid:"333dsfvgfsd",
-          distributor:"333dsfvgfsd",
-          suppler:"333dsfvgfsd",
-          state:"333dsfvgfsd",
-          activationDate:"333dsfvgfsd",
-          updateDate:"333dsfvgfsd",
-          expirationDate:"333dsfvgfsd",
-          curResidualFlow:"333dsfvgfsd",
-          optionGoods:"333dsfvgfsd",
+        queryParams:{
+          iccid:""
         },
-        optionGoods:[
-          {goodsName:"名称",price:"111",effectiveDate:"2011-10-10"}
-        ]
+        resultData:{},
       }
     },
+    created() {
+       this.queryParams.iccid = this.$props.detailIccid;
+       this.request();
+    },
     methods:{
+      request() {
+        detailSim(this.queryParams).then((result) => {
+            this.resultData = result.data;
+        })
+      },
       cancelForm (refresh=false){
         this.$root.$emit(event.CLOSE_DETAIL_SIM, refresh);
       }
