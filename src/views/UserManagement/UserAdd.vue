@@ -52,7 +52,7 @@
         formName: 'userForm',
         sex, state,
         userForm: {
-          userName: 'liufang',
+          userName: '',
           loginName: '',
           sex: 3,
           phone: '',

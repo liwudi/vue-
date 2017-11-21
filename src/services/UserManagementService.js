@@ -61,7 +61,7 @@ function getUser(params) {
       userName: '王小虎',
       loginName: 'wangxh',
       sex: 1,
-      phone: '134234234234',
+      phone: '15266668585',
       state: 1,
       password: 123
     }
@@ -85,7 +85,7 @@ function searchUser(params) {
         userName: '王小虎',
         loginName: 'wangxh',
         sex: 1,
-        phone: '134234234234',
+        phone: '15266668585',
         state: 1,
         password: 123
       },{
@@ -93,7 +93,7 @@ function searchUser(params) {
         userName: '王小虎',
         loginName: 'wangxh',
         sex: 1,
-        phone: '134234234234',
+        phone: '15266668585',
         state: 1,
         password: 123
       },{
@@ -101,7 +101,7 @@ function searchUser(params) {
         userName: '王小虎',
         loginName: 'wangxh',
         sex: 1,
-        phone: '134234234234',
+        phone: '15266668585',
         state: 1,
         password: 123
       },{
@@ -109,7 +109,7 @@ function searchUser(params) {
         userName: '王小虎',
         loginName: 'wangxh',
         sex: 1,
-        phone: '134234234234',
+        phone: '15266668585',
         state: 1,
         password: 123
       }]

@@ -47,6 +47,7 @@
   const rules = getRules();
   import {updateUser, getUser} from '../../services/UserManagementService';
   export default {
+    props: ['uid'],
     data() {
       return {
         formName: 'userForm',
@@ -56,7 +57,7 @@
           loginName: '',
           sex: 3,
           phone: '',
-          state: 1,
+          state: 1
         },
         rules: rules
       }
@@ -66,7 +67,7 @@
     },
     methods: {
       requestUserInfo () {
-        getUser().then((result) => {
+        getUser(this.$props.uid).then((result) => {
           let data = result.data;
           this.$data.userForm = data;
         });

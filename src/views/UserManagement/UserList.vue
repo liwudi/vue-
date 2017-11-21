@@ -49,7 +49,7 @@
         <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true, scope.row.userId)"><i class="el-icon-edit"></i></el-button>
               <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
               <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.row)"><i class="el-icon-more"></i></el-button>
             </el-button-group>
@@ -66,8 +66,13 @@
         :total="page.total">
       </el-pagination>
     </div>
-    <el-dialog title="创建用户" :visible.sync="dialog.visible.add" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-add v-on="dialog.event.add"></user-add></el-dialog>
-    <el-dialog title="修改信息" :visible.sync="dialog.visible.update" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"><user-update v-on="dialog.event.update"></user-update></el-dialog>
+    <el-dialog title="创建用户" :visible.sync="dialog.visible.add" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"
+               v-if="dialog.visible.add">
+      <user-add v-on="dialog.event.add"></user-add></el-dialog>
+    <el-dialog title="修改信息" :visible.sync="dialog.visible.update" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"
+               v-if="dialog.visible.update&&userId">
+      <user-update v-on="dialog.event.update" :uid="userId"></user-update>
+    </el-dialog>
   </el-main>
 </template>
 
@@ -109,7 +114,8 @@
           pageSize: 20,
           total: 200,
           pages: 1*/
-        }
+        },
+        userId: ''
       }
     },
     created() {
@@ -127,7 +133,8 @@
       userAddVisible (visible) {
         this.$data.dialog.visible.add = visible;
       },
-      userUpdateVisible (visible) {
+      userUpdateVisible (visible, userId) {
+        this.$data.userId = userId;
         this.$data.dialog.visible.update = visible;
       },
       openMessage(message, confirmText) {
