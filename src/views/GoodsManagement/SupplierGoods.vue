@@ -1,7 +1,7 @@
 <template>
   <el-main>
     <div>
-      <el-button type="primary" @click="addFormVisible(true)" size="medium">添加套餐</el-button>
+      <el-button type="primary" @click="addForm=true" size="medium">添加套餐</el-button>
     </div>
     <div class="tpl-mg">
       <el-table :data="supplierGoodsList" stripe border>
@@ -44,15 +44,11 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="供应商品添加" :visible.sync="addForm"><supplierGoods-add></supplierGoods-add></el-dialog>
+    <el-dialog title="供应商品添加" top="10vh" :visible.sync="addForm"><supplierGoods-add :closeView="closeAddView" v-if="addForm"></supplierGoods-add></el-dialog>
   </el-main>
 </template>
 
 <script>
-  const event = {
-    CLOSE_ADD_SUPPLIERGOODS: 'CLOSE_ADD_SUPPLIERGOODS',
-    CLOSE_DETAIL_SUPPLIERGOODS: 'CLOSE_DETAIL_SUPPLIERGOODS'
-  };
   import { searchSupplierGoods, deleteSupplierGoods, updateGoodsState } from '../../services/GoodsManagementService';
   import supplierGoodsAdd from './SupplierGoodsAdd.vue';
 
@@ -75,22 +71,10 @@
     },
     created() {
       this.request();
-      this.$root.$on(event.CLOSE_ADD_SUPPLIERGOODS, (refresh) => {
-        this.addFormVisible(false);
-        if (refresh) {
-          this.pageCurrentChange(1);
-        }
-      });
-      this.$root.$on(event.CLOSE_DETAIL_SUPPLIERGOODS, (refresh) => {
-        this.detailTableVisible(false);
-        if (refresh) {
-          this.request();
-        }
-      });
     },
     methods: {
-      addFormVisible(visible) {
-        this.$data.addForm = visible;
+      closeAddView() {
+        this.addForm = false;
       },
       request() {
         let params = this.$data.supplierGoodsParams;

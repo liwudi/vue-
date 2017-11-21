@@ -1,6 +1,6 @@
 <template>
-  <el-main>
-    <el-form ref="supplierGoodsAddForm" :rules="rules" :model="supplierGoodsAddForm" label-width="80px" size="medium">
+  <div>
+    <el-form ref="addForm" :rules="rules" :model="supplierGoodsAddForm" label-width="100px" size="medium">
       <el-form-item label="商品ID" prop="id">
         <el-input v-model="supplierGoodsAddForm.id" placeholder="请输入商品ID"></el-input>
       </el-form-item>
@@ -27,7 +27,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="周期值/周期" prop="cycle">
+      <el-form-item label="周期值/周期" :required="true" prop="cycle">
         <el-select v-model="supplierGoodsAddForm.cycle" placeholder="请选择周期值">
           <el-option
             v-for="item in cycle"
@@ -45,13 +45,13 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品价格" prop="price">
-        <el-input type="number" v-model="supplierGoodsAddForm.price" placeholder="请输入商品价格">
+      <el-form-item label="商品价格" :required="true" prop="price">
+        <el-input v-model="supplierGoodsAddForm.price" placeholder="请输入商品价格">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
       <el-form-item label="促销价格" prop="salePrice">
-        <el-input type="number" v-model="supplierGoodsAddForm.salePrice" placeholder="请输入促销价格">
+        <el-input v-model="supplierGoodsAddForm.salePrice" placeholder="请输入促销价格">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
@@ -73,22 +73,47 @@
         <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
-  </el-main>
+  </div>
 </template>
 
 <script>
-  import { totalFlow, type, cycle, cycleValue, supplierId } from './SupplierGoodsConfig';
-  const event = {
-    CLOSE_ADD_SUPPLIERGOODS: 'CLOSE_ADD_SUPPLIERGOODS'
-  };
-  import { getRules } from './SupplierGoodsRules';
-  const rules = getRules();
-  import { addSupplierGoods } from '../../services/GoodsManagementService';
+  import { totalFlow, type, cycle, cycleValue, supplierId } from './SupplierGoodsConfig'
+  import { getRules } from './SupplierGoodsRules'
+
+  const rules = getRules()
+  import { addSupplierGoods } from '../../services/GoodsManagementService'
 
   export default {
-    data() {
+    props: {
+      closeView: Function
+    },
+    data () {
+      var cyclePass = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请选择周期值'))
+        }
+        if (!this.supplierGoodsAddForm.cycleValue) {
+          return callback(new Error('请选择周期'))
+        }
+      }
+      var pricePass = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入商品价格'))
+        }
+        if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
+          return callback(new Error('只能输入数字,小数点后2位'))
+        }
+      }
+      var salePricePass = (rule, value, callback) => {
+        if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
+          return callback(new Error('只能输入数字,小数点后2位'))
+        }
+        if (value > this.supplierGoodsAddForm.price) {
+          return callback(new Error('促销价格不能大于商品价格'))
+        }
+      }
       return {
-        formName: 'supplierGoodsAddForm',
+        formName: 'addForm',
         totalFlow, type, cycle, cycleValue, supplierId,
         supplierGoodsAddForm: {
           id: '',
@@ -102,40 +127,51 @@
           desc: '',
           supplierId: ''
         },
-        rules: rules
+        rules: {
+          ...rules,
+          cycle: [
+            {validator: cyclePass, trigger: 'change'}
+          ],
+          price: [
+            {validator: pricePass, trigger: 'change'}
+          ],
+          salePrice: [
+            {validator: salePricePass, trigger: 'change'}
+          ]
+        }
       }
     },
     methods: {
-      close(refresh=false) {
-        this.$root.$emit(event.CLOSE_ADD_SUPPLIERGOODS, refresh);
+      close () {
+        this.$props.closeView()
       },
-      goToList() {
-        this.$router.back();
+      goToList () {
+        this.$router.back()
       },
-      openMessage() {
+      openMessage () {
         this.$alert('供应商品创建成功！', '提示', {
           confirmButtonText: '确定',
           callback: action => {
-            this.close(true);
+            this.close(true)
             //this.goToList();
           }
-        });
+        })
       },
-      request() {
-        let params = this.$data.supplierGoodsAddForm;
+      request () {
+        let params = this.$data.supplierGoodsAddForm
         addSupplierGoods(params).then(() => {
-          this.openMessage();
-        });
+          this.openMessage()
+        })
       },
-      onSubmit() {
-        let formName = this.$data.formName;
+      onSubmit () {
+        let formName = this.$data.formName
         this.$refs[formName].validate((valid) => {
-          if(valid) this.request();
-          return valid;
-        });
+          if (valid) this.request()
+          return valid
+        })
       },
-      onCancel() {
-        this.close();
+      onCancel () {
+        this.close()
       }
     }
   }

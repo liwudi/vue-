@@ -41,8 +41,8 @@
           </el-pagination>
        </div>
 
-      <el-dialog title="商品添加" :visible.sync="dialog.visible.add">
-          <optional-goods-add></optional-goods-add>
+      <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add">
+          <optional-goods-add :closeView="closeAddView" v-if="dialog.visible.add"></optional-goods-add>
       </el-dialog>
   </el-main>
 </template>
@@ -74,6 +74,9 @@
       this.request();
     },
     methods:{
+      closeAddView() {
+        this.dialog.visible.add = false;
+      },
       request () {
         searchSupplierGoods(this.queryParams).then((result) => {
            this.resultData = result.data;
