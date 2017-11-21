@@ -1,6 +1,6 @@
 <template>
   <div class="menu">
-    <el-menu router>
+    <el-menu router :default-active="defaultActive">
       <el-menu-item v-for="(item, index) in menuData" :index="item.index" :key="item.index">
         <i :class="item.icon"></i><span slot="title">{{item.title}}</span>
       </el-menu-item>
@@ -12,11 +12,13 @@
   export default {
     data () {
       return {
-        menuData: []
+        menuData: [],
+        defaultActive: ''
       }
     },
     created () {
       this.$data.menuData = menuData;
+      this.$data.defaultActive = this.$router.currentRoute.name;
     },
     methods: {
       handleOpen(key, keyPath) {
