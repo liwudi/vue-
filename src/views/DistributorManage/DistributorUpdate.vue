@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-form ref="distributorUpdateForm" :rules="rules" :model="distributorUpdateForm" label-width="80px" size="medium">
+    <el-form ref="distributorUpdateForm" :rules="rules" :model="distributorUpdateForm" label-width="100px" size="medium">
       <el-form-item label="分销商名称" prop="distributorName">
         <el-input v-model="distributorUpdateForm.distributorName" placeholder="请输入分销商名称"></el-input>
       </el-form-item>
@@ -28,7 +28,7 @@
   };
   import { getRules } from './DistributorRules';
   const rules = getRules();
-  import { getDistributor, updateDistributor } from '../../services/DistributorManageService';
+  import { getDistributor, updateDistributor, getDistributorDetail } from '../../services/DistributorManageService';
 
   export default {
     data() {
@@ -36,14 +36,10 @@
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
           distributorId: '',
-          distributorCode: '',
-          distributorName: 'taobao',
-          city: '',
+          distributorName: '',
           name: '',
           phone: '',
-          address: '',
-          email: '',
-          desc: ''
+          email: ''
         },
         rules: rules
       }
@@ -53,7 +49,7 @@
     },
     methods: {
       requestDistributorInfo() {
-        getDistributor().then((result) => {
+        getDistributorDetail().then((result) => {
           let data = result.data;
           this.$data.distributorUpdateForm = data;
         });
