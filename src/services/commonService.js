@@ -5,7 +5,7 @@ import axios from 'axios'
 import Qs from 'qs'
 import config from '../index.config';
 
-let userInfo = {};
+let userInfo = null;
 let serviceUrl = config.serviceBaseUrl;
 
 function urlEncode (param, key, encode) {
@@ -40,7 +40,8 @@ function request (opts, processor, isUpload) {
       cache: false,
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'token' : window.localStorage.getItem("token")
       }
     },
     queryString, formData
@@ -93,6 +94,10 @@ function request (opts, processor, isUpload) {
   }
 
   processor = processor || resultProcessor
+
+  if(userInfo){
+    options.headers['token'] = userInfo.token;
+  }
 
   return axios.request(options).then(function (res) {
     return processor(res.data)

@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div class="logo">后台管理系统</div>
+        <div class="logo">NI流量管理平台</div>
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
               <span class="el-dropdown-link">
@@ -23,7 +23,7 @@
             }
         },
         mounted(){
-          this.name = commonService.getUserInfo().email || '';
+          this.name = commonService.getUserInfo().userName || '';
         },
         methods:{
             handleCommand(command) {

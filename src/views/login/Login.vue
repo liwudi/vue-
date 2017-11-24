@@ -1,6 +1,6 @@
 <template>
   <div class="login-wrap">
-    <div class="ms-title">后台管理系统</div>
+    <div class="ms-title">NI流量管理平台</div>
     <div class="ms-login">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
         <el-form-item prop="username">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import ssoService from '../../services/sso.service';
   export default {
     data: function(){
       return {
@@ -40,9 +41,19 @@
         const self = this;
         self.$refs[formName].validate((valid) => {
           if (valid) {
-            self.$router.push('home');
+            ssoService.login(this.ruleForm)
+              .then((data)=>{
+                window.localStorage.setItem("token",data.token);
+                self.$router.replace('/');
+              })
+              .catch((err)=>{
+                this.$message({
+                  showClose: true,
+                  message: err.message,
+                  type: 'warning'
+                });
+              })
           } else {
-//            console.log(self)
             console.log('error submit!!');
             return false;
           }

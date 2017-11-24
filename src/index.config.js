@@ -9,14 +9,16 @@ let Config =  {
       *return Promise
   **/
   sucessInterceptor : (response) => {
-    if(response.data.code === 1015){
+    if(response.data.code === 601){
+      window.localStorage.clear();
       Config.toLogin();
       return Promise.resolve({data:{code:200}});
     }
     return Promise.resolve(response);
   },
   failInterceptor :  (error) => {
-    if(error.response.data.code === 1015){
+    if(error.response.data.code === 601){
+      window.localStorage.clear();
       Config.toLogin();
       return Promise.resolve({data:{code:200}});
     }
@@ -29,15 +31,11 @@ let Config =  {
       *return
   **/
   toLogin :  () => {
-    //window.location.href = Config.loginUrl + encodeURIComponent(window.location.href);
     router.replace('login');
   },
 
-  loginUrl : 'http://wdpassport.mapbar.com/#/login?redirect=',
-  ssoServiceUrl : 'https://wdservice.mapbar.com/ssoapi/user',
-  serviceBaseUrl : "http://117.107.204.165:8770/yixin/"
+  serviceBaseUrl : "http://192.168.144.33:8888/api-ni-flow"
 }
 
-sso.setServiceUrl(Config.ssoServiceUrl);
 
 export default Config

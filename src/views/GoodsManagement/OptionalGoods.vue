@@ -16,17 +16,14 @@
             <el-table-column label="关联商品" align="center" width="70">
               <template slot-scope="scope">
                 <el-button-group>
-                  <el-button size="mini" type="info" title="查看" ><i class="el-icon-edit"></i></el-button>
+                  <el-button size="mini" type="info" title="查看" >查看</el-button>
                 </el-button-group>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="220">
+            <el-table-column label="操作" align="center" width="70">
               <template slot-scope="scope">
-                <el-button-group>
-                  <el-button size="mini" type="info" title="启用" ><i class="el-icon-edit"></i></el-button>
-                  <el-button size="mini" type="danger" title="停用" ><i class="el-icon-delete"></i></el-button>
-                  <el-button size="mini" type="default" title="删除" ><i class="el-icon-more"></i></el-button>
-                </el-button-group>
+                  <el-button v-if="scope.row.state == 2" size="mini" type="info" title="启用" >启用</el-button>
+                  <el-button v-if="scope.row.state == 1" size="mini" type="danger" title="停用" >停用</el-button>
               </template>
             </el-table-column>
           </el-table>

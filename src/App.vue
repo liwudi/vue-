@@ -18,12 +18,14 @@
       }
     },
     beforeCreate : function () {
-      ssoService.logined()
+      ssoService.checkToken()
         .then((data)=>{
+            window.localStorage.setItem("token",data.token);
+            commonService.setUserInfo(data);
             return;
         })
-        .catch(()=>{
-          //window.location.href = `${window.location.origin}/#hello`;
+        .catch((err)=>{
+          this.$router.replace('login');
           return;
         })
         .then(()=>{

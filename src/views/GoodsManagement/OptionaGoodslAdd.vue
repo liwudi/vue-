@@ -24,8 +24,8 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="周期值/周期" prop="cycle">
-        <el-select v-model="supplierGoodsAddForm.cycle" placeholder="请选择周期值">
+      <el-form-item label="周期/周期值" prop="cycle">
+        <el-select v-model="supplierGoodsAddForm.cycle" placeholder="请选择周期">
           <el-option
             v-for="item in cycle"
             :key="item"
@@ -33,7 +33,7 @@
             :value="item">
           </el-option>
         </el-select>
-        <el-select v-model="supplierGoodsAddForm.cycleValue" placeholder="请选择周期">
+        <el-select v-model="supplierGoodsAddForm.cycleValue" placeholder="请选择周期值">
           <el-option
             v-for="item in cycleValue"
             :key="item"
@@ -55,7 +55,23 @@
       <el-form-item label="商品介绍" prop="desc">
         <el-input type="textarea" :rows="2" v-model="supplierGoodsAddForm.desc" placeholder="请输入商品介绍"></el-input>
       </el-form-item>
-      <el-form-item label="商品关联" prop="desc">
+      <el-form-item label="商品关联">
+        <div
+          v-for="(domain, index) in supplierGoodsAddForm.domains"
+          :key="index"
+        >
+          <el-select v-model="domain.key" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-input-number v-model="domain.value" :min="1" :max="10" label="描述文字"></el-input-number>
+          <el-button v-if="index !== 0" @click.prevent="removeDomain(domain)">删除</el-button>
+        </div>
+        <el-button class="tpl-mg-t" @click="addDomain">添加关联</el-button>
       </el-form-item>
       <el-form-item label="分销商" prop="supplierId">
         <el-select v-model="supplierGoodsAddForm.supplierId" placeholder="请选择分销商">
@@ -111,6 +127,13 @@
         }
       };
       return {
+        options: [{
+          value: 1,
+          label: '黄金糕'
+        }, {
+          value: 2,
+          label: '北京烤鸭'
+        }],
         formName: 'addForm',
         totalFlow, type, cycle, cycleValue, supplierId,
         supplierGoodsAddForm: {
@@ -123,7 +146,11 @@
           price: '',
           salePrice: '',
           desc: '',
-          supplierId: ''
+          supplierId: '',
+          domains:[
+            {key:1,value:1},
+            {key:2,value:1}
+          ]
         },
         rules: {
           ...rules,
@@ -155,6 +182,18 @@
             this.close(true);
             //this.goToList();
           }
+        });
+      },
+      removeDomain(item) {
+        var index = this.supplierGoodsAddForm.domains.indexOf(item)
+        if (index !== -1) {
+          this.supplierGoodsAddForm.domains.splice(index, 1)
+        }
+      },
+      addDomain() {
+        this.supplierGoodsAddForm.domains.push({
+          value: '',
+          key: ''
         });
       },
       request() {

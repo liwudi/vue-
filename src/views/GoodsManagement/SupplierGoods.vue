@@ -23,13 +23,10 @@
             <el-button size="mini" type="info" @click="detailTableVisible(true)">查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" align="center" width="70">
           <template slot-scope="scope">
-            <el-button-group>
-              <el-button size="mini" type="info" @click="">启用</el-button>
-              <!--<el-button size="mini" type="info" @click="">停用</el-button>-->
-              <el-button size="mini" type="danger" @click="supplierGoodsDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
-            </el-button-group>
+            <el-button v-if="scope.row.state == 2" size="mini" type="info" title="启用" >启用</el-button>
+            <el-button v-if="scope.row.state == 1" size="mini" type="danger" title="停用" >停用</el-button>
           </template>
         </el-table-column>
       </el-table>

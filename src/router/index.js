@@ -27,7 +27,7 @@ let router = new Router({
       component: Home,
       children:[
         {
-          path: '/basetable',
+          path: '/',
           name : 'basetable',
           component: BaseTable
         },
@@ -72,7 +72,7 @@ let router = new Router({
       name: 'login',
       component: Login
     },
-     { path: '*', redirect: '/basetable' }
+     { path: '*', redirect: '/' }
   ]
 });
 
