@@ -22,7 +22,7 @@
           <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
         <el-table-column prop="distributorName" label="分销商名称" align="center"></el-table-column>
-        <el-table-column prop="linkman" label="联系人" align="center"></el-table-column>
+        <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
@@ -72,19 +72,15 @@
         //添加 or 修改 Dialog
         addForm: false,
         updateForm: false,
-        //分销商名称模糊查询
+        //分销商列表模糊查询
         formName: 'distributorQuery',
         distributorQuery: {
-          distributorName: ''
-        },
-        rules: rules,
-        //分销商列表请求参数
-        distributorParams: {
           distributorName: '',
           distributorCode: '',
           pageNum: 1,
           pageSize: 10
         },
+        rules: rules,
         distributorList: [],
         page: {}
       }
@@ -108,6 +104,7 @@
       //查询按钮
       onSubmit() {
         let formName = this.$data.formName;
+        console.log(this.distributorQuery.distributorName);
         this.$refs[formName].validate((valid) => {
           if(valid) this.request();
           return valid;
@@ -141,7 +138,7 @@
       },
       //请求分销商列表查询接口渲染列表
       request() {
-        let params = this.$data.distributorParams;
+        let params = this.$data.distributorQuery;
         getDistributor(params).then((result) => {
           let data = result.data;
           this.$data.distributorList = data.list;
@@ -151,12 +148,12 @@
       },
       //页码
       pageSizeChange(val) {
-        let params = this.$data.distributorParams;
+        let params = this.$data.distributorQuery;
         params.pageSize = val;
         this.request();
       },
       pageCurrentChange(val) {
-        let params = this.$data.distributorParams;
+        let params = this.$data.distributorQuery;
         params.pageNum = val;
         this.request();
       }
@@ -166,7 +163,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped rel="stylesheet/scss">
-  h3 {
-    margin-bottom: 20px;
-  }
 </style>

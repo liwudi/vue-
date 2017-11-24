@@ -20,7 +20,7 @@ function validatePhone(rule, value, callback) {
   if(!value || phoneReg.test(value)) {
     callback();
   } else callback('手机号格式错误，只能为11位数字');
-};
+}
 
 function getRules (distributorNameRequired = true) {
   return {
