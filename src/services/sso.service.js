@@ -51,6 +51,14 @@ export default {
     return RequestService.get(
       makeUrl('/manager/user/checkToken')
     )
+  },
+  /** 2017/11/27
+      *功能: 退出登录
+      *@param
+      *return
+  **/
+  loginOut : function () {
+    
   }
 
 

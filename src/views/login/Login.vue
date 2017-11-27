@@ -19,6 +19,7 @@
 
 <script>
   import ssoService from '../../services/sso.service';
+  import commonService from '../../services/commonService';
   export default {
     data: function(){
       return {
@@ -44,6 +45,7 @@
             ssoService.login(this.ruleForm)
               .then((data)=>{
                 window.localStorage.setItem("token",data.token);
+                commonService.setUserInfo(data);
                 self.$router.replace('/');
               })
               .catch((err)=>{

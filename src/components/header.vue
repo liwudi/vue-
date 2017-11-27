@@ -16,6 +16,7 @@
 
 <script>
     import commonService from '../services/commonService';
+    import ssoService from '../services/sso.service';
     export default {
         data() {
             return {
@@ -27,6 +28,11 @@
         },
         methods:{
             handleCommand(command) {
+              switch (command){
+                case 'loginout' : this.loginOut();
+              }
+            },
+            loginOut(){
 
             }
         }
