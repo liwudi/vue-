@@ -21,16 +21,16 @@
         <el-table-column label="序号" width="96" align="center">
           <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
-        <el-table-column prop="distributorName" label="分销商名称" align="center"></el-table-column>
+        <el-table-column prop="distributorname" label="分销商名称" align="center"></el-table-column>
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="createdate.time" label="创建时间" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
               <el-button size="mini" type="info" @click="updateFormVisible(true)"><i class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="danger" @click="distributorDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
+              <el-button size="mini" type="danger" @click="distributorDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -46,19 +46,20 @@
       </el-pagination>
     </div>
     <!--创建分销商Dialog对话框-->
-    <el-dialog title="创建分销商" :visible.sync="addForm"><distributor-add></distributor-add></el-dialog>
+    <el-dialog title="创建分销商" width="65%" :visible.sync="dialog.visible.add" :close-on-click-modal="false" :close-on-press-escape="false" v-if="dialog.visible.add">
+      <distributor-add v-on="dialog.event.add"></distributor-add>
+    </el-dialog>
     <!--修改信息Dialog对话框-->
-    <el-dialog title="修改信息" :visible.sync="updateForm"><distributor-update></distributor-update></el-dialog>
+    <el-dialog title="修改信息" width="65%" :visible.sync="dialog.visible.update" :close-on-click-modal="false" :close-on-press-escape="false" v-if="dialog.visible.update">
+      <distributor-update v-on="dialog.event.update"></distributor-update>
+    </el-dialog>
   </el-main>
 </template>
 
 <script>
   const event = {
-    CLOSE_ADD_DISTRIBUTOR: 'CLOSE_ADD_DISTRIBUTOR',
-    CLOSE_UPDATE_DISTRIBUTOR: 'CLOSE_UPDATE_DISTRIBUTOR'
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
-  import { getRules } from './DistributorRules';
-  const rules = getRules(false);
   import { getDistributor, deleteDistributor } from '../../services/DistributorManageService';
   import distributorAdd from './DistributorAdd.vue';
   import distributorUpdate from './DistributorUpdate.vue';
@@ -68,10 +69,20 @@
       distributorAdd, distributorUpdate
     },
     data() {
+      var validateDistributorName = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入分销商名称'));
+        }
+        if (!String(value).match(/[^\/w+$][^\u4e00-\u9fa5]/)) {
+          return callback(new Error('分销商名称格式错误，只能是数字、字母和符号'));
+        }
+      };
       return {
         //添加 or 修改 Dialog
-        addForm: false,
-        updateForm: false,
+        dialog: {
+          visible: {add: false, update: false},
+          event: {add: {}, update: {}}
+        },
         //分销商列表模糊查询
         formName: 'distributorQuery',
         distributorQuery: {
@@ -80,25 +91,27 @@
           pageNum: 1,
           pageSize: 10
         },
-        rules: rules,
+        rules: {
+          distributorName: [
+            {required: true, message: '请输入分销商名称', trigger: 'change'},
+            {max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'},
+            {validator: validateDistributorName, trigger: 'change'}
+          ]
+        },
         distributorList: [],
         page: {}
       }
     },
     created() {
       this.request();
-      this.$root.$on(event.CLOSE_ADD_DISTRIBUTOR, (refresh) => {
+      this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
         this.addFormVisible(false);
-        if (refresh) {
-          this.pageCurrentChange(1);
-        }
-      });
-      this.$root.$on(event.CLOSE_UPDATE_DISTRIBUTOR, (refresh) => {
+        refresh && this.pageCurrentChange(1);
+      };
+      this.$data.dialog.event.update[event.CLOSE_DIALOG] = (refresh) => {
         this.updateFormVisible(false);
-        if (refresh) {
-          this.request();
-        }
-      });
+        refresh && this.request();
+      };
     },
     methods: {
       //查询按钮
@@ -112,11 +125,11 @@
       },
       //添加按钮
       addFormVisible(visible) {
-        this.$data.addForm = visible;
+        this.$data.dialog.visible.add = visible;
       },
       //修改按钮
       updateFormVisible(visible) {
-        this.$data.updateForm = visible;
+        this.$data.dialog.visible.update = visible;
       },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
@@ -130,9 +143,8 @@
         });
       },
       //删除按钮
-      distributorDelete(index, row) {
-        console.log(index, row);
-        deleteDistributor({distributorId: row.distributorId}).then(() => {
+      distributorDelete(row) {
+        deleteDistributor({id: row.id}).then(() => {
           this.openMessage('您确定要删除该分销商吗？', '删除');
         });
       },
@@ -140,18 +152,19 @@
       request() {
         let params = this.$data.distributorQuery;
         getDistributor(params).then((result) => {
-          let data = result.data;
-          this.$data.distributorList = data.list;
-          delete data.list;
-          this.$data.page = data;
+          console.log(result.list);
+          this.$data.distributorList = result.list;
+          delete result.list;
+          this.$data.page = result;
         });
       },
-      //页码
+      //每页显示条数
       pageSizeChange(val) {
         let params = this.$data.distributorQuery;
         params.pageSize = val;
         this.request();
       },
+      //当前页码
       pageCurrentChange(val) {
         let params = this.$data.distributorQuery;
         params.pageNum = val;
