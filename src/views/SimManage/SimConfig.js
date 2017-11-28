@@ -11,8 +11,7 @@ const suppliers = [
   { label:"善领",value:"3"}
 ];
 const event = {
-  CLOSE_EDIT_SIM: 'CLOSE_EDIT_SIM',
-  CLOSE_DETAIL_SIM: 'CLOSE_DETAIL_SIM'
+  CLOSE_DIALOG: 'CLOSE_DIALOG'
 };
 
 export {

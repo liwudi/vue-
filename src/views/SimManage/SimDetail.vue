@@ -10,43 +10,43 @@
     </div>
     <div class="item-info">
       <label>供应商 : </label>
-      <span>{{resultData.suppler}}</span>
+      <span>{{resultData.supplier}}</span>
     </div>
     <div class="item-info">
       <label>状态 : </label>
-      <span>{{resultData.state}}</span>
+      <span>{{resultData.state | stateStr }}</span>
     </div>
     <div class="item-info">
       <label>激活时间 : </label>
-      <span>{{resultData.activationDate}}</span>
+      <span>{{resultData.activationDate.time | dateMoment}}</span>
     </div>
     <div class="item-info">
       <label>套餐修改时间 : </label>
-      <span>{{resultData.updateDate}}</span>
+      <span>{{resultData.updateDate.time}}</span>
     </div>
     <div class="item-info">
       <label>服务到期时间 : </label>
-      <span>{{resultData.expirationDate}}</span>
+      <span>{{resultData.expirationDate.time}}</span>
     </div>
     <div class="item-info">
-      <label>当前计费周期内使用流量 : </label>
-      <span>{{resultData.curResidualFlow}}</span>
+      <label>当前计费周期内剩余流量 : </label>
+      <span>{{ resultData.curResidualFlow }}</span>
     </div>
     <div class="item-info">
       <label>当前计费周期内总流量 : </label>
-      <span>{{resultData.curResidualFlow}}</span>
+      <span>{{resultData.curTotalFlow}}</span>
     </div>
     <div class="item-info">
       <label>当前基础套餐 : </label>
-      <span>{{resultData.curResidualFlow}}</span>
+      <span>{{resultData.curGoodsName}}</span>
     </div>
     <div class="item-info">
       <label>当前基础套餐到期时间 : </label>
-      <span>{{resultData.curResidualFlow}}</span>
+      <span>{{resultData.basicExpirationDate.time}}</span>
     </div>
     <div class="item-info">
       <label>当前可选套餐 : </label>
-      <el-table :data="resultData.optionGoods">
+      <el-table :data="resultData.list">
           <el-table-column
             prop="goodsName"
             label="套餐名称"
@@ -83,24 +83,45 @@
     props:["detailIccid"],
     data () {
       return {
-        queryParams:{
-          iccid:""
-        },
         resultData:{},
       }
     },
     created() {
-       this.queryParams.iccid = this.$props.detailIccid;
        this.request();
     },
+
     methods:{
       request() {
-        detailSim(this.queryParams).then((result) => {
-            this.resultData = result.data;
+        detailSim({ iccid:this.$props.detailIccid }).then((result) => {
+            this.resultData = result;
         })
       },
       cancelForm (refresh=false){
-        this.$root.$emit(event.CLOSE_DETAIL_SIM, refresh);
+         this.$emit(event.CLOSE_DIALOG, refresh);
+      }
+    },
+    filters:{
+      stateStr: function (value) {
+          if (!value) return '';
+          let str = '';
+          switch(value){
+            case 1 :
+              str = "未激活"
+              break;
+            case 2 :
+              str = "已激活"
+              break;
+            case 3 :
+              str = "停卡"
+              break;
+            default:
+              str = ""
+          };
+          return str;
+      },
+      dateMoment:function (value) {
+         if (!value) return '';
+
       }
     }
   }
