@@ -4,7 +4,7 @@ import sso from './services/sso.service';
 
 let Config =  {
   /** 2017/11/9
-      *功能: ajax请求的拦截器,更加各个业务不同修改code码与属性
+      *功能: ajax请求的拦截器,根据各个业务不同修改code码与属性
       *@param response
       *return Promise
   **/
