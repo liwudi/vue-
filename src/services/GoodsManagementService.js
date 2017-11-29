@@ -142,57 +142,10 @@ function updateGoodsState(params) {
   return Promise.resolve();
 }
 function searchSupplierGoods(params) {
-  /*return cs.get(makeUrl('/api-ni-flow/searchSupplierGoods'), params).then((result) => {
-   console.log(result);
-   return result;
-   }).catch((e) => {
-   console.log(e)
-   });*/
-  return Promise.resolve({
-    data:{
-      pageNum: 1,
-      pageSize: 10,
-      total: 30,
-      pages: 3,
-      list: [{
-        id: '111',
-        name: '1年无限套餐',
-        type: '续费套餐',
-        totalFlow: '无限流量',
-        cycle: '年',
-        cycleValue: '1',
-        price: '20.00',
-        salePrice: '0',
-        desc: '1年无限套餐',
-        supplier: '翼卡',
-        state: 1
-      },{
-        id: '222',
-        name: '1季度无限套餐',
-        type: '充值套餐',
-        totalFlow: '无限流量',
-        cycle: '季',
-        cycleValue: '4',
-        price: '25.00',
-        salePrice: '0',
-        desc: '1季度无限套餐',
-        supplier: '翼卡',
-        state: 2
-      },{
-        id: '333',
-        name: '1G月包',
-        type: '续费套餐',
-        totalFlow: '1G',
-        cycle: '月',
-        cycleValue: '6',
-        price: '27.00',
-        salePrice: '0',
-        desc: '1G月包',
-        supplier: '翼卡',
-        state: 3
-      }]
-    }
-  });
+  return CommonService.get(
+    makeUrl('/manager/goods/searchNiGoods'),
+    params
+  )
 }
 
 export {

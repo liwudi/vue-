@@ -24,14 +24,30 @@
 
 <script>
   const event = {
-    CLOSE_UPDATE_DISTRIBUTOR: 'CLOSE_UPDATE_DISTRIBUTOR'
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
-  import { getRules } from './DistributorRules';
-  const rules = getRules();
   import { getDistributor, updateDistributor, getDistributorDetail } from '../../services/DistributorManageService';
 
   export default {
     data() {
+      var validateDistributorName = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入分销商名称'));
+        }
+        if (!String(value).match(/[^\/w+$][^\u4e00-\u9fa5]/)) {
+          return callback(new Error('分销商名称格式错误，只能是数字、字母和符号'));
+        }
+      };
+      var validateEmail = (rule, value, callback) => {
+        if (!String(value).match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
+          return callback(new Error('邮箱格式错误'));
+        }
+      };
+      var validatePhone = (rule, value, callback) => {
+        if (!String(value).match(/^\d{11}$/)) {
+          return callback(new Error('手机号格式错误，只能为11位数字'));
+        }
+      };
       return {
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
@@ -41,7 +57,22 @@
           phone: '',
           email: ''
         },
-        rules: rules
+        rules: {
+          distributorName: [
+            {required: true, message: '请输入分销商名称', trigger: 'change'},
+            {max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'},
+            {validator: validateDistributorName, trigger: 'change'}
+          ],
+          name: [
+            {max: 20, message: '联系人最大长度为20', trigger: 'change'}
+          ],
+          email: [
+            {validator: validateEmail, trigger: 'change'}
+          ],
+          phone: [
+            {validator: validatePhone, trigger: 'change'}
+          ]
+        }
       }
     },
     created() {
@@ -55,7 +86,7 @@
         });
       },
       close(refresh=false) {
-        this.$root.$emit(event.CLOSE_UPDATE_DISTRIBUTOR, refresh);
+        this.$emit(event.CLOSE_DIALOG, refresh);
       },
       goToList() {
         this.$router.back();
