@@ -3,7 +3,7 @@
     <div class="tpl-title">供应商管理</div>
     <div class="tpl-mg-t">
       <el-form :inline="true" ref="supplierQuery" :model="supplierQuery" class="tpl-form-inline" size="medium">
-        <el-form-item label="供应商名称：" >
+        <el-form-item label="供应商名称：">
           <el-input v-model="supplierQuery.supplierName" placeholder="请输入供应商名称" style="width: 200px"></el-input>
         </el-form-item>
         <el-form-item>
@@ -24,12 +24,16 @@
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        <el-table-column prop="createDate.time"  label="创建时间"   align="center"></el-table-column>
+        <el-table-column prop="createDate.time " label="创建时间" align="center">
+          <template slot-scope="scope">{{scope.row.createDate.time | moment}}</template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" @click="updateFormVisible(true) " :subKey="id"><i class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="danger" @click="supplierDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
+              <el-button size="mini" type="info" @click="updateFormVisible(true, scope.row)" ><i
+                class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="danger" @click="supplierDelete(scope.$index, scope.row)"><i
+                class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -38,8 +42,8 @@
         @size-change="pageSizeChange"
         @current-change="pageCurrentChange"
         :current-page="page.pageNum"
-        :page-sizes="[10, 20]"
-        :page-size="10"
+        :page-sizes="[10, 20,30,40]"
+        :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="page.total">
       </el-pagination>
@@ -59,16 +63,16 @@
                :close-on-click-modal="false"
                :close-on-press-escape="false"
                v-if="dialog.visible.update">
-      <supplier-update v-on="dialog.event.update"></supplier-update>
+      <supplier-update v-on="dialog.event.update" :sId="id"></supplier-update>
     </el-dialog>
   </el-main>
 </template>
 
 <script>
-  import { event} from './SupplierConfig';
-  import { getRules } from './SupplierRules';
+  import {event} from './SupplierConfig';
+  import {getRules} from './SupplierRules';
   const rules = getRules(false);
-  import { getSupplier, deleteSupplier } from '../../services/SupplierManagementService';
+  import {getSupplier, deleteSupplier} from '../../services/SupplierManagementService';
   import supplierAdd from './SupplierAdd.vue';
   import supplierUpdate from './SupplierUpdate.vue';
 
@@ -93,7 +97,7 @@
         rules: rules,
         supplierList: [],
         page: {},
-        id: '1'
+        id: ''
       }
     },
     created() {
@@ -118,7 +122,8 @@
         this.$data.dialog.visible.add = visible;
       },
       //修改
-      updateFormVisible(visible) {
+      updateFormVisible(visible,id ) {
+        this.$data.id = Object.assign({},id);
         this.$data.dialog.visible.update = visible;
       },
       openMessage(message, confirmText) {
@@ -141,9 +146,6 @@
       },
       //列表
       request() {
-        /*let params = {
-          supplierName:this.supplierQuery.supplierName,
-        };*/
         let params = this.$data.supplierQuery;
         getSupplier(params).then((result) => {
           this.$data.supplierList = result.list;

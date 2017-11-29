@@ -26,15 +26,15 @@
   import { event} from './SupplierConfig';
   import { getRules } from './SupplierRules';
   const rules = getRules();
-  import { agetSupplier, updateSupplier } from '../../services/SupplierManagementService';
+  import { getSupplier, updateSupplier } from '../../services/SupplierManagementService';
 
   export default {
-    props: ['subKey'],
+    props: ['sId'],
     data() {
       return {
         formName: 'supplierUpdateForm',
         supplierUpdateForm: {
-          supplierId: '',
+
           supplierName: '',
           name: '',
           phone: '',
@@ -44,19 +44,14 @@
       }
     },
     created() {
-      console.info(this.$props.subKey)
-      this.requestSupplierInfo();
+      this.supplierUpdateForm = this.$props.sId;
+
     },
     methods: {
-      requestSupplierInfo() {
-        agetSupplier().then((result) => {
-          let data = result.data;
-          this.$data.supplierUpdateForm = data;
-        });
 
-      },
       request() {
         let params = this.$data.supplierUpdateForm;
+        params.supplierId = this.$props.sId.id;
         updateSupplier(params).then(() => {
           this.openMessage();
         });

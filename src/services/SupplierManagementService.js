@@ -21,34 +21,14 @@ function deleteSupplier(supplierIds) {
 }
 
 function updateSupplier(params) {
-  /*return CommonService.post(makeUrl('/api-ni-flow/updatesupplier'), params).then((result) => {
-   console.log(result);
+  return CommonService.post(makeUrl('/biz/manager/updateSupplier'), params).then((result) => {
    return result;
    }).catch((e) => {
-   console.log(e)
-   });*/
+   });
   return Promise.resolve();
 }
 
-function agetSupplier(params) {
-  /*return CommonService.get(makeUrl('/api-ni-flow/searchsupplier'), params).then((result) => {
-   console.log(result);
-   return result;
-   }).catch((e) => {
-   console.log(e)
-   });*/
-  return Promise.resolve({
-    data: {
-      supplierId: '1',
-      createTime: '2016-05-03',
-      supplierName: 'yika',
-      name: '王小虎',
-      phone: '15110194995',
-      email: '000@mapbar.com'
-    }
 
-  });
-}
 function getSupplier(params) {
   return CommonService.get(makeUrl('/biz/manager/searchSupplier'), params).then((result) => {
    return result;
@@ -58,5 +38,5 @@ function getSupplier(params) {
   return Promise.resolve();
 }
 export {
-  addSupplier, deleteSupplier, updateSupplier, getSupplier,agetSupplier
+  addSupplier, deleteSupplier, updateSupplier, getSupplier
 }
