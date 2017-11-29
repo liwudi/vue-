@@ -10,7 +10,7 @@
       <el-form-item label="性别">
         <el-select v-model="userForm.sex" placeholder="请选择性别">
           <el-option
-            v-for="item in sex"
+            v-for="item in editSex"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -24,7 +24,7 @@
       <el-form-item label="用户状态">
         <el-select v-model="userForm.state" placeholder="请选择用户状态">
           <el-option
-            v-for="item in state"
+            v-for="item in editState"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import {sex, state, event} from './UserConfig';
+  import {editSex, editState, event} from './UserConfig';
   import {getRules} from './UserRules';
   const rules = getRules();
   import {updateUser, getUser} from '../../services/UserManagementService';
@@ -51,33 +51,29 @@
     data() {
       return {
         formName: 'userForm',
-        sex, state,
+        editSex, editState,
         userForm: {
-          userName: 'liufang',
+          userName: '',
           loginName: '',
-          sex: 3,
+          sex: 1,
           phone: '',
-          state: 1
+          state: ''
         },
         rules: rules
       }
     },
     created () {
-      this.requestUserInfo();
+      this.userForm = this.$props.uid;
     },
     methods: {
-      requestUserInfo () {
-        getUser(this.$props.uid).then((result) => {
-          let data = result.data;
-          this.$data.userForm = data;
-        });
-      },
       request () {
         let params = this.$data.userForm;
+        params.userId = this.$props.uid.id;
         updateUser(params).then(() => {
-          console.info('success');
           this.openMessage();
-        });
+        }).catch((err)=>{
+          this.$message({type: 'warning', message: err.message});
+        })
       },
       openMessage() {
         this.$alert('信息修改成功！', '提示', {
