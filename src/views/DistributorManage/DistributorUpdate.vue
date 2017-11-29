@@ -54,7 +54,7 @@
       return {
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
-          distributorId: this.$props.distributorId,
+          distributorId: '',
           distributorCode: '',
           distributorName: '',
           city: '',
@@ -83,16 +83,9 @@
       }
     },
     created() {
-      //this.requestDistributorInfo();
-      this.request();
+      this.distributorUpdateForm = this.$props.distributorId;
     },
     methods: {
-      /*requestDistributorInfo() {
-        getDistributorDetail().then((result) => {
-          let data = result.data;
-          this.$data.distributorUpdateForm = data;
-        });
-      },*/
       close(refresh=false) {
         this.$emit(event.CLOSE_DIALOG, refresh);
       },
@@ -111,10 +104,13 @@
       request() {
         let params = this.$data.distributorUpdateForm;
         console.log(params);
+        params.distributorId = this.$props.distributorId;
+        console.log(this.$props.distributorId);
         updateDistributor(params).then((result) => {
           console.log(result);
-          //this.distributorUpdateForm = result;
-          //this.openMessage();
+          this.openMessage();
+        }).catch((err)=>{
+          this.$message({type: 'warning', message: err.message});
         });
       },
       onSubmit() {

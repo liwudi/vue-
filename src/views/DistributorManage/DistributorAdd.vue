@@ -81,11 +81,12 @@
       }
     },
     methods: {
-      close(refresh=false) {
-        this.$emit(event.CLOSE_DIALOG, refresh);
-      },
-      goToList() {
-        this.$router.back();
+      request() {
+        let params = this.$data.distributorAddForm;
+        addDistributor(params).then(() => {
+          console.log(params);
+          this.openMessage();
+        });
       },
       openMessage() {
         this.$alert('分销商创建成功！', '提示', {
@@ -95,12 +96,11 @@
           }
         });
       },
-      request() {
-        let params = this.$data.distributorAddForm;
-        addDistributor(params).then(() => {
-          console.log(params);
-          this.openMessage();
-        });
+      close(refresh=false) {
+        this.$emit(event.CLOSE_DIALOG, refresh);
+      },
+      goToList() {
+        this.$router.back();
       },
       onSubmit() {
         console.log('aaa');

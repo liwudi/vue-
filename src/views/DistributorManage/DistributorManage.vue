@@ -29,8 +29,8 @@
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" @click="updateFormVisible(true, scope.row)"><i class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="danger" @click="distributorDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
+              <el-button size="mini" type="info" title="修改" @click="updateFormVisible(true, scope.row)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="danger" title="删除" @click="distributorDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -51,7 +51,7 @@
     </el-dialog>
     <!--修改信息Dialog对话框-->
     <el-dialog title="修改信息" width="65%" :visible.sync="dialog.visible.update" :close-on-click-modal="false" :close-on-press-escape="false" v-if="dialog.visible.update">
-      <distributor-update v-on="dialog.event.update" :distributorId="distributorId"></distributor-update>
+      <distributor-update v-on="dialog.event.update" :distributorId="distributor"></distributor-update>
     </el-dialog>
   </el-main>
 </template>
@@ -100,7 +100,8 @@
           ]
         },
         distributorList: [],
-        page: {}
+        page: {},
+        distributor: ''
       }
     },
     created() {
@@ -129,10 +130,9 @@
         this.$data.dialog.visible.add = visible;
       },
       //修改按钮
-      updateFormVisible(visible, row) {
+      updateFormVisible(visible, distributor) {
+        this.$data.distributor = Object.assign({}, distributor);
         this.$data.dialog.visible.update = visible;
-        if (!row) return;
-        this.distributorId = row.id;
       },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
