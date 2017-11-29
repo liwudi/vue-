@@ -6,6 +6,7 @@ function makeUrl (path) {
 
 function addDistributor(params) {
   //return CommonService.post(makeUrl('/api-ni-flow/biz/manager/addDistributor'), params)
+  console.log(makeUrl('/biz/manager/addDistributor'));
   return CommonService.post(makeUrl('/biz/manager/addDistributor'), params)
     .then((result) => {
       console.log(result);

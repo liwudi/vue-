@@ -38,15 +38,17 @@
           return callback(new Error('分销商名称格式错误，只能是数字、字母和符号'));
         }
       };
+      const emailReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
       var validateEmail = (rule, value, callback) => {
-        if (!String(value).match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
-          return callback(new Error('邮箱格式错误'));
-        }
+        if(!value || emailReg.test(value)) {
+          callback();
+        } else callback('邮箱格式错误');
       };
+      const phoneReg = /^\d{11}$/;
       var validatePhone = (rule, value, callback) => {
-        if (!String(value).match(/^\d{11}$/)) {
-          return callback(new Error('手机号格式错误，只能为11位数字'));
-        }
+        if(!value || phoneReg.test(value)) {
+          callback();
+        } else callback('手机号格式错误，只能为11位数字');
       };
       return {
         formName: 'distributorAddForm',
@@ -90,17 +92,18 @@
           confirmButtonText: '确定',
           callback: action => {
             this.close(true);
-            //this.goToList();
           }
         });
       },
       request() {
         let params = this.$data.distributorAddForm;
         addDistributor(params).then(() => {
+          console.log(params);
           this.openMessage();
         });
       },
       onSubmit() {
+        console.log('aaa');
         let formName = this.$data.formName;
         this.$refs[formName].validate((valid) => {
           if(valid) this.request();
