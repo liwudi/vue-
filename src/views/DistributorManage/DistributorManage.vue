@@ -21,15 +21,15 @@
         <el-table-column label="序号" width="96" align="center">
           <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
-        <el-table-column prop="distributorname" label="分销商名称" align="center"></el-table-column>
+        <el-table-column prop="distributorName" label="分销商名称" align="center"></el-table-column>
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        <el-table-column prop="createdate.time" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="createDate.time" label="创建时间" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" @click="updateFormVisible(true)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="info" @click="updateFormVisible(true, scope.row)"><i class="el-icon-edit"></i></el-button>
               <el-button size="mini" type="danger" @click="distributorDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
@@ -51,7 +51,7 @@
     </el-dialog>
     <!--修改信息Dialog对话框-->
     <el-dialog title="修改信息" width="65%" :visible.sync="dialog.visible.update" :close-on-click-modal="false" :close-on-press-escape="false" v-if="dialog.visible.update">
-      <distributor-update v-on="dialog.event.update"></distributor-update>
+      <distributor-update v-on="dialog.event.update" :distributorId="distributorId"></distributor-update>
     </el-dialog>
   </el-main>
 </template>
@@ -85,6 +85,7 @@
         },
         //分销商列表模糊查询
         formName: 'distributorQuery',
+        distributorId: '',
         distributorQuery: {
           distributorName: '',
           distributorCode: '',
@@ -128,8 +129,10 @@
         this.$data.dialog.visible.add = visible;
       },
       //修改按钮
-      updateFormVisible(visible) {
+      updateFormVisible(visible, row) {
         this.$data.dialog.visible.update = visible;
+        if (!row) return;
+        this.distributorId = row.id;
       },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
@@ -144,7 +147,7 @@
       },
       //删除按钮
       distributorDelete(row) {
-        deleteDistributor({id: row.id}).then(() => {
+        deleteDistributor({distributorIds: row.id}).then(() => {
           this.openMessage('您确定要删除该分销商吗？', '删除');
         });
       },
@@ -152,7 +155,6 @@
       request() {
         let params = this.$data.distributorQuery;
         getDistributor(params).then((result) => {
-          console.log(result.list);
           this.$data.distributorList = result.list;
           delete result.list;
           this.$data.page = result;

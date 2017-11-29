@@ -20,7 +20,6 @@ function deleteDistributor(params) {
   //return CommonService.get(makeUrl('/api-ni-flow/biz/manager/deleteDistributor'), params)
   return CommonService.get(makeUrl('/biz/manager/deleteDistributor'), params)
     .then((result) => {
-      console.log(result);
       return result;
     }).catch((e) => {
       console.log(e);

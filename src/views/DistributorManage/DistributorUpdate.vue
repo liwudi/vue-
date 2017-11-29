@@ -29,6 +29,7 @@
   import { getDistributor, updateDistributor, getDistributorDetail } from '../../services/DistributorManageService';
 
   export default {
+    props: ['distributorId'],
     data() {
       var validateDistributorName = (rule, value, callback) => {
         if (!value) {
@@ -51,11 +52,15 @@
       return {
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
-          distributorId: '',
+          distributorId: this.$props.distributorId,
+          distributorCode: '',
           distributorName: '',
+          city: '',
           name: '',
           phone: '',
-          email: ''
+          address: '',
+          email: '',
+          message: ''
         },
         rules: {
           distributorName: [
@@ -76,15 +81,16 @@
       }
     },
     created() {
-      this.requestDistributorInfo();
+      //this.requestDistributorInfo();
+      this.request();
     },
     methods: {
-      requestDistributorInfo() {
+      /*requestDistributorInfo() {
         getDistributorDetail().then((result) => {
           let data = result.data;
           this.$data.distributorUpdateForm = data;
         });
-      },
+      },*/
       close(refresh=false) {
         this.$emit(event.CLOSE_DIALOG, refresh);
       },
@@ -102,8 +108,11 @@
       },
       request() {
         let params = this.$data.distributorUpdateForm;
-        updateDistributor(params).then(() => {
-          this.openMessage();
+        console.log(params);
+        updateDistributor(params).then((result) => {
+          console.log(result);
+          //this.distributorUpdateForm = result;
+          //this.openMessage();
         });
       },
       onSubmit() {
