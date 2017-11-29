@@ -20,15 +20,15 @@
         <el-table-column label="序号" width="96" align="center">
           <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
-        <el-table-column prop="suppliername" label="供应商名称" align="center"></el-table-column>
+        <el-table-column prop="supplierName" label="供应商名称" align="center"></el-table-column>
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="createDate.time"  label="创建时间"   align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" @click="updateFormVisible(true)"><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="info" @click="updateFormVisible(true) " :subKey="id"><i class="el-icon-edit"></i></el-button>
               <el-button size="mini" type="danger" @click="supplierDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
@@ -38,23 +38,34 @@
         @size-change="pageSizeChange"
         @current-change="pageCurrentChange"
         :current-page="page.pageNum"
-        :page-sizes="[1, 2,3,4]"
-        :page-size="pageSize"
+        :page-sizes="[10, 20]"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="supplierList.length">
+        :total="page.total">
       </el-pagination>
     </div>
 
-    <el-dialog title="创建供应商" :visible.sync="addForm"><supplier-add></supplier-add></el-dialog>
-    <el-dialog title="修改信息" :visible.sync="updateForm"><supplier-update></supplier-update></el-dialog>
+
+    <el-dialog title="创建供应商" width="65%"
+               :visible.sync="dialog.visible.add"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               v-if="dialog.visible.add">
+      <supplier-add v-on="dialog.event.add"></supplier-add>
+    </el-dialog>
+
+    <el-dialog title="修改信息" width="65%"
+               :visible.sync="dialog.visible.update"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               v-if="dialog.visible.update">
+      <supplier-update v-on="dialog.event.update"></supplier-update>
+    </el-dialog>
   </el-main>
 </template>
 
 <script>
-  const event = {
-    CLOSE_ADD_SUPPLIER: 'CLOSE_ADD_SUPPLIER',
-    CLOSE_UPDATE_SUPPLIER: 'CLOSE_UPDATE_SUPPLIER'
-  };
+  import { event} from './SupplierConfig';
   import { getRules } from './SupplierRules';
   const rules = getRules(false);
   import { getSupplier, deleteSupplier } from '../../services/SupplierManagementService';
@@ -67,10 +78,12 @@
     },
     data() {
       return {
-        //添加 or 修改 Dialog
-        addForm: false,
-        updateForm: false,
-        //供应商名称查询
+        //弹框
+        dialog: {
+          visible: {add: false, update: false},
+          event: {add: {}, update: {}}
+        },
+
         formName: 'supplierQuery',
         supplierQuery: {
           supplierName: '',
@@ -78,38 +91,35 @@
           pageSize: 10
         },
         rules: rules,
-
         supplierList: [],
-        page: {}
+        page: {},
+        id: '1'
       }
     },
     created() {
       this.request();
-      this.$root.$on(event.CLOSE_ADD_SUPPLIER, (refresh) => {
+      this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
         this.addFormVisible(false);
-        if (refresh) {
-          this.pageCurrentChange(1);
-        }
-      });
-      this.$root.$on(event.CLOSE_UPDATE_SUPPLIER, (refresh) => {
+        refresh && this.pageCurrentChange(1);
+      };
+      this.$data.dialog.event.update[event.CLOSE_DIALOG] = (refresh) => {
         this.updateFormVisible(false);
-        if (refresh) {
-          this.request();
-        }
-      });
+        refresh && this.request();
+      };
     },
     methods: {
+
       //查询
       suppliernameSearch() {
         this.request();
       },
       //添加
       addFormVisible(visible) {
-        this.$data.addForm = visible;
+        this.$data.dialog.visible.add = visible;
       },
       //修改
       updateFormVisible(visible) {
-        this.$data.updateForm = visible;
+        this.$data.dialog.visible.update = visible;
       },
       openMessage(message, confirmText) {
         this.$confirm(message, '提示', {
@@ -131,13 +141,15 @@
       },
       //列表
       request() {
-        let params = {
+        /*let params = {
           supplierName:this.supplierQuery.supplierName,
-        };
+        };*/
+        let params = this.$data.supplierQuery;
         getSupplier(params).then((result) => {
           this.$data.supplierList = result.list;
           delete result.list;
           this.$data.page = result;
+
         });
       },
       //页码

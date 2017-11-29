@@ -23,14 +23,13 @@
 </template>
 
 <script>
-  const event = {
-    CLOSE_UPDATE_SUPPLIER: 'CLOSE_UPDATE_SUPPLIER'
-  };
+  import { event} from './SupplierConfig';
   import { getRules } from './SupplierRules';
   const rules = getRules();
   import { agetSupplier, updateSupplier } from '../../services/SupplierManagementService';
 
   export default {
+    props: ['subKey'],
     data() {
       return {
         formName: 'supplierUpdateForm',
@@ -45,6 +44,7 @@
       }
     },
     created() {
+      console.info(this.$props.subKey)
       this.requestSupplierInfo();
     },
     methods: {
@@ -78,7 +78,7 @@
         this.close();
       },
       close(refresh=false) {
-        this.$root.$emit(event.CLOSE_UPDATE_SUPPLIER, refresh);
+        this.$emit(event.CLOSE_DIALOG, refresh);
       },
       goToList() {
         this.$router.back();

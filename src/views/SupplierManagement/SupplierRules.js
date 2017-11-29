@@ -24,7 +24,7 @@ function validatePhone(rule, value, callback) {
 
 function getRules (supplierNameRequired = true) {
   return {
-    supplerName: [
+    supplierName: [
       {required: supplierNameRequired, message: '请输入供应商名称', trigger: 'change'},
       {validator: validatesupplierName, trigger: 'change'},
       {min: 1,max: 16, message: '供应商名称字符长度为1-16', trigger: 'change'}

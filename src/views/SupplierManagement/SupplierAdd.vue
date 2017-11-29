@@ -23,9 +23,7 @@
 </template>
 
 <script>
-  const event = {
-    CLOSE_ADD_SUPPLIER: 'CLOSE_ADD_SUPPLIER'
-  };
+  import { event} from './SupplierConfig';
   import { getRules } from './SupplierRules';
   const rules = getRules();
   import { addSupplier } from '../../services/SupplierManagementService';
@@ -58,7 +56,9 @@
       openMessage() {
         this.$alert('供应商创建成功！', '提示', {
           confirmButtonText: '确定',
-          callback: action => {this.close(true);}
+          callback: action => {
+              this.close(true);
+          }
         });
       },
       onSubmit() {
@@ -73,7 +73,7 @@
         this.close();
       },
       close(refresh=false) {
-        this.$root.$emit(event.CLOSE_ADD_SUPPLIER, refresh);
+        this.$emit(event.CLOSE_DIALOG, refresh);
       },
       goToList() {
         this.$router.back();
