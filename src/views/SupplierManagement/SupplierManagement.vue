@@ -4,10 +4,10 @@
     <div class="tpl-mg-t">
       <el-form :inline="true" ref="supplierQuery" :model="supplierQuery" class="tpl-form-inline" size="medium">
         <el-form-item label="供应商名称：" >
-          <el-input v-model="supplierQuery.supplerName" placeholder="请输入供应商名称" style="width: 200px"></el-input>
+          <el-input v-model="supplierQuery.supplierName" placeholder="请输入供应商名称" style="width: 200px"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button type="primary" @click="suppliernameSearch">查询</el-button>
         </el-form-item>
       </el-form>
       <div>
@@ -20,7 +20,7 @@
         <el-table-column label="序号" width="96" align="center">
           <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
-        <el-table-column prop="supplerName" label="供应商名称" align="center"></el-table-column>
+        <el-table-column prop="suppliername" label="供应商名称" align="center"></el-table-column>
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
@@ -38,8 +38,8 @@
         @size-change="pageSizeChange"
         @current-change="pageCurrentChange"
         :current-page="page.pageNum"
-        :page-sizes="[2, 4]"
-        :page-size="100"
+        :page-sizes="[1, 2,3,4]"
+        :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="supplierList.length">
       </el-pagination>
@@ -70,10 +70,10 @@
         //添加 or 修改 Dialog
         addForm: false,
         updateForm: false,
-        //供应商名称模糊查询
+        //供应商名称查询
         formName: 'supplierQuery',
         supplierQuery: {
-          supplerName: '',
+          supplierName: '',
           pageNum: 1,
           pageSize: 10
         },
@@ -100,14 +100,8 @@
     },
     methods: {
       //查询
-      onSubmit() {
-        let formName = this.$data.formName;
-        console.log(this.supplierQuery.supplerName)
-        this.$refs[formName].validate((valid) => {
-          if(valid) this.request();
-
-          return valid;
-        });
+      suppliernameSearch() {
+        this.request();
       },
       //添加
       addFormVisible(visible) {
@@ -131,18 +125,19 @@
       //删除
       supplierDelete(index, row) {
         console.log(index, row);
-        deleteSupplier({supplierId: row.supplierId}).then(() => {
+        deleteSupplier({supplierIds: row.id}).then(() => {
           this.openMessage('您确定要删除该供应商吗？', '删除');
         });
       },
-      //查询
+      //列表
       request() {
-        let params = this.$data.supplierParams;
+        let params = {
+          supplierName:this.supplierQuery.supplierName,
+        };
         getSupplier(params).then((result) => {
-          let data = result.data;
-          this.$data.supplierList = data.list;
-          delete data.list;
-          this.$data.page = data;
+          this.$data.supplierList = result.list;
+          delete result.list;
+          this.$data.page = result;
         });
       },
       //页码
@@ -156,6 +151,9 @@
         params.pageNum = val;
         this.request();
       }
+    },
+    mounted() {
+      this.suppliernameSearch()
     }
   }
 </script>

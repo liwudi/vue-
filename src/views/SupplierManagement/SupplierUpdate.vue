@@ -1,8 +1,8 @@
 <template>
   <el-main>
     <el-form ref="supplierUpdateForm" :rules="rules" :model="supplierUpdateForm" label-width="100px" size="medium">
-      <el-form-item label="供应商名称" prop="supplerName">
-        <el-input v-model="supplierUpdateForm.supplerName" placeholder="请输入供应商名称"></el-input>
+      <el-form-item label="供应商名称" prop="supplierName">
+        <el-input v-model="supplierUpdateForm.supplierName" placeholder="请输入供应商名称"></el-input>
       </el-form-item>
       <el-form-item label="联系人" prop="name">
         <el-input v-model="supplierUpdateForm.name" placeholder="请输入联系人"></el-input>
@@ -36,7 +36,7 @@
         formName: 'supplierUpdateForm',
         supplierUpdateForm: {
           supplierId: '',
-          supplerName: '',
+          supplierName: '',
           name: '',
           phone: '',
           email: ''
@@ -53,6 +53,7 @@
           let data = result.data;
           this.$data.supplierUpdateForm = data;
         });
+
       },
       request() {
         let params = this.$data.supplierUpdateForm;

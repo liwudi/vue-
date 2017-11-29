@@ -1,8 +1,8 @@
 <template>
   <el-main>
     <el-form ref="supplierAddForm" :rules="rules" :model="supplierAddForm" label-width="100px" size="medium">
-      <el-form-item label="供应商名称" prop="supplerName">
-        <el-input v-model="supplierAddForm.supplerName" placeholder="请输入供应商名称"></el-input>
+      <el-form-item label="供应商名称" prop="supplierName">
+        <el-input v-model="supplierAddForm.supplierName" placeholder="请输入供应商名称"></el-input>
       </el-form-item>
       <el-form-item label="联系人" prop="name">
         <el-input v-model="supplierAddForm.name" placeholder="请输入联系人"></el-input>
@@ -35,7 +35,7 @@
       return {
         formName: 'supplierAddForm',
         supplierAddForm: {
-          supplerName: '',
+          supplierName: '',
           supplierCode: '',
           city: '',
           name: '',
@@ -51,7 +51,7 @@
       request() {
         let params = this.$data.supplierAddForm;
         addSupplier(params).then(() => {
-          console.log(params)
+          //console.log(params)
           this.openMessage();
         });
       },
