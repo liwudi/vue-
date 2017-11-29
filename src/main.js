@@ -10,6 +10,7 @@ import '../static/css/main.scss'
 import '../static/css/template.scss'
 
 import commonService from './services/commonService';
+import CommonFilter from './filter/CommonFilter';
 import config from './index.config';
 
 Vue.config.productionTip = false

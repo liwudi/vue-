@@ -1,8 +1,8 @@
 <template>
   <el-main>
     <el-form ref="supplierAddForm" :rules="rules" :model="supplierAddForm" label-width="100px" size="medium">
-      <el-form-item label="供应商名称" prop="supplerName">
-        <el-input v-model="supplierAddForm.supplerName" placeholder="请输入供应商名称"></el-input>
+      <el-form-item label="供应商名称" prop="supplierName">
+        <el-input v-model="supplierAddForm.supplierName" placeholder="请输入供应商名称"></el-input>
       </el-form-item>
       <el-form-item label="联系人" prop="name">
         <el-input v-model="supplierAddForm.name" placeholder="请输入联系人"></el-input>
@@ -23,9 +23,7 @@
 </template>
 
 <script>
-  const event = {
-    CLOSE_ADD_SUPPLIER: 'CLOSE_ADD_SUPPLIER'
-  };
+  import { event} from './SupplierConfig';
   import { getRules } from './SupplierRules';
   const rules = getRules();
   import { addSupplier } from '../../services/SupplierManagementService';
@@ -35,7 +33,7 @@
       return {
         formName: 'supplierAddForm',
         supplierAddForm: {
-          supplerName: '',
+          supplierName: '',
           supplierCode: '',
           city: '',
           name: '',
@@ -51,14 +49,16 @@
       request() {
         let params = this.$data.supplierAddForm;
         addSupplier(params).then(() => {
-          console.log(params)
+          //console.log(params)
           this.openMessage();
         });
       },
       openMessage() {
         this.$alert('供应商创建成功！', '提示', {
           confirmButtonText: '确定',
-          callback: action => {this.close(true);}
+          callback: action => {
+              this.close(true);
+          }
         });
       },
       onSubmit() {
@@ -73,7 +73,7 @@
         this.close();
       },
       close(refresh=false) {
-        this.$root.$emit(event.CLOSE_ADD_SUPPLIER, refresh);
+        this.$emit(event.CLOSE_DIALOG, refresh);
       },
       goToList() {
         this.$router.back();

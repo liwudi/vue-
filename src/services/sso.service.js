@@ -58,7 +58,9 @@ export default {
       *return
   **/
   loginOut : function () {
-    
+    return RequestService.get(
+      makeUrl('/manager/user/logout')
+    )
   }
 
 

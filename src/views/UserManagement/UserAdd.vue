@@ -10,7 +10,7 @@
       <el-form-item label="性别">
         <el-select v-model="userForm.sex" placeholder="请选择性别">
           <el-option
-            v-for="item in sex"
+            v-for="item in editSex"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -21,7 +21,7 @@
         <el-input v-model="userForm.phone" placeholder="请输入手机号"></el-input>
       </el-form-item>
 
-      <el-form-item label="用户状态">
+     <!-- <el-form-item label="用户状态">
         <el-select v-model="userForm.state" placeholder="请选择用户状态" disabled>
           <el-option
             v-for="item in state"
@@ -30,7 +30,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
 
 
       <el-form-item>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import {sex, state, event} from './UserConfig';
+  import {editSex, editState, event} from './UserConfig';
   import {getRules} from './UserRules';
   const rules = getRules();
   import {addUser} from '../../services/UserManagementService';
@@ -50,13 +50,12 @@
     data() {
       return {
         formName: 'userForm',
-        sex, state,
+        editSex, editState,
         userForm: {
           userName: '',
           loginName: '',
-          sex: 3,
-          phone: '',
-          state: 1
+          sex: 1,
+          phone: ''
         },
         rules: rules
       }
@@ -65,8 +64,6 @@
       request () {
         let params = this.$data.userForm;
         addUser(params).then(() => {
-          console.info('success');
-
           this.openMessage();
         });
       },
@@ -75,7 +72,6 @@
           confirmButtonText: '确定',
           callback: action => {
             this.close(true);
-            //this.goToList();
           }
         });
       },
@@ -91,9 +87,6 @@
       },
       close (refresh=false) {
         this.$emit(event.CLOSE_DIALOG, refresh);
-      },
-      goToList() {
-        this.$router.back();
       }
     }
   }

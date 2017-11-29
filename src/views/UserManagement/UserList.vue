@@ -41,17 +41,17 @@
         <el-table-column align="center" prop="loginName" label="姓名"></el-table-column>
         <el-table-column align="center" prop="phone" label="手机号"></el-table-column>
         <el-table-column align="center" prop="sex" label="性别">
-          <template slot-scope="scope">{{sex[scope.row.sex - 1].label}}</template>
+          <template slot-scope="scope">{{scope.row.sex ? scope.row.sex === 1 ? '男' : '女'  : '未知'}}</template>
         </el-table-column>
         <el-table-column align="center" prop="state" label="用户状态">
-          <template slot-scope="scope">{{state[scope.row.sex - 1].label}}</template>
+          <template slot-scope="scope">{{scope.row.state ? scope.row.state === 1 ? '可用' : '停用'  : '未知'}}</template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="150">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true, scope.row.userId)"><i class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
-              <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.row)"><i class="el-icon-more"></i></el-button>
+              <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true, scope.row)">编辑</el-button>
+              <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.row)">停用</el-button>
+              <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.row)">重置密码</el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -70,8 +70,8 @@
                v-if="dialog.visible.add">
       <user-add v-on="dialog.event.add"></user-add></el-dialog>
     <el-dialog title="修改信息" :visible.sync="dialog.visible.update" width="65%" :close-on-click-modal="false" :close-on-press-escape="false"
-               v-if="dialog.visible.update&&userId">
-      <user-update v-on="dialog.event.update" :uid="userId"></user-update>
+               v-if="dialog.visible.update">
+      <user-update v-on="dialog.event.update" :uid="user"></user-update>
     </el-dialog>
   </el-main>
 </template>
@@ -86,9 +86,9 @@
   const defaultUserForm = {
     userName: '',
     loginName: '',
-    sex: 3,
+    sex: '',
     phone: '',
-    state: 3,
+    state: '',
     pageNum: 1,
     pageSize: 10
   };
@@ -103,7 +103,7 @@
           visible: {add: false, update: false},
           event: {add: {}, update: {}}
         },
-        defaultPassword: 'yx8888',
+        defaultPassword: '888888',
         formName: 'userForm',
         sex, state,
         userForm: {...defaultUserForm},
@@ -115,7 +115,7 @@
           total: 200,
           pages: 1*/
         },
-        userId: ''
+        user: ''
       }
     },
     created() {
@@ -133,29 +133,36 @@
       userAddVisible (visible) {
         this.$data.dialog.visible.add = visible;
       },
-      userUpdateVisible (visible, userId) {
-        this.$data.userId = userId;
+      userUpdateVisible (visible, user) {
+        this.$data.user = Object.assign({},user);
         this.$data.dialog.visible.update = visible;
       },
-      openMessage(message, confirmText) {
+      openMessage(message, confirmText,doit) {
         this.$confirm(message, '提示', {
           cancelButtonText: '取消',
           confirmButtonText: confirmText
         }).then(() => {
-          this.$message({type: 'success', message: '操作成功!'});
-          this.request();
+          doit();
         }).catch(() => {
-          this.$message({type: 'info', message: '已取消操作'});
         });
       },
       userDelete(row) {
-        deleteUser({userId: row.userId}).then(() => {
-          this.openMessage('您确定要删除该用户吗？', '删除');
+        this.openMessage('您确定要停用该用户吗？', '停用',()=>{
+          deleteUser({userId: row.id}).then(() => {
+            this.$message({type: 'success', message: '操作成功!'});
+            this.request();
+          }).catch((err)=>{
+            this.$message({type: 'error', message: err.message});
+          })
         });
       },
       userPasswordReset(row) {
-        resetUserPassword({password: row.password, useId: row.userId}).then(() => {
-          this.openMessage('您确定要将该用户重置为默认密码吗？', '确定');
+        this.openMessage('您确定要将该用户重置为默认密码吗？', '确定',()=>{
+          resetUserPassword({userId: row.id}).then(() => {
+            this.$message({type: 'success', message: '重置成功!'});
+          }).catch((err)=>{
+            this.$message({type: 'error', message: err.message});
+          })
         });
       },
       pageSizeChange(val) {
@@ -164,7 +171,6 @@
         this.request();
       },
       pageCurrentChange(val) {
-        console.info('current-page', val);
         let params = this.$data.userForm;
         params.pageNum = val;
         this.request();
@@ -172,16 +178,17 @@
       request () {
         let params = this.$data.userForm;
         searchUser(params).then((result) => {
-          let data = result.data;
-          this.$data.tableData = data.list;
-          delete data.list;
-          this.$data.page = data;
+          this.$data.tableData = result.list;
+          this.$data.page = result;
         });
       },
       submitForm() {
         let formName = this.$data.formName;
         this.$refs[formName].validate((valid) => {
-          if(valid) this.request();
+          if(valid) {
+            this.$data.userForm.pageNum = 1;
+            this.request();
+          }
           return valid;
         });
       },
@@ -189,6 +196,7 @@
         this.$data.userForm = {
           ...defaultUserForm
         }
+        this.request();
       }
     }
   }
