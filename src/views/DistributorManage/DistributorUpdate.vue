@@ -26,65 +26,33 @@
   const event = {
     CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
-  import { getDistributor, updateDistributor, getDistributorDetail } from '../../services/DistributorManageService';
+  import {getRules} from './DistributorRules';
+  const rules = getRules();
+  import { updateDistributor } from '../../services/DistributorManageService';
 
   export default {
+    props: ['distributorId'],
     data() {
-      var validateDistributorName = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入分销商名称'));
-        }
-        if (!String(value).match(/[^\/w+$][^\u4e00-\u9fa5]/)) {
-          return callback(new Error('分销商名称格式错误，只能是数字、字母和符号'));
-        }
-      };
-      var validateEmail = (rule, value, callback) => {
-        if (!String(value).match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
-          return callback(new Error('邮箱格式错误'));
-        }
-      };
-      var validatePhone = (rule, value, callback) => {
-        if (!String(value).match(/^\d{11}$/)) {
-          return callback(new Error('手机号格式错误，只能为11位数字'));
-        }
-      };
       return {
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
           distributorId: '',
+          distributorCode: '',
           distributorName: '',
+          city: '',
           name: '',
           phone: '',
-          email: ''
+          address: '',
+          email: '',
+          message: ''
         },
-        rules: {
-          distributorName: [
-            {required: true, message: '请输入分销商名称', trigger: 'change'},
-            {max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'},
-            {validator: validateDistributorName, trigger: 'change'}
-          ],
-          name: [
-            {max: 20, message: '联系人最大长度为20', trigger: 'change'}
-          ],
-          email: [
-            {validator: validateEmail, trigger: 'change'}
-          ],
-          phone: [
-            {validator: validatePhone, trigger: 'change'}
-          ]
-        }
+        rules: rules
       }
     },
     created() {
-      this.requestDistributorInfo();
+      this.distributorUpdateForm = this.$props.distributorId;
     },
     methods: {
-      requestDistributorInfo() {
-        getDistributorDetail().then((result) => {
-          let data = result.data;
-          this.$data.distributorUpdateForm = data;
-        });
-      },
       close(refresh=false) {
         this.$emit(event.CLOSE_DIALOG, refresh);
       },
@@ -96,14 +64,17 @@
           confirmButtonText: '确定',
           callback: action => {
             this.close(true);
-            //this.goToList();
           }
         });
       },
       request() {
         let params = this.$data.distributorUpdateForm;
+        console.log(params);
+        params.distributorId = this.$props.distributorId.id;
         updateDistributor(params).then(() => {
           this.openMessage();
+        }).catch((err)=>{
+          this.$message({type: 'warning', message: err.message});
         });
       },
       onSubmit() {
