@@ -26,31 +26,13 @@
   const event = {
     CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
-  import { getDistributor, updateDistributor, getDistributorDetail } from '../../services/DistributorManageService';
+  import {getRules} from './DistributorRules';
+  const rules = getRules();
+  import { updateDistributor } from '../../services/DistributorManageService';
 
   export default {
     props: ['distributorId'],
     data() {
-      var validateDistributorName = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入分销商名称'));
-        }
-        if (!String(value).match(/[^\/w+$][^\u4e00-\u9fa5]/)) {
-          return callback(new Error('分销商名称格式错误，只能是数字、字母和符号'));
-        }
-      };
-      const emailReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      var validateEmail = (rule, value, callback) => {
-        if(!value || emailReg.test(value)) {
-          callback();
-        } else callback('邮箱格式错误');
-      };
-      const phoneReg = /^\d{11}$/;
-      var validatePhone = (rule, value, callback) => {
-        if(!value || phoneReg.test(value)) {
-          callback();
-        } else callback('手机号格式错误，只能为11位数字');
-      };
       return {
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
@@ -64,22 +46,7 @@
           email: '',
           message: ''
         },
-        rules: {
-          distributorName: [
-            {required: true, message: '请输入分销商名称', trigger: 'change'},
-            {max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'},
-            {validator: validateDistributorName, trigger: 'change'}
-          ],
-          name: [
-            {max: 20, message: '联系人最大长度为20', trigger: 'change'}
-          ],
-          email: [
-            {validator: validateEmail, trigger: 'change'}
-          ],
-          phone: [
-            {validator: validatePhone, trigger: 'change'}
-          ]
-        }
+        rules: rules
       }
     },
     created() {
@@ -97,17 +64,14 @@
           confirmButtonText: '确定',
           callback: action => {
             this.close(true);
-            //this.goToList();
           }
         });
       },
       request() {
         let params = this.$data.distributorUpdateForm;
         console.log(params);
-        params.distributorId = this.$props.distributorId;
-        console.log(this.$props.distributorId);
-        updateDistributor(params).then((result) => {
-          console.log(result);
+        params.distributorId = this.$props.distributorId.id;
+        updateDistributor(params).then(() => {
           this.openMessage();
         }).catch((err)=>{
           this.$message({type: 'warning', message: err.message});

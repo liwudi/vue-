@@ -25,7 +25,9 @@
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        <el-table-column prop="createDate.time" label="创建时间" align="center"></el-table-column>
+        <el-table-column label="创建时间" align="center">
+          <template slot-scope="scope" v-if="scope.row.createDate">{{ scope.row.createDate.time | moment('YYYY-MM-DD') }}</template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
@@ -60,6 +62,8 @@
   const event = {
     CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
+  import {getRules} from './DistributorRules';
+  const rules = getRules();
   import { getDistributor, deleteDistributor } from '../../services/DistributorManageService';
   import distributorAdd from './DistributorAdd.vue';
   import distributorUpdate from './DistributorUpdate.vue';
@@ -69,39 +73,24 @@
       distributorAdd, distributorUpdate
     },
     data() {
-      var validateDistributorName = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入分销商名称'));
-        }
-        if (!String(value).match(/[^\/w+$][^\u4e00-\u9fa5]/)) {
-          return callback(new Error('分销商名称格式错误，只能是数字、字母和符号'));
-        }
-      };
       return {
         //添加 or 修改 Dialog
         dialog: {
           visible: {add: false, update: false},
           event: {add: {}, update: {}}
         },
+        distributor: '',
         //分销商列表模糊查询
         formName: 'distributorQuery',
-        distributorId: '',
         distributorQuery: {
           distributorName: '',
           distributorCode: '',
           pageNum: 1,
           pageSize: 10
         },
-        rules: {
-          distributorName: [
-            {required: true, message: '请输入分销商名称', trigger: 'change'},
-            {max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'},
-            {validator: validateDistributorName, trigger: 'change'}
-          ]
-        },
+        rules: rules,
         distributorList: [],
-        page: {},
-        distributor: ''
+        page: {}
       }
     },
     created() {
@@ -116,47 +105,11 @@
       };
     },
     methods: {
-      //查询按钮
-      onSubmit() {
-        let formName = this.$data.formName;
-        console.log(this.distributorQuery.distributorName);
-        this.$refs[formName].validate((valid) => {
-          if(valid) this.request();
-          return valid;
-        });
-      },
-      //添加按钮
-      addFormVisible(visible) {
-        this.$data.dialog.visible.add = visible;
-      },
-      //修改按钮
-      updateFormVisible(visible, distributor) {
-        this.$data.distributor = Object.assign({}, distributor);
-        this.$data.dialog.visible.update = visible;
-      },
-      openMessage(message, confirmText) {
-        this.$confirm(message, '提示', {
-          cancelButtonText: '取消',
-          confirmButtonText: confirmText
-        }).then(() => {
-          this.$message({type: 'success', message: '操作成功!'});
-          this.request();
-        }).catch(() => {
-          this.$message({type: 'info', message: '已取消操作'});
-        });
-      },
-      //删除按钮
-      distributorDelete(row) {
-        deleteDistributor({distributorIds: row.id}).then(() => {
-          this.openMessage('您确定要删除该分销商吗？', '删除');
-        });
-      },
       //请求分销商列表查询接口渲染列表
       request() {
         let params = this.$data.distributorQuery;
         getDistributor(params).then((result) => {
           this.$data.distributorList = result.list;
-          delete result.list;
           this.$data.page = result;
         });
       },
@@ -171,6 +124,46 @@
         let params = this.$data.distributorQuery;
         params.pageNum = val;
         this.request();
+      },
+      //查询按钮
+      onSubmit() {
+        let formName = this.$data.formName;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.$data.distributorQuery.pageNum = 1;
+            this.request();
+          }
+          return valid;
+        });
+      },
+      //添加按钮
+      addFormVisible(visible) {
+        this.$data.dialog.visible.add = visible;
+      },
+      //修改按钮
+      updateFormVisible(visible, distributor) {
+        this.$data.distributor = Object.assign({}, distributor);
+        this.$data.dialog.visible.update = visible;
+      },
+      openMessage(message, confirmText, doit) {
+        this.$confirm(message, '提示', {
+          cancelButtonText: '取消',
+          confirmButtonText: confirmText
+        }).then(() => {
+          doit();
+        }).catch(() => {
+        });
+      },
+      //删除按钮
+      distributorDelete(row) {
+        this.openMessage('您确定要删除该分销商吗？', '删除',()=>{
+          deleteDistributor({distributorIds: row.id}).then(() => {
+            this.$message({type: 'success', message: '操作成功!'});
+            this.request();
+          }).catch((err)=>{
+            this.$message({type: 'error', message: err.message});
+          })
+        });
       }
     }
   }
