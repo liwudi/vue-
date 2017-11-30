@@ -7,35 +7,35 @@ function makeUrl (path) {
 function addSupplier(params) {
   return CommonService.post(makeUrl('/biz/manager/addSupplier'), params).then((result) => {
    return result;
-   }).catch((e) => {
-   });
-  return Promise.resolve();
-}
+   }).catch((err) => {
 
+    return err
+   });
+
+}
 function deleteSupplier(supplierIds) {
   return CommonService.get(makeUrl('/biz/manager/deleteSupplier'), supplierIds).then((result) => {
    return result;
-   }).catch((e) => {
+   }).catch((err) => {
+    return err
    });
-  return Promise.resolve();
-}
 
+}
 function updateSupplier(params) {
   return CommonService.post(makeUrl('/biz/manager/updateSupplier'), params).then((result) => {
    return result;
-   }).catch((e) => {
+   }).catch((err) => {
+    return err
    });
-  return Promise.resolve();
+
 }
-
-
 function getSupplier(params) {
   return CommonService.get(makeUrl('/biz/manager/searchSupplier'), params).then((result) => {
    return result;
-   }).catch((e) => {
-   //
+   }).catch((err) => {
+    return err
    });
-  return Promise.resolve();
+
 }
 export {
   addSupplier, deleteSupplier, updateSupplier, getSupplier

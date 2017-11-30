@@ -24,8 +24,8 @@
         <el-table-column prop="name" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        <el-table-column prop="createDate.time " label="创建时间" align="center">
-          <!--<template slot-scope="scope">{{scope.row.createDate.time | moment}}</template>-->
+        <el-table-column prop="createDate.time" label="创建时间" align="center">
+          <!--<template slot-scope="scope">{{ scope.row.createDate.time | moment }}</template>-->
         </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">

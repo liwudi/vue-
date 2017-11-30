@@ -52,8 +52,12 @@
       request() {
         let params = this.$data.supplierUpdateForm;
         params.supplierId = this.$props.sId.id;
-        updateSupplier(params).then(() => {
-          this.openMessage();
+        updateSupplier(params).then((err) => {
+          if(err){
+            this.$message({type: 'warning', message: err.message});
+          }else{
+            this.openMessage();
+          }
         });
       },
       openMessage() {
