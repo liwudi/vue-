@@ -14,20 +14,23 @@
       <el-form-item>
         <el-button type="primary" @click="submitUpload">确 定</el-button>
         <el-button @click="cancelForm">取 消</el-button>
-        <a href=" download " download="" target="_blank" class="btn btn-default">下载模板</a>
+        <a style="margin-left: 5px;" :href="getDownloadUrl()" download="" target="_blank" >
+           <el-button>下载模板</el-button>
+        </a>
       </el-form-item>
     </el-form>
   </el-main>
 </template>
 
 <script>
-  import { batchAddSims } from  '../../services/SimManageService';
+  import { batchAddSims , downloadTemplate } from  '../../services/SimManageService';
   import { event } from './SimConfig';
   export default {
     data () {
       return {
         simImportForm:{},
-        file:''
+        file:'',
+        downloadUrl:"hhhhh"
       }
     },
     methods:{
@@ -39,6 +42,9 @@
       },
       changeFn(file){
         this.$data.file = file;
+      },
+      getDownloadUrl(){
+          return downloadTemplate();
       },
       submitUpload() {
           if(this.$data.file){
@@ -58,9 +64,6 @@
                   type: 'warning'
               });
           }
-      },
-      download(){
-//          return '';
       }
 
     }

@@ -2,7 +2,7 @@
   <el-main>
     <el-form ref="simEditForm" :model="simEditForm" :label-position="labelPosition" label-width="180px">
       <el-form-item label="当前基础套餐" >
-        <el-select v-model="simEditForm.combo" @change="mealChange" placeholder="请选择当前基础套餐">
+        <el-select v-model="simEditForm.comboId" @change="mealChange" placeholder="请选择当前基础套餐">
           <el-option
               v-for="item in selectActiveGoodsData"
               :key="item.id"
@@ -12,10 +12,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="当前基础套餐到期时间" >
-        <span style="padding-left: 10px;">{{ simEditForm.basicExpirationDate }}</span>
+        <span style="padding-left: 10px;">{{ simEditForm.date | moment}}</span>
       </el-form-item>
       <el-form-item>
-          <el-button type="primary" :disabled="!simEditForm.combo || edit" @click="submitForm">保 存</el-button>
+          <el-button type="primary" :disabled="!simEditForm.comboId || edit" @click="submitForm">保 存</el-button>
           <el-button @click="cancelForm">取 消</el-button>
       </el-form-item>
     </el-form>
@@ -44,28 +44,36 @@
       * */
       getSelectActiveGoods(){
           let edit = this.$props.editParams;
-          let iccid = edit.iccid;
-
-          this.$data.simEditForm = {
-             combo:edit.comboName,
-             basicExpirationDate:edit.date
+          let iccid = edit.iccId;
+          let vm = this;
+          this.simEditForm = {
+              comboId:edit.comboId
           };
-          selectActiveGoods(iccid).then((result) => {
-              this.$data.selectActiveGoodsData = result;
+          selectActiveGoods({ iccId:iccid}).then((result) => {
+              result.forEach((item , index) => {
+                  vm.$data.selectActiveGoodsData.push({
+                      id:item.id,
+                      name:item.name,
+                      date:item.basicExpirationDate
+                  });
+                  if( item.id == edit.comboId ){
+                      vm.$data.simEditForm.date = item.basicExpirationDate.time;
+                  };
+              });
           });
       },
       mealChange() {
-          let id =  this.$data.simEditForm.combo;
+          let id =  this.simEditForm.comboId;
           let vm = this;
-          this.$data.edit = false;
+          this.edit = false;
           if(!this.$data.selectActiveGoodsData) return ;
-          this.$data.selectActiveGoodsData.filter((item) => {
-              if(id == item.id){
-                 vm.simEditForm.basicExpirationDate = item.basicExpirationDate.time;
-              }
+
+          this.$data.selectActiveGoodsData.forEach((item) => {
+               if( id == item.id ) {
+                  vm.simEditForm.date = item.date.time;
+               }
           })
       },
-
       openMessage() {
           this.$message({type: 'success', message: '操作成功!'});
       },
@@ -77,10 +85,10 @@
           });
       },
       request(){
-         let iccid = this.$props.editParams.iccid;  // sim卡id
-         let newGoodsId = this.$data.simEditForm.combo; // 新套餐id
+         let iccid = this.$props.editParams.iccId;  // sim卡id
+         let newGoodsId = this.$data.simEditForm.comboId; // 新套餐id
          let params = {
-           iccid:iccid,
+           iccId:iccid,
            newGoodsId:newGoodsId
          };
          this.$confirm("确定要修改吗","提示",{
@@ -89,7 +97,10 @@
              type: 'warning'
          }).then(() => {
              editSim( params ).then((result) => {
-                 this.close();
+                this.$message({message:"修改成功", type: 'success'});
+                this.close();
+             }).catch((err)=>{
+                this.$message.error( err.message );
              })
          }).catch(() => {
               this.close();
