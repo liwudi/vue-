@@ -6,12 +6,16 @@
         <el-table-column align="center" prop="id" label="商品Id"></el-table-column>
         <el-table-column align="center" prop="name" label="商品名称"></el-table-column>
         <el-table-column align="center" prop="totalFlow" label="商品规格"></el-table-column>
-        <el-table-column align="center" prop="type" label="商品类型"></el-table-column>
+        <el-table-column align="center" prop="comboType" label="商品类型">
+          <template slot-scope="scope">
+            {{scope.row.comboType ===1 ? '续费套餐' : scope.row.comboType ===2 ? '激活套餐' : '充值套餐' }}
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="cycleValue" label="周期值"></el-table-column>
         <el-table-column align="center" prop="cycle" label="周期"></el-table-column>
         <el-table-column align="center" prop="price" label="商品价格"></el-table-column>
         <el-table-column align="center" prop="salePrice" label="促销价格"></el-table-column>
-        <el-table-column align="center" prop="desc" label="商品介绍"></el-table-column>
+        <el-table-column align="center" prop="message" label="商品介绍"></el-table-column>
         <el-table-column align="center" prop="distributor" label="分销商"></el-table-column>
         <el-table-column label="关联商品" align="center" width="70">
           <template slot-scope="scope">
@@ -22,8 +26,8 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="70">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state == 2" size="mini" type="info" title="启用">启用</el-button>
-            <el-button v-if="scope.row.state == 1" size="mini" type="danger" title="停用">停用</el-button>
+            <el-button v-if="scope.row.state === 2" size="mini" type="info" title="启用">启用</el-button>
+            <el-button v-if="scope.row.state === 1" size="mini" type="danger" title="停用">停用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -78,7 +82,7 @@
       request () {
         searchSupplierGoods(this.queryParams).then((result) => {
           console.log(result)
-          this.resultData = result.data
+          this.resultData = result
         })
       },
       pageSizeChange (val) {

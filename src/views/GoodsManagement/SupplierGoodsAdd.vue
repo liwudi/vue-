@@ -114,7 +114,7 @@
       }
       return {
         formName: 'addForm',
-        totalFlow, type, cycle, cycleValue, supplierId,
+        totalFlow, cycle, cycleValue,
         supplierGoodsAddForm: {
           id: '',
           name: '',

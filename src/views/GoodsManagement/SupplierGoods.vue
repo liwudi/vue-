@@ -76,7 +76,7 @@
       request() {
         let params = this.$data.supplierGoodsParams;
         searchSupplierGoods(params).then((result) => {
-          let data = result.data;
+          let data = result;
           this.supplierGoodsList = data.list;
           delete data.list;
           this.page = data;
