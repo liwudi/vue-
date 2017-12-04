@@ -52,13 +52,11 @@
       request() {
         let params = this.$data.supplierUpdateForm;
         params.supplierId = this.$props.sId.id;
-        updateSupplier(params).then((err) => {
-          if(err){
-            this.$message({type: 'warning', message: err.message});
-          }else{
-            this.openMessage();
-          }
-        });
+        updateSupplier(params).then(() => {
+          this.openMessage();
+        }).catch((err)=>{
+          this.$message({type: 'warning', message: err.message});
+        })
       },
       openMessage() {
         this.$alert('供应商修改成功！', '提示', {

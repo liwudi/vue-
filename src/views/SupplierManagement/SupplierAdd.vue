@@ -49,12 +49,10 @@
       request() {
         let params = this.$data.supplierAddForm;
         addSupplier(params).then((err) => {
-            if(err){
-              this.$message({type: 'warning', message: err.message});
-            }else{
-              this.openMessage();
-            }
-        });
+          this.openMessage();
+        }).catch((err)=>{
+          this.$message({type: 'warning', message: err.message});
+        })
       },
       openMessage() {
         this.$alert('供应商创建成功！', '提示', {
