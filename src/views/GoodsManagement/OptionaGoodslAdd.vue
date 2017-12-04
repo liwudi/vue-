@@ -8,13 +8,13 @@
         <el-select v-model="supplierGoodsAddForm.totalFlow" placeholder="请选择商品规格">
           <el-option
             v-for="item in totalFlow"
-            :key="item"
-            :label="item"
-            :value="item">
+            :key="item.key"
+            :label="item.value"
+            :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品类型" prop="type">
+    <!--  <el-form-item label="商品类型" prop="type">
         <el-select v-model="supplierGoodsAddForm.type" placeholder="请选择商品类型">
           <el-option
             v-for="item in type"
@@ -23,19 +23,19 @@
             :value="item">
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="周期/周期值" prop="cycle">
-        <el-select v-model="supplierGoodsAddForm.cycle" placeholder="请选择周期">
+        <el-select v-model="supplierGoodsAddForm.cycle" @change="cycleChange" placeholder="请选择周期">
           <el-option
             v-for="item in cycle"
-            :key="item"
-            :label="item"
-            :value="item">
+            :key="item.key"
+            :label="item.value"
+            :value="item.key">
           </el-option>
         </el-select>
         <el-select v-model="supplierGoodsAddForm.cycleValue" placeholder="请选择周期值">
           <el-option
-            v-for="item in cycleValue"
+            v-for="item in cycleValue[supplierGoodsAddForm.cycle-2]"
             :key="item"
             :label="item"
             :value="item">
@@ -55,7 +55,7 @@
       <el-form-item label="商品介绍" prop="desc">
         <el-input type="textarea" :rows="2" v-model="supplierGoodsAddForm.desc" placeholder="请输入商品介绍"></el-input>
       </el-form-item>
-      <el-form-item label="商品关联">
+      <!--<el-form-item label="商品关联">
         <div
           v-for="(domain, index) in supplierGoodsAddForm.domains"
           :key="index"
@@ -72,7 +72,7 @@
           <el-button v-if="index !== 0" @click.prevent="removeDomain(domain)">删除</el-button>
         </div>
         <el-button class="tpl-mg-t" @click="addDomain">添加关联</el-button>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="分销商" prop="supplierId">
         <el-select v-model="supplierGoodsAddForm.supplierId" placeholder="请选择分销商">
           <el-option
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-  import { totalFlow, type, cycle, cycleValue, supplierId } from './SupplierGoodsConfig';
+  import { totalFlow,cycle, cycleValue} from './SupplierGoodsConfig';
   import { getRules } from './SupplierGoodsRules';
   const rules = getRules();
   import { addSupplierGoods } from '../../services/GoodsManagementService';
@@ -103,11 +103,12 @@
     },
     data() {
       var cyclePass = (rule, value, callback) => {
+        console.log(value)
         if(!value){
-          return callback(new Error('请选择周期值'));
+          return callback(new Error('请选择周期'));
         }
         if(!this.supplierGoodsAddForm.cycleValue){
-          return callback(new Error('请选择周期'));
+          return callback(new Error('请选择周期值'));
         }
       };
       var pricePass = (rule, value, callback)=>{
@@ -127,35 +128,26 @@
         }
       };
       return {
-        options: [{
-          value: 1,
-          label: '黄金糕'
-        }, {
-          value: 2,
-          label: '北京烤鸭'
-        }],
         formName: 'addForm',
-        totalFlow, type, cycle, cycleValue, supplierId,
+        totalFlow, cycle, cycleValue,
+        supplierId:[],
         supplierGoodsAddForm: {
           id: '',
           name: '',
           type: '',
           totalFlow: '',
-          cycle: '',
-          cycleValue: '',
+          cycle: 2,
+          cycleValue: 1,
           price: '',
           salePrice: '',
           desc: '',
           supplierId: '',
-          domains:[
-            {key:1,value:1},
-            {key:2,value:1}
-          ]
+          domains:[]
         },
         rules: {
           ...rules,
           cycle : [
-            {required: true, message: '请选择周期值', trigger: 'change'},
+            {required: true, message: '请选择周期值'},
             { validator: cyclePass, trigger: 'change' }
           ],
           price : [
@@ -211,6 +203,9 @@
       },
       onCancel() {
         this.close();
+      },
+      cycleChange(){
+        this.supplierGoodsAddForm.cycleValue = 1;
       }
     }
   }
