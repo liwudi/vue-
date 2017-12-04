@@ -36,15 +36,10 @@
       return {
         formName: 'distributorUpdateForm',
         distributorUpdateForm: {
-          distributorId: '',
-          distributorCode: '',
           distributorName: '',
-          city: '',
           name: '',
           phone: '',
-          address: '',
-          email: '',
-          message: ''
+          email: ''
         },
         rules: rules
       }
@@ -69,7 +64,6 @@
       },
       request() {
         let params = this.$data.distributorUpdateForm;
-        console.log(params);
         params.distributorId = this.$props.distributorId.id;
         updateDistributor(params).then(() => {
           this.openMessage();

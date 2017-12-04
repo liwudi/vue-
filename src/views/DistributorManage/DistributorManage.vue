@@ -63,7 +63,7 @@
     CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
   import {getRules} from './DistributorRules';
-  const rules = getRules();
+  const rules = getRules(false);
   import { getDistributor, deleteDistributor } from '../../services/DistributorManageService';
   import distributorAdd from './DistributorAdd.vue';
   import distributorUpdate from './DistributorUpdate.vue';

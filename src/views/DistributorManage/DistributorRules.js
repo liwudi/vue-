@@ -23,10 +23,10 @@ function validatePhone(rule, value, callback) {
 
 function getRules (distributorNameRequired = true) {
   return {
-    supplierName: [
+    distributorName: [
       {required: distributorNameRequired, message: '请输入分销商名称', trigger: 'change'},
       {validator: validateDistributorName, trigger: 'change'},
-      {min: 1,max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'}
+      {max: 16, message: '分销商名称字符长度为1-16', trigger: 'change'}
     ],
     name: [
       {max: 20, message: '联系人最大长度为20', trigger: 'change'}
