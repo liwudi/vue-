@@ -49,7 +49,7 @@
     data () {
       return {
         queryParams:{
-          type:1,
+          comboTypeId:1,
           pageNum:1,
           pageSize:10
         },
@@ -65,7 +65,7 @@
     methods: {
       request () {
         searchSupplierGoods(this.queryParams).then((result) => {
-           this.resultData = result.data;
+           this.resultData = result;
         });
       },
       pageSizeChange(val) {

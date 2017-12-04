@@ -1,7 +1,6 @@
 'use strict';
 
-//const supplierNameReg = /[^\S\w+][^\u4e00-\u9fa5]$/;
-const supplierNameReg = /[^\/w+$][^\u4e00-\u9fa5]/;
+const supplierNameReg = /[^\/w+$]/;
 function validatesupplierName (rule, value, callback) {
   if(!value || supplierNameReg.test(value)) {
     callback();

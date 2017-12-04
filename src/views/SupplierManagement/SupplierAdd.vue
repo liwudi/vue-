@@ -48,9 +48,12 @@
     methods: {
       request() {
         let params = this.$data.supplierAddForm;
-        addSupplier(params).then(() => {
-          //console.log(params)
-          this.openMessage();
+        addSupplier(params).then((err) => {
+            if(err){
+              this.$message({type: 'warning', message: err.message});
+            }else{
+              this.openMessage();
+            }
         });
       },
       openMessage() {

@@ -143,7 +143,7 @@ function updateGoodsState(params) {
 }
 function searchSupplierGoods(params) {
   return CommonService.get(
-    makeUrl('/goods/getAllNiGoodsByTypeAndDistributer'),
+    makeUrl('/goods/searchNiGoods'),
     params
   )
 }

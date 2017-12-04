@@ -1,88 +1,71 @@
 import RequestService from './commonService';
-const rootPath = 'http://192.168.144.33:8888/api-ni-flow/';
+import config from '../index.config';
+
+let rootPath = '';
 function makeUrl (path) {
   return `${rootPath}${path}`;
+}
+/*
+*   下载模板
+* */
+function downloadTemplate() {
+    return config.serviceBaseUrl+"/template.xlsx";
 }
 
 /*
 *   sim卡列表查询
 * */
 function querySimList(params) {
-  return RequestService.get(makeUrl("manager/sim/searchSimList"),params).then((result) => {
-      return result;
-  }).catch((err) => {
-      return err;
-  });
+  return RequestService.get(makeUrl("/manager/sim/searchSimList"),params)
 };
 function searchSupplier() {
-  return RequestService.get(makeUrl("biz/manager/searchSupplier")).then((result) => {
-      return result;
-  }).catch((err) => {
-      return err;
-  });
+  return RequestService.get(makeUrl("/biz/manager/searchSupplier"));
 };
 
 function searchDistributor() {
-  return RequestService.get(makeUrl("biz/manager/searchDistributor")).then((result) => {
-    return result;
-  }).catch((err) => {
-    return err;
-  });
+  return RequestService.get(makeUrl("/biz/manager/searchDistributor"))
 };
 
 /*
 *   导入
 * */
 function batchAddSims(file) {
-  return RequestService.post(makeUrl("manager/sim/batchAddSims"),{ file:file }).then((result) => {
-    return result;
-  }).catch((err) => {
-    return err;
-  });
+  return RequestService.post(makeUrl("/manager/sim/batchAddSims"),{ file:file });
 };
 
 /*
 *  sim卡编辑
 * */
-function selectActiveGoods(iccid) {
+function selectActiveGoods(params) {
     return RequestService.get(
-        makeUrl("manager/sim/selectActiveGoods"),
-        { iccid : iccid }
-    ).then((result) => {
-        return result;
-    }).catch((err) => {
-        return err;
-    });
+        makeUrl("/manager/sim/selectActiveGoods"),
+        params
+    )
 };
 /*
 *     编辑提交
 * */
 function  editSim( params ) {
     return RequestService.get(
-       makeUrl("manager/sim/updateActiveGoods"),
+       makeUrl("/manager/sim/updateActiveGoods"),
        params
-    ).then((result) => {
-
-    }).catch((err) =>{
-
-    });
-    return Promise.resolve();
-
+    );
 };
 
 /*
 *   详情查询
 * */
 function detailSim(params) {
-      return RequestService.get(makeUrl("manager/sim/searchSim") ,params).then((result) => {
-        return result;
-      }).catch((e) => {
-        return result;
-      });
-
+      return RequestService.get(makeUrl("/manager/sim/searchSim") ,params);
+};
+/*
+*   当前可选套餐
+* */
+function searchSimCombo(params) {
+    return RequestService.get(makeUrl("/manager/sim/searchSimCombo") , params)
 };
 export {
-  querySimList , searchSupplier ,searchDistributor , batchAddSims , selectActiveGoods , editSim , detailSim
+  querySimList , searchSupplier ,searchDistributor , batchAddSims , selectActiveGoods , editSim , detailSim , searchSimCombo , downloadTemplate
 }
 
 
