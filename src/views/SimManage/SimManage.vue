@@ -18,7 +18,7 @@
               <el-option v-for="item in wrap" :key="item.id" :value="item.id" :label="item.name"></el-option>
               <el-option v-for="item in distributors"
                          :key="item.id"
-                         :label="item.distributorname"
+                         :label="item.distributorName"
                          :value="item.id">
               </el-option>
             </el-select>
@@ -28,13 +28,13 @@
               <el-option v-for="item in wrap" :key="item.id" :value="item.id" :label="item.name"></el-option>
               <el-option v-for="item in suppliers"
                          :key="item.id"
-                         :label="item.suppliername"
+                         :label="item.supplierName"
                          :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="queryParmas.iccid" placeholder="请输入ICCID"></el-input>
+            <el-input v-model="queryParmas.iccId" placeholder="请输入ICCID"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -48,24 +48,32 @@
       <el-table
         :data="resultData.list"
         stripe border>
-        <el-table-column prop="iccid" label="ICCID" align="center"></el-table-column>
+        <el-table-column prop="iccId" label="ICCID" align="center"></el-table-column>
         <el-table-column prop="distributorName" label="分销商" align="center"></el-table-column>
         <el-table-column prop="supplierName" label="供应商" align="center"></el-table-column>
-        <el-table-column prop="activationdate.time" label="卡激活日期" align="center"></el-table-column>
-        <el-table-column prop="updatedate.time" label="套餐修改日期" align="center"></el-table-column>
-        <el-table-column prop="expirationdate.time" label="服务到期日期" align="center"></el-table-column>
-        <el-table-column prop="basicexpirationdate.time" label="当前套餐到期日期" align="center"></el-table-column>
+        <el-table-column prop="activationDate" label="卡激活日期" align="center">
+          <template slot-scope="scope">{{ scope.row.activationDate.time |  moment }} </template>
+        </el-table-column>
+        <el-table-column prop="updateDate" label="套餐修改日期" align="center">
+          <template slot-scope="scope">{{ scope.row.updateDate.time |  moment }} </template>
+        </el-table-column>
+        <el-table-column prop="expirationDate" label="服务到期日期" align="center">
+          <template slot-scope="scope">{{ scope.row.expirationDate.time |  moment }} </template>
+        </el-table-column>
+        <el-table-column prop="basicExpirationDate" label="当前套餐到期日期" align="center">
+          <template slot-scope="scope">{{ scope.row.basicExpirationDate.time | moment }} </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" title="编辑" @click="SimEditVisible(true , scope.row)"><i class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="default" title="查看详情" @click="SimDetailVisible(true , scope.row)"><i class="el-icon-more"></i></el-button>
+              <el-button size="mini" type="info" title="编辑" @click="SimEditVisible(true , scope.row)">编辑</el-button>
+              <el-button size="mini" type="default" title="查看详情" @click="SimDetailVisible(true , scope.row)">查看详情</el-button>
             </el-button-group>
           </template>
 
         </el-table-column>
       </el-table>
-      <div class="block page">
+      <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -80,7 +88,7 @@
           <sim-edit v-on="dialog.event.edit" v-if="dialog.visible.edit" :editParams = editParams></sim-edit>
       </el-dialog>
       <el-dialog title="SIM卡详情" :visible.sync="dialog.visible.detail" :close-on-click-modal="false" :close-on-press-escape="false" >
-          <sim-detail v-on="dialog.event.detail" v-if="dialog.visible.detail" :detailIccid="detailIccid"></sim-detail>
+          <sim-detail v-on="dialog.event.detail" v-if="dialog.visible.detail" :detailIccid="detailIccid" style="max-height: 700px;overflow-y: auto"></sim-detail>
       </el-dialog>
       <el-dialog title="导入" :visible.sync="dialog.visible.importV" :close-on-click-modal="false" :close-on-press-escape="false" >
           <sim-import v-on="dialog.event.importV" v-if="dialog.visible.importV"></sim-import>
@@ -109,8 +117,9 @@
         queryParmas:{
           timeStart:"",
           timeEnd:"",
-          supplierId: '1',
-          distributorId: '1',
+          supplierId: 'all',
+          distributorId: 'all',
+          iccId:"",
           pageNum : 1 ,
           pageSize: 10
         },
@@ -125,7 +134,7 @@
           event: {edit: {}, detail: {}, importV:{}}
         },
         wrap:[
-          { id:"1" , name:"全部"}
+          { id:"all" , name:"全部"}
         ]
       }
     },
@@ -154,11 +163,7 @@
           });
           let params = this.$data.queryParmas;
           querySimList(params).then((result) => {
-//              result.list.forEach(function (item,index) {
-//
-//              });
               this.$data.resultData = result;
-
           })
         },
         onSubmit() {
@@ -174,15 +179,22 @@
                 timeEnd:"",
                 supplierId: '1',
                 distributorId: '1',
+                iccId:"",
                 pageNum : 1
             };
             this.$data.startEndDateTime = [];
             this.request();
         },
         dateChange() {
-            this.queryParmas.timeStart = this.startEndDateTime[0].getTime();
-            this.queryParmas.timeEnd = this.startEndDateTime[1].getTime();
-            this.request();
+            if(this.startEndDateTime) {
+              this.queryParmas.timeStart = this.startEndDateTime[0].getTime();
+              this.queryParmas.timeEnd = this.startEndDateTime[1].getTime();
+              this.request();
+            }else{
+              this.queryParmas.timeStart = '';
+              this.queryParmas.timeEnd = '';
+              this.request();
+            }
         },
         distributorChange() {
             this.request();
@@ -194,34 +206,25 @@
           this.$data.dialog.visible.edit = visible;
           if(!row) return ;
           this.$data.editParams = {
-            iccid : row.iccid ,
-            comboid:row.comboid,
-            comboName:row.comboName,
-            date : row.basicexpirationdate.time
+            iccId : row.iccId ,
+            comboId:row.comboId
           };
         },
         SimDetailVisible(visible , row) {
           this.$data.dialog.visible.detail = visible;
           if(!row) return ;
-          this.detailIccid = row.iccid;
+          this.detailIccid = row.iccId;
         },
         importVisible (visible){
           this.$data.dialog.visible.importV = visible;
         },
         handleSizeChange(val) {
-          this.pageSize = val;
+          this.queryParmas.pageSize = val;
           this.request();
         },
         handleCurrentChange(val) {
-          this.pageNum = val;
+          this.queryParmas.pageNum = val;
           this.request();
-        }
-    },
-    filters:{
-        dateMoment:function (value) {
-            if(!value) return "";
-//            console.log(this.$moment(1511835596000))
-//            return this.$moment(1511835596000).format("YYYY-MM-DD h:mm:ss");
         }
     }
   }
