@@ -5,7 +5,6 @@
         ref="upload"
         :action="getImportUrl()"
         :on-change="changeFn"
-        :on-progress="progressFn"
         :on-success="successFn"
         :on-error="errorFn"
         :auto-upload="false"
@@ -45,9 +44,6 @@
       changeFn(file){
         this.$data.file = file;
         this.importOkBtn = false;
-      },
-      progressFn(event, file, fileList){
-
       },
       successFn( res, file, fileList){
           this.$message.success("上传成功") ;

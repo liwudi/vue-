@@ -1,5 +1,5 @@
 import RequestService from './commonService';
-
+import config from '../index.config';
 let rootPath = '';
 function makeUrl (path) {
   return `${rootPath}${path}`;
@@ -26,10 +26,9 @@ function searchDistributor(){
  * @returns {*}
  */
 function downloadBillForDistributor (params) {
-  return RequestService.get(
-    makeUrl('/manager/bill/downloadBillForDistributor'),
-    params
-  )
+  let token = RequestService.getUserInfo().token;
+   let url = config.serviceBaseUrl+"/bill/downloadBillForDistributor?type="+params.type+"&&distributorId="+params.distributorId+"&&timeStart="+params.timeStart+"&&timeEnd="+params.timeEnd;
+    return url;
 }
 
 /**
@@ -57,10 +56,8 @@ function searchSupplier() {
  * @returns {*}
  */
 function downloadBillForSupplier (params) {
-  return RequestService.get(
-    makeUrl('/manager/bill/downloadBillForDistributor'),
-    params
-  )
+  let url = config.serviceBaseUrl+"/bill/downloadBillForSupplier?type="+params.type+"&&SupplierId="+params.supplier+"&&timeStart="+params.timeStart+"&&timeEnd="+params.timeEnd;
+  return url;
 }
 
 export {

@@ -37,7 +37,9 @@
             </el-form>
         </div>
         <div class="tpl-mg-b">
-            <el-button type="primary" :disabled="exportBtn" @click="exportExcel" size="medium">导出Excel</el-button>
+            <a :href="getDownloadUrl()"  download=""  target="_blank" >
+                <el-button type="primary" size="medium">导出Excel</el-button>
+            </a>
         </div>
         <el-table stripe border :data="resultData.list">
             <el-table-column prop="id" label="订单号" align="center"></el-table-column>
@@ -69,6 +71,7 @@
 
 <script>
   import {searchBillForDistributor , searchDistributor , downloadBillForDistributor} from '../../services/BillsManagementService'
+
   import { types , wrap } from './BillConfig';
   export default {
     data () {
@@ -79,9 +82,12 @@
         queryParams:{
             type:"",
             distributorId:"",
+            timeStart:"",
+            timeEnd:"",
             pageNum:1,
             pageSize:10
         },
+        downUrl:"",
         types , wrap ,
         distributors:[],
         resultData:{}
@@ -130,21 +136,8 @@
         };
         this.request();
       },
-      exportExcel(){
-          this.exportBtn = true;
-          let params = {
-              type:this.queryParams.type,
-              distributorId:this.queryParams.distributorId,
-              timeStart:this.queryParams.timeStart,
-              timeEnd:this.queryParams.timeEnd
-          };
-          downloadBillForDistributor(params).then((result) => {
-              this.$message.success("导出成功");
-              this.exportBtn = false;
-          }).catch((err) => {
-              this.$message.error( err.message );
-              this.exportBtn = false;
-          })
+      getDownloadUrl(){
+          return downloadBillForDistributor(this.queryParams);
       },
       handleSizeChange(val){
         this.queryParams.pageSize = val;

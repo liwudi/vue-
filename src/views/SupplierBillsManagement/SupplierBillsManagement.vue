@@ -37,7 +37,9 @@
         </el-form>
     </div>
     <div class="tpl-mg-b">
-        <el-button type="primary" @click="exportExcel" size="medium">导出Excel</el-button>
+        <a :href="getDownloadUrl()" download=""  target="_blank" >
+            <el-button type="primary" size="medium">导出Excel</el-button>
+        </a>
     </div>
     <el-table stripe border :data="resultData.list">
         <el-table-column prop="id" label="订单号" align="center"></el-table-column>
@@ -120,22 +122,25 @@
             return valid;
           });
       },
-      exportExcel(){
-          this.exportBtn = true;
-          let params = {
-            type:this.queryParams.type,
-            SupplierId:this.queryParams.supplier,
-            timeStart:this.queryParams.timeStart,
-            timeEnd:this.queryParams.timeEnd
-          };
-          downloadBillForSupplier(params).then((result) => {
-            this.$message.success("导出成功");
-            this.exportBtn = false;
-          }).catch((err) => {
-            this.$message.error( err.message );
-            this.exportBtn = false;
-          })
+      getDownloadUrl(){
+          return downloadBillForSupplier(this.queryParams);
       },
+//      exportExcel(){
+//          this.exportBtn = true;
+//          let params = {
+//            type:this.queryParams.type,
+//            SupplierId:this.queryParams.supplier,
+//            timeStart:this.queryParams.timeStart,
+//            timeEnd:this.queryParams.timeEnd
+//          };
+//          downloadBillForSupplier(params).then((result) => {
+//            this.$message.success("导出成功");
+//            this.exportBtn = false;
+//          }).catch((err) => {
+//            this.$message.error( err.message );
+//            this.exportBtn = false;
+//          })
+//      },
       reset(){
         this.startEndDateTime = null;
         this.queryParams = {
