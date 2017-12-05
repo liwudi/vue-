@@ -109,7 +109,7 @@
     data () {
       return {
         formName:"queryForm",
-        startEndDateTime: [],
+        startEndDateTime: null,
         editParams:{ },
         editIccid:'',
         editDate:'',

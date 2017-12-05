@@ -1,13 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '../views/login/Login.vue';
-import BillsManagement from '../views/BillsManagement/Reconciliation.vue';
+
 import Home from '../views/Home.vue';
 const BaseTable = () => import('../views/template/BaseTable.vue');
 
 import SimManage from '../views/SimManage/SimManage.vue';
-import SimEdit from '../views/SimManage/SimEdit.vue';
-import SimDetail from '../views/SimManage/SimDetail.vue';
 
 const GoodsManagement = () => import('../views/GoodsManagement/GoodsManagement.vue');
 const UserManagement = () => import ('../views/UserManagement/UserList.vue');
@@ -16,6 +14,8 @@ const SupplierManagement = () => import('../views/SupplierManagement/SupplierMan
 
 const DistributorManage = () => import('../views/DistributorManage/DistributorManage.vue');
 
+const DistributorBillsManagement = () => import('../views/DistributorBillsManagement/DistributorBillsManagement.vue');
+const SupplierBillsManagement = () => import('../views/SupplierBillsManagement/SupplierBillsManagement.vue');
 
 Vue.use(Router)
 
@@ -48,11 +48,16 @@ let router = new Router({
         },
 
         {
-          path: '/BillsManagement',
-          name: 'BillsManagement',
-          component: BillsManagement
-
+          path: '/DistributorBillsManagement',
+          name: 'DistributorBillsManagement',
+          component: DistributorBillsManagement
         },
+        {
+          path: '/SupplierBillsManagement',
+          name: 'SupplierBillsManagement',
+          component: SupplierBillsManagement
+        },
+
         {
           path: '/SupplierManagement',
           name: 'SupplierManagement',
