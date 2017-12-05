@@ -51,8 +51,9 @@
       request() {
         let params = this.$data.distributorAddForm;
         addDistributor(params).then(() => {
-          console.log(params);
           this.openMessage();
+        }).catch((err) => {
+          this.$message({type: 'warning', message: err.message});
         });
       },
       openMessage() {
