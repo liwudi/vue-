@@ -47,7 +47,7 @@
         this.importOkBtn = false;
       },
       progressFn(event, file, fileList){
-          console.log("11")
+
       },
       successFn( res, file, fileList){
           this.$message.success("上传成功") ;
