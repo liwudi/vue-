@@ -29,8 +29,11 @@ function searchDistributor() {
 /*
 *   导入
 * */
-function batchAddSims(file) {
-  return RequestService.post(makeUrl("/manager/sim/batchAddSims"),{ file:file });
+function batchAddSims( params ) {
+  //return RequestService.post(makeUrl("/manager/sim/batchAddSims"),params);
+  return RequestService.post(
+    "http://172.22.50.12:9999/api-ni-flow/sim/batchAddSims"
+    ,params,null,true);
 };
 
 /*
