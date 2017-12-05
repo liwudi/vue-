@@ -3,7 +3,11 @@
     <el-form  :model="simImportForm" >
       <el-upload
         ref="upload"
+        :action="getImportUrl()"
         :on-change="changeFn"
+        :on-progress="progressFn"
+        :on-success="successFn"
+        :on-error="errorFn"
         :auto-upload="false"
         :show-file-list="false">
         <el-button  size="small" type="text">点击这里上传文件</el-button>
@@ -28,7 +32,7 @@
       return {
         simImportForm:{},
         file:{},
-        importOkBtn:false,
+        importOkBtn:true
       }
     },
     methods:{
@@ -40,30 +44,26 @@
       },
       changeFn(file){
         this.$data.file = file;
+        this.importOkBtn = false;
       },
-
+      progressFn(event, file, fileList){
+          console.log("11")
+      },
+      successFn( res, file, fileList){
+          this.$message.success("上传成功") ;
+          this.close();
+      },
+      errorFn( err, file, fileList){
+          this.$message.success( err.message ) ;
+      },
+      getImportUrl(){
+          return  batchAddSims();
+      },
       getDownloadUrl(){
           return downloadTemplate();
       },
       submitUpload() {
-          if(this.$data.file){
-              this.importOkBtn = true;
-              let params = {
-                  file:this.$data.file
-              };
-              batchAddSims(params).then((result) => {
-                  this.$message.success("上传成功") ;
-                  this.importOkBtn = false;
-              }).catch((err) => {
-                  this.$message.error(err.message);
-                  this.importOkBtn = false;
-              })
-          }else{
-              this.$message({
-                  message:"请选择要上传的文件",
-                  type: 'warning'
-              });
-          }
+          this.$refs.upload.submit();
       }
 
     }
