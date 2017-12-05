@@ -52,16 +52,16 @@
         <el-table-column prop="distributorName" label="分销商" align="center"></el-table-column>
         <el-table-column prop="supplierName" label="供应商" align="center"></el-table-column>
         <el-table-column prop="activationDate" label="卡激活日期" align="center">
-          <template slot-scope="scope">{{ scope.row.activationDate.time |  moment }} </template>
+          <template slot-scope="scope" v-if="scope.row.activationDate">{{ scope.row.activationDate.time |  moment }} </template>
         </el-table-column>
         <el-table-column prop="updateDate" label="套餐修改日期" align="center">
-          <template slot-scope="scope">{{ scope.row.updateDate.time |  moment }} </template>
+          <template slot-scope="scope" v-if="scope.row.updateDate">{{ scope.row.updateDate.time |  moment }} </template>
         </el-table-column>
         <el-table-column prop="expirationDate" label="服务到期日期" align="center">
-          <template slot-scope="scope">{{ scope.row.expirationDate.time |  moment }} </template>
+          <template slot-scope="scope" v-if="scope.row.expirationDate">{{ scope.row.expirationDate.time |  moment }} </template>
         </el-table-column>
         <el-table-column prop="basicExpirationDate" label="当前套餐到期日期" align="center">
-          <template slot-scope="scope">{{ scope.row.basicExpirationDate.time | moment }} </template>
+          <template slot-scope="scope" v-if="scope.row.basicExpirationDate">{{ scope.row.basicExpirationDate.time | moment }} </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
@@ -139,6 +139,8 @@
       }
     },
     created(){
+        this.getSupplier();
+        this.getDistributor();
         this.request();
         this.$data.dialog.event.edit[event.CLOSE_DIALOG] = (refresh) => {
           this.SimEditVisible(false);
@@ -155,16 +157,20 @@
     },
     methods:{
         request(){
-          searchSupplier().then((result) => {
-              this.$data.suppliers = result.list;
-          });
-          searchDistributor().then((result) => {
-              this.$data.distributors = result.list;
-          });
           let params = this.$data.queryParmas;
           querySimList(params).then((result) => {
               this.$data.resultData = result;
           })
+        },
+        getSupplier(){
+            searchSupplier().then((result) => {
+              this.$data.suppliers = result.list;
+            });
+        },
+        getDistributor(){
+          searchDistributor().then((result) => {
+            this.$data.distributors = result.list;
+          });
         },
         onSubmit() {
           let formName = this.$data.formName;
@@ -177,8 +183,8 @@
             this.$data.queryParmas = {
                 timeStart:"",
                 timeEnd:"",
-                supplierId: '1',
-                distributorId: '1',
+                supplierId: 'all',
+                distributorId: 'all',
                 iccId:"",
                 pageNum : 1
             };
@@ -186,15 +192,10 @@
             this.request();
         },
         dateChange() {
-            if(this.startEndDateTime) {
-              this.queryParmas.timeStart = this.startEndDateTime[0].getTime();
-              this.queryParmas.timeEnd = this.startEndDateTime[1].getTime();
-              this.request();
-            }else{
-              this.queryParmas.timeStart = '';
-              this.queryParmas.timeEnd = '';
-              this.request();
-            }
+          let startEndDateTime = this.startEndDateTime;
+          this.queryParmas.timeStart = startEndDateTime ? startEndDateTime[0].getTime() : '';
+          this.queryParmas.timeEnd = startEndDateTime ? startEndDateTime[1].getTime() : '';
+          this.request();
         },
         distributorChange() {
             this.request();
