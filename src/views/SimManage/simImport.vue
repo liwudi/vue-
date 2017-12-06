@@ -46,11 +46,11 @@
         this.importOkBtn = false;
       },
       successFn( res, file, fileList){
-          this.$message.success("上传成功") ;
+          this.$message.success("上传成功");
           this.close();
       },
       errorFn( err, file, fileList){
-          this.$message.success( err.message ) ;
+          this.$message.success( err.message );
       },
       getImportUrl(){
           return  batchAddSims();
