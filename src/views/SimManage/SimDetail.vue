@@ -18,15 +18,15 @@
     </div>
     <div class="item-info">
       <label>激活时间 : </label>
-      <span>{{resultData.activationDate.time  | moment }}</span>
+      <span v-if="resultData.activationDate">{{resultData.activationDate.time  | moment }}</span>
     </div>
     <div class="item-info">
       <label>套餐修改时间 : </label>
-      <span>{{resultData.updateDate.time   | moment  }}</span>
+      <span v-if="resultData.updateDate">{{resultData.updateDate.time   | moment  }}</span>
     </div>
     <div class="item-info">
       <label>服务到期时间 : </label>
-      <span>{{resultData.expirationDate.time   | moment }}</span>
+      <span v-if="resultData.expirationDate ">{{resultData.expirationDate.time   | moment }}</span>
     </div>
     <div class="item-info">
       <label>当前计费周期内剩余流量 : </label>
@@ -42,7 +42,7 @@
     </div>
     <div class="item-info">
       <label>当前基础套餐到期时间 : </label>
-      <span>{{resultData.basicExpirationDate.time  | moment  }}</span>
+      <span v-if="resultData.basicExpirationDate">{{resultData.basicExpirationDate.time  | moment  }}</span>
     </div>
     <div class="tableContainer">
       <h6>当前可选套餐</h6>

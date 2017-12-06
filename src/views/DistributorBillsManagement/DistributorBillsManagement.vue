@@ -41,8 +41,11 @@
                 <el-button type="primary" size="medium">导出Excel</el-button>
             </a>
         </div>
+
         <el-table stripe border :data="resultData.list">
-            <el-table-column prop="id" label="订单号" align="center"></el-table-column>
+            <el-table-column :prop="orderId" label="订单号" align="center">
+                <template slot-scope="scope" v-if="scope.row.id">{{ scope.row.id }}</template>
+            </el-table-column>
             <el-table-column prop="iccId" label="ICCID" align="center"></el-table-column>
             <el-table-column prop="newId" label="新套餐ID" align="center"></el-table-column>
             <el-table-column prop="newName" label="新套餐名称" align="center"></el-table-column>
@@ -50,7 +53,7 @@
             <el-table-column prop="oldName" label="原套餐名称" align="center"></el-table-column>
             <el-table-column prop="distributorName" label="分销商" align="center"></el-table-column>
             <el-table-column prop="createDate" label="创建时间" align="center">
-                <template slot-scope="scope">{{ scope.row.createDate | moment }} </template>
+                <template slot-scope="scope" v-if="scope.row.updateDate">{{ scope.row.updateDate.time | moment }} </template>
             </el-table-column>
             <el-table-column prop="difference" label="订单金额" align="center"></el-table-column>
         </el-table>
