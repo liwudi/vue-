@@ -44,15 +44,13 @@
     <el-table stripe border :data="resultData.list">
         <el-table-column prop="id" label="订单号" align="center"></el-table-column>
         <el-table-column prop="iccId" label="ICCID" align="center"></el-table-column>
-        <el-table-column prop="newId" label="新套餐ID" align="center"></el-table-column>
-        <el-table-column prop="newName" label="新套餐名称" align="center"></el-table-column>
-        <el-table-column prop="oldId" label="原套餐ID" align="center"></el-table-column>
-        <el-table-column prop="oldName" label="原套餐名称" align="center"></el-table-column>
+        <el-table-column prop="goodsId" label="套餐ID" align="center"></el-table-column>
+        <el-table-column prop="name" label="套餐名称" align="center"></el-table-column>
         <el-table-column prop="supplierName" label="供应商" align="center"></el-table-column>
         <el-table-column prop="createDate" label="创建时间" align="center">
           <template slot-scope="scope">{{ scope.row.createDate | moment }} </template>
         </el-table-column>
-        <el-table-column prop="difference" label="订单金额" align="center"></el-table-column>
+        <el-table-column prop="price" label="订单金额" align="center"></el-table-column>
     </el-table>
     <p class="tpl-p" style="float:right">总金额：{{ resultData.totalAmount }}元</p>
     <div class="block">
@@ -79,6 +77,8 @@
           queryParams:{
               type:"",
               SupplierId:"",
+              timeStart:"",
+              timeEnd:"",
               pageNum:1,
               pageSize:10
           },
@@ -125,22 +125,6 @@
       getDownloadUrl(){
           return downloadBillForSupplier(this.queryParams);
       },
-//      exportExcel(){
-//          this.exportBtn = true;
-//          let params = {
-//            type:this.queryParams.type,
-//            SupplierId:this.queryParams.supplier,
-//            timeStart:this.queryParams.timeStart,
-//            timeEnd:this.queryParams.timeEnd
-//          };
-//          downloadBillForSupplier(params).then((result) => {
-//            this.$message.success("导出成功");
-//            this.exportBtn = false;
-//          }).catch((err) => {
-//            this.$message.error( err.message );
-//            this.exportBtn = false;
-//          })
-//      },
       reset(){
         this.startEndDateTime = null;
         this.queryParams = {

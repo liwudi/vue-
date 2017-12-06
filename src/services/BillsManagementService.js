@@ -26,8 +26,7 @@ function searchDistributor(){
  * @returns {*}
  */
 function downloadBillForDistributor (params) {
-    let token = RequestService.getUserInfo().token;
-   let url = config.serviceBaseUrl+"/manager/bill/downloadBillForDistributor?type="+params.type+"&&distributorId="+params.distributorId+"&&timeStart="+params.timeStart+"&&timeEnd="+params.timeEnd+"&&token="+token;
+   let url = config.serviceBaseUrl+"/bill/downloadBillForDistributor?type="+params.type+"&&distributorId="+params.distributorId+"&&timeStart="+params.timeStart+"&&timeEnd="+params.timeEnd;
     return url;
 }
 
