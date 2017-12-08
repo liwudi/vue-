@@ -1,9 +1,62 @@
-import CommonService from './commonService';
-const cs = CommonService;
+import RequestService from './commonService';
+
 const rootPath = '';
 function makeUrl (path) {
   return `${rootPath}${path}`;
 }
+
+/*
+*   基础商品和可选商品列表
+*   @params
+*/
+function searchNiGoods(params) {
+  return RequestService.get(
+    makeUrl('/goods/manager/searchNiGoods'),
+    params
+  )
+}
+/*
+*   供应商品列表
+*/
+function searchSupplierGoods( params ) {
+  return RequestService.get(
+    makeUrl('/goods/manager/searchSupplierGoods'),
+    params
+  )
+}
+
+/*
+*   获取分销商列表
+*/
+function getAllDistributor( ) {
+  return RequestService.get(makeUrl("/biz/manager/getAllDistributor"))
+};
+/*
+*   获取供应商列表
+*/
+function getAllSupplier() {
+  return RequestService.get(makeUrl("/biz/manager/getAllSupplier"));
+}
+
+
+/*
+*   获取商品类型
+*/
+function searchPackageType(params) {
+  return RequestService.get(makeUrl("/goods/manager/searchPackageType"),params)
+}
+
+/*
+*   可选商品添加
+*/
+function addSupplierGoods(params) {
+  return RequestService.post(
+    makeUrl('/goods/manager/addNiGoods'),
+    params
+  )
+}
+
+
 
 function addUser(params) {
   /*return cs.post(makeUrl('addUser'), params).then((result) => {
@@ -114,15 +167,6 @@ function searchUser(params) {
   });
 }
 
-function addSupplierGoods(params) {
-  /*return cs.post(makeUrl('/api-ni-flow/addSupplyGoods'), params).then((result) => {
-    console.log(result);
-    return result;
-  }).catch((e) => {
-    console.log(e);
-  });*/
-  return Promise.resolve();
-}
 function deleteSupplierGoods(params) {
   /*return cs.post(makeUrl('/api-ni-flow/deleteSupplierGoods'), params).then((result) => {
    console.log(result);
@@ -141,13 +185,8 @@ function updateGoodsState(params) {
    });*/
   return Promise.resolve();
 }
-function searchSupplierGoods(params) {
-  return CommonService.get(
-    makeUrl('/goods/searchNiGoods'),
-    params
-  )
-}
+
 
 export {
-  addUser, searchUser, deleteUser, resetUserPassword, updateUser, getUser, addSupplierGoods, deleteSupplierGoods, updateGoodsState, searchSupplierGoods
+  searchNiGoods, searchSupplierGoods, getAllDistributor , getAllSupplier,searchPackageType , addUser, searchUser, deleteUser, resetUserPassword, updateUser, getUser, addSupplierGoods, deleteSupplierGoods, updateGoodsState,
 }

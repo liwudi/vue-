@@ -1,31 +1,41 @@
 <template>
   <div>
-    <el-form ref="addForm" :rules="rules" :model="supplierGoodsAddForm" label-width="100px" size="medium">
+    <el-form ref="addForm" :rules="rules" :model="addParams" label-width="100px" size="medium">
       <el-form-item label="商品名称" prop="name">
-        <el-input v-model="supplierGoodsAddForm.name" placeholder="请输入商品名称"></el-input>
+        <el-input v-model="addParams.name" placeholder="请输入商品名称"></el-input>
+      </el-form-item>
+      <el-form-item label="供应商" prop="supplierId">
+        <el-select v-model="addParams.supplierId" placeholder="请选择分销商">
+          <el-option
+            v-for="item in suppliers"
+            :key="item.id"
+            :label="item.supplierName"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="商品规格" prop="totalFlow">
-        <el-select v-model="supplierGoodsAddForm.totalFlow" placeholder="请选择商品规格">
+        <el-select v-model="addParams.totalFlow" placeholder="请选择商品规格">
           <el-option
-            v-for="item in totalFlow"
-            :key="item.key"
-            :label="item.value"
-            :value="item.value">
+            v-for="item in totalFlows"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
-    <!--  <el-form-item label="商品类型" prop="type">
-        <el-select v-model="supplierGoodsAddForm.type" placeholder="请选择商品类型">
+      <el-form-item label="商品类型" prop="type">
+        <el-select v-model="addParams.type" placeholder="请选择商品类型">
           <el-option
-            v-for="item in type"
-            :key="item"
-            :label="item"
-            :value="item">
+            v-for="item in goodTypes"
+            :key="item.comboType"
+            :label="item.comboName"
+            :value="item.comboType">
           </el-option>
         </el-select>
-      </el-form-item>-->
+      </el-form-item>
       <el-form-item label="周期/周期值" prop="cycle">
-        <el-select v-model="supplierGoodsAddForm.cycle" @change="cycleChange" placeholder="请选择周期">
+        <el-select v-model="addParams.cycle" @change="cycleChange" placeholder="请选择周期">
           <el-option
             v-for="item in cycle"
             :key="item.key"
@@ -33,9 +43,9 @@
             :value="item.key">
           </el-option>
         </el-select>
-        <el-select v-model="supplierGoodsAddForm.cycleValue" placeholder="请选择周期值">
+        <el-select v-model="addParams.cycleValue" placeholder="请选择周期值">
           <el-option
-            v-for="item in cycleValue[supplierGoodsAddForm.cycle-2]"
+            v-for="item in cycleValue[addParams.cycle-2]"
             :key="item"
             :label="item"
             :value="item">
@@ -43,17 +53,27 @@
         </el-select>
       </el-form-item>
       <el-form-item label="商品价格"  prop="price">
-        <el-input v-model="supplierGoodsAddForm.price" placeholder="请输入商品价格">
+        <el-input v-model="addParams.price" placeholder="请输入商品价格">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
       <el-form-item label="促销价格" prop="salePrice">
-        <el-input v-model="supplierGoodsAddForm.salePrice" placeholder="请输入促销价格">
+        <el-input v-model="addParams.salePrice" placeholder="请输入促销价格">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
       <el-form-item label="商品介绍" prop="desc">
-        <el-input type="textarea" :rows="2" v-model="supplierGoodsAddForm.desc" placeholder="请输入商品介绍"></el-input>
+        <el-input type="textarea" :rows="2" v-model="addParams.message" placeholder="请输入商品介绍"></el-input>
+      </el-form-item>
+      <el-form-item label="分销商" prop="distributorId">
+        <el-select v-model="addParams.distributorId" placeholder="请选择分销商">
+          <el-option
+            v-for="item in distributors"
+            :key="item.id"
+            :label="item.distributorName"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <!--<el-form-item label="商品关联">
         <div
@@ -73,16 +93,7 @@
         </div>
         <el-button class="tpl-mg-t" @click="addDomain">添加关联</el-button>
       </el-form-item>-->
-      <el-form-item label="分销商" prop="supplierId">
-        <el-select v-model="supplierGoodsAddForm.supplierId" placeholder="请选择分销商">
-          <el-option
-            v-for="item in supplierId"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
-        </el-select>
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
         <el-button @click="onCancel">取消</el-button>
@@ -92,14 +103,15 @@
 </template>
 
 <script>
-  import { totalFlow,cycle, cycleValue} from './SupplierGoodsConfig';
+  import {  totalFlows , cycle , cycleValue} from "./GoodsCofig";
   import { getRules } from './SupplierGoodsRules';
   const rules = getRules();
-  import { addSupplierGoods } from '../../services/GoodsManagementService';
+  import { getAllSupplier,getAllDistributor ,searchPackageType ,searchSupplierGoods , addSupplierGoods } from '../../services/GoodsManagementService';
 
   export default {
     props:{
-      closeView : Function
+      closeView : Function,
+      goodAdd:Number
     },
     data() {
       var cyclePass = (rule, value, callback) => {
@@ -129,20 +141,21 @@
       };
       return {
         formName: 'addForm',
-        totalFlow, cycle, cycleValue,
-        supplierId:[],
-        supplierGoodsAddForm: {
-          id: '',
+        totalFlows  , cycle, cycleValue ,
+        suppliers:[],
+        distributors:[],
+        goodTypes:[],
+        addParams: {
           name: '',
-          type: '',
-          totalFlow: '',
+          supplierId:"",
+          totalFlow: '-1',
+          type: 0,
           cycle: 2,
           cycleValue: 1,
           price: '',
           salePrice: '',
-          desc: '',
-          supplierId: '',
-          domains:[]
+          message: '',
+          distributorId:"",
         },
         rules: {
           ...rules,
@@ -160,7 +173,57 @@
         }
       }
     },
+    created(){
+        this.getSupplierList();
+        this.getDistributoList();
+        this.getGoodTypes();
+
+    },
     methods: {
+      /*
+      *   获取所有供应商
+      * */
+      getSupplierList(){
+          getAllSupplier().then((res) => {
+              this.suppliers = res;
+          })
+      },
+      /*
+      *   获取所有分销商
+      * */
+      getDistributoList(){
+          getAllDistributor().then((res) => {
+            this.distributors = res;
+          })
+      },
+      /*
+      *   获取商品类型
+      */
+      getGoodTypes(){
+        let params = {
+          comboType:this.$props.goodAdd
+        };
+        searchPackageType(params).then((res) => {
+            this.goodTypes = res;
+        })
+      },
+
+      /*
+      *   商品关联
+      */
+      searchRelationGoods(){
+          let params = {
+              supplierId:1,
+              monthFlow:"1",
+              type:"1",
+              cycle:"1",
+              cycleVal:"15"
+          };
+        searchSupplierGoods(params).then((res) => {
+            console.log(res);
+        })
+
+      },
       close() {
         this.$props.closeView();
       },
@@ -168,7 +231,7 @@
         this.$router.back();
       },
       openMessage() {
-        this.$alert('供应商品创建成功！', '提示', {
+        this.$alert('商品创建成功！', '提示', {
           confirmButtonText: '确定',
           callback: action => {
             this.close(true);
@@ -191,7 +254,7 @@
       request() {
         let params = this.$data.supplierGoodsAddForm;
         addSupplierGoods(params).then(() => {
-          this.openMessage();
+           this.openMessage();
         });
       },
       onSubmit() {

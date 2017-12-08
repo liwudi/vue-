@@ -1,13 +1,8 @@
 'use strict';
-const totalFlows = [
-  { label:"无限流量",value:"1"},
-  { label:"流量设置",value:"2"}
-];
-const optionalGoodType = [
-  { label:"充值套餐",value:"1"},
-  { label:"续费套餐",value:"2"}
-];
-
+const statusArr = [{ id:1, name:"启用"},{ id:2, name:"停用"},{ id:'', name:"全部"}],
+      cycle = [{key:2,value:'月'},{key:3,value:'年'}],
+      cycleValue = [[1,2,3,4,5,6,7,8,9,10,11,12],[1,2,3]],
+      totalFlows = [{ id:"-1", name:"无限流量"},{ id:"1", name:"流量设置"}];
 function getRules () {
   return {
     name: [
@@ -30,5 +25,5 @@ function getRules () {
 }
 
 export {
-  totalFlows , optionalGoodType, getRules
+  statusArr ,totalFlows ,cycle ,cycleValue , getRules
 }
