@@ -30,7 +30,7 @@ function searchSupplierGoods( params ) {
 */
 function getAllDistributor( ) {
   return RequestService.get(makeUrl("/biz/manager/getAllDistributor"))
-};
+}
 /*
 *   获取供应商列表
 */
@@ -43,7 +43,7 @@ function getAllSupplier() {
 *   获取商品类型
 */
 function searchPackageType(params) {
-  return RequestService.get(makeUrl("/goods/manager/searchPackageType"),params)
+  return RequestService.get(makeUrl("/goods/manager/searchPackageType"),params);
 }
 
 /*
@@ -54,6 +54,20 @@ function addSupplierGoods(params) {
     makeUrl('/goods/manager/addNiGoods'),
     params
   )
+}
+
+/*
+*   供应商商品增加
+*/
+function addSupplyGoods() {
+  return RequestService.post(makeUrl('/goods/manager/addSupplyGoods'), params);
+}
+
+/*
+*   供应商查看详情
+*/
+function searchRelationSupplyGoods(params) {
+  return RequestService.get(makeUrl('/goods/manager/searchRelationSupplyGoods'), params);
 }
 
 
@@ -188,5 +202,5 @@ function updateGoodsState(params) {
 
 
 export {
-  searchNiGoods, searchSupplierGoods, getAllDistributor , getAllSupplier,searchPackageType , addUser, searchUser, deleteUser, resetUserPassword, updateUser, getUser, addSupplierGoods, deleteSupplierGoods, updateGoodsState,
+  searchNiGoods, searchSupplierGoods, getAllDistributor, getAllSupplier, searchPackageType, searchRelationSupplyGoods, addUser, searchUser, deleteUser, resetUserPassword, updateUser, getUser, addSupplierGoods, deleteSupplierGoods, updateGoodsState,
 }

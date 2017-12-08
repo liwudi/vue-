@@ -31,7 +31,7 @@
         <el-table-column prop="supplier" label="供应商" align="center"></el-table-column>
         <el-table-column label="关联商品" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="info" @click="detailTableVisible(true)">查看</el-button>
+            <el-button size="mini" type="info" @click="detailTableVisible(true, scope.row)">查看</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="70">
@@ -56,21 +56,32 @@
     <el-dialog title="供应商品添加" top="10vh" :visible.sync="addForm">
       <supplierGoods-add :closeView="closeAddView" v-if="addForm"></supplierGoods-add>
     </el-dialog>
+    <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
+      <supplierGoods-detail v-on="dialog.event.detail" :supplierId="supplierGoods"></supplierGoods-detail>
+    </el-dialog>
   </el-main>
 </template>
 
 <script>
+  const event = {
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
+  };
   import { searchSupplierGoods, deleteSupplierGoods, updateGoodsState } from '../../services/GoodsManagementService';
   import supplierGoodsAdd from './SupplierGoodsAdd.vue';
+  import supplierGoodsDetail from './SupplierGoodsDetail.vue';
   import { statusArr } from "./GoodsCofig";
   export default {
     components: {
-      supplierGoodsAdd
+      supplierGoodsAdd, supplierGoodsDetail
     },
     data() {
       return {
+        dialog: {
+          visible: {detail: false},
+          event: {detail: {}}
+        },
+        supplierGoods: '',
         addForm: false,
-        detailTable: false,
         statusArr,
         queryParams:{
           supplierId:'',
@@ -86,10 +97,18 @@
     },
     created() {
       this.request();
+      /*this.$data.dialog.event.detail[event.CLOSE_DIALOG] = (refresh) => {
+        this.detailTableVisible(false);
+        refresh && this.request();
+      };*/
     },
     methods: {
       closeAddView() {
         this.addForm = false;
+      },
+      detailTableVisible(visible, supplierGoods) {
+        this.$data.supplierGoods = Object.assign({}, supplierGoods);
+        this.$data.dialog.visible.detail = visible;
       },
       request() {
         searchSupplierGoods(this.queryParams).then((result) => {
@@ -126,7 +145,7 @@
       pageCurrentChange(val) {
         this.queryParams.pageNum = val;
         this.request();
-      },
+      }
     }
   }
 </script>
