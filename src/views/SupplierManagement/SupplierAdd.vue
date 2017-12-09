@@ -48,7 +48,7 @@
     methods: {
       request() {
         let params = this.$data.supplierAddForm;
-        addSupplier(params).then((err) => {
+        addSupplier(params).then(() => {
           this.openMessage();
         }).catch((err)=>{
           this.$message({type: 'warning', message: err.message});

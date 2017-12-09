@@ -1,6 +1,6 @@
 <template>
-  <div :model="supplierGoodsDetail">
-    <div>供应商品：<span>1年无限套餐</span></div>
+  <div>
+    <div class="supplyGood">供应商品：<span>{{ supplyGood }}</span></div>
     <el-table :data="detailData.list" stripe border>
       <el-table-column property="id" label="四维商品ID" align="center"></el-table-column>
       <el-table-column property="name" label="商品名称" align="center"></el-table-column>
@@ -12,10 +12,10 @@
 <script>
   import { searchRelationSupplyGoods } from '../../services/GoodsManagementService';
   export default {
-    props: ['supplierId'],
+    props: ['supplierParams'],
     data() {
       return {
-        supplierGoodsDetail: {},
+        supplyGood: "",
         detailData: {},
         page: {
           pageNum: 1,
@@ -28,19 +28,26 @@
     },
     methods: {
       request() {
-        let params = this.$data.supplierGoodsDetail;
-        params.supplierId = this.$props.supplierId.id;
-        console.log(params);
+        this.$data.supplyGood = this.$props.supplierParams.name;
+        let params = {
+          supplierId: this.$props.supplierParams.supplierId,
+          cycle: this.$props.supplierParams.cycle,
+          cycleValue: this.$props.supplierParams.cycleValue,
+          pageNum: this.page.pageNum,
+          pageSize: this.page.pageSize
+        };
         searchRelationSupplyGoods(params).then((data) => {
           console.log(data);
           this.$data.detailData = data;
-        }).catch((err)=>{
-          console.log(err);
-          //this.$message({type: 'warning', message: err.message});
         });
       }
     }
   }
 </script>
 <style lang="scss" scoped rel="stylesheet/scss">
+  .supplyGood {
+    line-height: 36px;
+    font-size: 14px;
+    font-weight: bold;
+  }
 </style>

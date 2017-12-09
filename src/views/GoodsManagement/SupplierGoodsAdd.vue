@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-form ref="addForm"  :model="addParams" label-width="100px" size="medium">
-      <el-form-item label="商品ID" >
+    <el-form ref="supplierGoodsAddForm" :rules="rules" :model="addParams" label-width="100px" size="medium">
+      <el-form-item label="商品ID" prop="id">
         <el-input v-model="addParams.id" placeholder="请输入商品ID"></el-input>
       </el-form-item>
       <el-form-item label="商品名称" prop="name">
@@ -77,70 +77,69 @@
 </template>
 
 <script>
-  import {  totalFlows , cycle , cycleValue} from "./GoodsCofig";
- // import { getRules } from './SupplierGoodsRules'
-
- // const rules = getRules()
-  import { searchPackageType ,getAllSupplier ,addSupplierGoods } from '../../services/GoodsManagementService'
+  const event = {
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
+  };
+  import {  totalFlows, cycle, cycleValue } from "./GoodsCofig";
+  import { getRules } from './SupplierGoodsRules';
+  const rules = getRules();
+  import { searchPackageType, getAllSupplier, addSupplyGoods } from '../../services/GoodsManagementService';
 
   export default {
-    props: {
-      closeView: Function
-    },
     data () {
-//      var cyclePass = (rule, value, callback) => {
-//        if (!value) {
-//          return callback(new Error('请选择周期值'))
-//        }
-//        if (!this.supplierGoodsAddForm.cycleValue) {
-//          return callback(new Error('请选择周期'))
-//        }
-//      }
-//      var pricePass = (rule, value, callback) => {
-//        if (!value) {
-//          return callback(new Error('请输入商品价格'))
-//        }
-//        if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
-//          return callback(new Error('只能输入数字,小数点后2位'))
-//        }
-//      }
-//      var salePricePass = (rule, value, callback) => {
-//        if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
-//          return callback(new Error('只能输入数字,小数点后2位'))
-//        }
-//        if (value > this.supplierGoodsAddForm.price) {
-//          return callback(new Error('促销价格不能大于商品价格'))
-//        }
-//      }
+      let cyclePass = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请选择周期值'));
+        }
+        if (!this.supplierGoodsAddForm.cycleValue) {
+          return callback(new Error('请选择周期'));
+        }
+      };
+      let pricePass = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入商品价格'));
+        }
+        if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
+          return callback(new Error('只能输入数字,小数点后2位'));
+        }
+      };
+      let salePricePass = (rule, value, callback) => {
+        if (value && !String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
+          return callback(new Error('只能输入数字,小数点后2位'));
+        }
+        /*if (value > this.supplierGoodsAddForm.price) {
+          return callback(new Error('促销价格不能大于商品价格'));
+        }*/
+      };
       return {
-        formName: 'addForm',
+        formName: 'supplierGoodsAddForm',
         totalFlows, cycle, cycleValue,
-        goodTypes:[],
-        suppliers:[],
+        goodTypes: [],
+        suppliers: [],
         addParams: {
-//          id: '',
-//          name: '',
-//          type: '',
-//          totalFlow: '',
-//          cycle: '',
-//          cycleValue: '',
-//          price: '',
-//          salePrice: '',
-//          desc: '',
-//          supplierId: ''
+          id: '',
+          name: '',
+          type: 1,
+          totalFlow: '',
+          cycle: '',
+          cycleValue: '',
+          price: '',
+          salePrice: '',
+          message: '',
+          supplierId: ''
         },
-//        rules: {
-//          ...rules,
-//          cycle: [
-//            {validator: cyclePass, trigger: 'change'}
-//          ],
-//          price: [
-//            {validator: pricePass, trigger: 'change'}
-//          ],
-//          salePrice: [
-//            {validator: salePricePass, trigger: 'change'}
-//          ]
-//        }
+        rules: {
+          ...rules,
+          cycle: [
+            {validator: cyclePass, trigger: 'change'}
+          ],
+          price: [
+            {validator: pricePass, trigger: 'change'}
+          ],
+          salePrice: [
+            {validator: salePricePass, trigger: 'change'}
+          ]
+        }
       }
     },
     created(){
@@ -153,7 +152,7 @@
         */
         getGoodTypes(){
           let params = {
-            comboType:''
+            comboType: ''
           };
           searchPackageType(params).then((res) => {
             this.goodTypes = res;
@@ -167,37 +166,40 @@
             this.suppliers = res;
           })
         },
-//      close () {
-//        this.$props.closeView()
-//      },
-//      goToList () {
-//        this.$router.back()
-//      },
-//      openMessage () {
-//        this.$alert('供应商品创建成功！', '提示', {
-//          confirmButtonText: '确定',
-//          callback: action => {
-//            this.close(true)
-//            //this.goToList();
-//          }
-//        })
-//      },
-//      request () {
-//        let params = this.$data.supplierGoodsAddForm
-//        addSupplierGoods(params).then(() => {
-//          this.openMessage()
-//        })
-//      },
-        onSubmit () {
-          let formName = this.$data.formName
-          this.$refs[formName].validate((valid) => {
-            if (valid) this.request()
-            return valid
+        close(refresh=false) {
+          this.$emit(event.CLOSE_DIALOG, refresh);
+        },
+        goToList () {
+          this.$router.back();
+        },
+        openMessage () {
+          this.$alert('供应商品创建成功！', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.close(true);
+              //this.goToList();
+            }
           })
         },
-//      onCancel () {
-//        this.close()
-//      }
+        request () {
+          let params = this.$data.addParams;
+          console.log(params);
+          addSupplyGoods(params).then(() => {
+            this.openMessage();
+          }).catch((err)=>{
+            this.$message({type: 'warning', message: err.message});
+          })
+        },
+        onSubmit () {
+          let formName = this.$data.formName;
+          this.$refs[formName].validate((valid) => {
+            if (valid) this.request();
+            return valid;
+          })
+        },
+        onCancel () {
+          this.close();
+        }
     }
   }
 </script>

@@ -9,7 +9,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-button type="primary" @click="addForm=true" size="medium">添加套餐</el-button>
+    <el-button type="primary" @click="addFormVisible(true)" size="medium">添加套餐</el-button>
     <div class="tpl-mg">
       <el-table :data="resultData.list" stripe border>
         <el-table-column label="序号" width="96" align="center">
@@ -36,9 +36,12 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="70">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state == 1" size="mini" type="info" title="启用" >启用</el-button>
+            <el-button size="mini" type="danger" title="操作" @click="goodsOperate(scope.row)">
+              {{ scope.row.state ===1 ? '启用' : scope.row.state ===2 ? '停用' : '删除' }}
+            </el-button>
+            <!--<el-button v-if="scope.row.state == 1" size="mini" type="info" title="启用" >启用</el-button>
             <el-button v-if="scope.row.state == 2" size="mini" type="danger" title="停用" >停用</el-button>
-            <el-button v-if="scope.row.state == 3" size="mini" type="default" title="删除" >删除</el-button>
+            <el-button v-if="scope.row.state == 3" size="mini" type="default" title="删除" >删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -53,11 +56,11 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="供应商品添加" top="10vh" :visible.sync="addForm">
-      <supplierGoods-add :closeView="closeAddView" v-if="addForm"></supplierGoods-add>
+    <el-dialog title="供应商品添加" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.add" v-if="dialog.visible.add">
+      <supplierGoods-add v-on="dialog.event.add"></supplierGoods-add>
     </el-dialog>
     <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
-      <supplierGoods-detail v-on="dialog.event.detail" :supplierId="supplierGoods"></supplierGoods-detail>
+      <supplierGoods-detail v-on="dialog.event.detail" :supplierParams="supplierParams"></supplierGoods-detail>
     </el-dialog>
   </el-main>
 </template>
@@ -77,11 +80,10 @@
     data() {
       return {
         dialog: {
-          visible: {detail: false},
-          event: {detail: {}}
+          visible: {add: false, detail: false},
+          event: {add: {}, detail: {}}
         },
-        supplierGoods: '',
-        addForm: false,
+        supplierParams: {},
         statusArr,
         queryParams:{
           supplierId:'',
@@ -97,44 +99,74 @@
     },
     created() {
       this.request();
-      /*this.$data.dialog.event.detail[event.CLOSE_DIALOG] = (refresh) => {
-        this.detailTableVisible(false);
+      this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
+        this.addFormVisible(false);
         refresh && this.request();
-      };*/
+      };
     },
     methods: {
-      closeAddView() {
-        this.addForm = false;
+      addFormVisible(visible){
+        this.$data.dialog.visible.add = visible;
       },
-      detailTableVisible(visible, supplierGoods) {
-        this.$data.supplierGoods = Object.assign({}, supplierGoods);
+      detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;
+        this.$data.supplierParams = {
+          name: row.name,
+          supplierId: row.id,
+          cycle: row.cycle,
+          cycleValue: row.cycleValue
+        };
       },
       request() {
         searchSupplierGoods(this.queryParams).then((result) => {
-            this.resultData = result;
-        }).catch((err) => {
-
+          this.resultData = result;
         })
       },
-      openMessage(message, confirmText) {
+      openMessage(message, confirmText, doit) {
         this.$confirm(message, '提示', {
           cancelButtonText: '取消',
           confirmButtonText: confirmText
         }).then(() => {
-          this.$message({type: 'success', message: '操作成功!'});
-          this.request();
-        }).catch(() => {
-          this.$message({type: 'info', message: '已取消操作'});
-        });
+          doit();
+        }).catch(() => {});
       },
-      supplierGoodsDelete(index, row){
-        console.log(index, row);
-        deleteSupplierGoods({supplierGoodsId: row.supplierGoodsId}).then(() => {
-          this.openMessage('您确定要删除该供应商品吗？', '删除');
-        });
+      goodsOperate(row) {
+        let params = {
+          id: row.id,
+          type: row.type,
+          state: row.state
+        };
+        if (params.state === 1) {
+          this.openMessage('您确定要停用该商品吗？', '停用', ()=>{
+            updateGoodsState(params).then(() => {
+              this.$message({type: 'success', message: '操作成功!'});
+              params.state = 2;
+              console.log(params.state);
+              this.request();
+            }).catch((err)=>{
+              this.$message({type: 'error', message: err.message});
+            })
+          });
+        } else if (params.state === 2) {
+          this.openMessage('您确定要启用该商品吗？', '启用', ()=>{
+            updateGoodsState(params).then(() => {
+              this.$message({type: 'success', message: '操作成功!'});
+              params.state = 1;
+              this.request();
+            }).catch((err)=>{
+              this.$message({type: 'error', message: err.message});
+            })
+          });
+        }
+        /*this.openMessage('您确定要停用该商品吗？', '停用',()=>{
+          updateGoodsState(params).then(() => {
+            this.$message({type: 'success', message: '操作成功!'});
+            this.request();
+          }).catch((err)=>{
+            this.$message({type: 'error', message: err.message});
+          })
+        });*/
       },
-
       statusChange(){
         this.request();
       },
@@ -152,5 +184,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped rel="stylesheet/scss">
-
 </style>

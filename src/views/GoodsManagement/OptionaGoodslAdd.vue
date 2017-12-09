@@ -103,7 +103,10 @@
 </template>
 
 <script>
-  import {  totalFlows , cycle , cycleValue} from "./GoodsCofig";
+  const event = {
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
+  };
+  import { totalFlows, cycle, cycleValue } from "./GoodsCofig";
   import { getRules } from './SupplierGoodsRules';
   const rules = getRules();
   import { getAllSupplier,getAllDistributor ,searchPackageType ,searchSupplierGoods , addSupplierGoods } from '../../services/GoodsManagementService';
@@ -224,8 +227,8 @@
         })
 
       },
-      close() {
-        this.$props.closeView();
+      close(refresh=false) {
+        this.$emit(event.CLOSE_DIALOG, refresh);
       },
       goToList() {
         this.$router.back();

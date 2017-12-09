@@ -29,7 +29,7 @@
           <el-table-column label="关联商品" align="center" width="70">
             <template slot-scope="scope">
               <el-button-group>
-                <el-button size="mini" type="info" title="查看" >查看</el-button>
+                <el-button size="mini" type="info" title="查看" @click="detailTableVisible(true, scope.row)">查看</el-button>
               </el-button-group>
             </template>
           </el-table-column>
@@ -51,19 +51,26 @@
           :total="resultData.total">
         </el-pagination>
       </div>
-      <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add">
-        <optional-goods-add :closeView="closeAddView" v-if="dialog.visible.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
+      <el-dialog title="商品添加" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.add" v-if="dialog.visible.add">
+        <optional-goods-add v-on="dialog.event.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
+      </el-dialog>
+      <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
+        <baseGoods-detail v-on="dialog.event.detail" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
       </el-dialog>
     </el-main>
 </template>
 
 <script>
-  import {searchNiGoods, deleteUser, resetUserPassword} from '../../services/GoodsManagementService';
-  import optionalGoodsAdd from './OptionaGoodslAdd.vue'
+  const event = {
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
+  };
+  import { searchNiGoods } from '../../services/GoodsManagementService';
+  import optionalGoodsAdd from './OptionaGoodslAdd.vue';
+  import baseGoodsDetail from './BaseGoodsDetail.vue';
   import { statusArr } from "./GoodsCofig";
   export default {
     components: {
-      optionalGoodsAdd,
+      optionalGoodsAdd, baseGoodsDetail
     },
     data () {
       return {
@@ -80,13 +87,27 @@
         },
         dialog: {
           visible: {add: false, detail: false},
-        }
+          event: {add: {}, detail: {}}
+        },
+        baseGoodsParams: {}
       }
     },
     created() {
-        this.request();
+      this.request();
+      this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
+        this.goodAddVisible(false);
+        refresh && this.request();
+      };
     },
     methods: {
+      detailTableVisible(visible, row) {
+        console.log(row);
+        this.$data.dialog.visible.detail = visible;
+        this.$data.baseGoodsParams = {
+          supplierGoodId: row.id,
+          name: row.name
+        };
+      },
       request () {
         searchNiGoods(this.queryParams).then((result) => {
            this.resultData = result;
@@ -96,7 +117,7 @@
         this.request();
       },
       goodAddVisible (visible) {
-        this.$data.dialog.visible.add = visible
+        this.$data.dialog.visible.add = visible;
       },
       pageSizeChange(val) {
         this.queryParams.pageSize = val;
@@ -105,7 +126,7 @@
       pageCurrentChange(val) {
         this.queryParams.pageNum = val;
         this.request();
-      },
+      }
     }
 
   }
