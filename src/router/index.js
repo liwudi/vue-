@@ -27,7 +27,7 @@ let router = new Router({
       component: Home,
       children:[
         {
-          path: '/',
+          path: '/basetable',
           name : 'basetable',
           component: BaseTable
         },
@@ -42,7 +42,7 @@ let router = new Router({
           component: SimManage
         },
         {
-          path: '/GoodsManagement',
+          path: '/',
           name: 'GoodsManagement',
           component: GoodsManagement
         },

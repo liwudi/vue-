@@ -29,7 +29,7 @@
         <el-table-column label="关联商品" align="center" width="70">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" title="查看" @click="detailTableVisible(true, scope.row)">查看</el-button>
+              <el-button size="mini" type="info" title="查看" @click="detailTableVisible(true,scope.row)">查看</el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -52,7 +52,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="商品添加" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.add" v-if="dialog.visible.add">
+    <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add" :close-on-click-modal="false" :close-on-press-escape="false">
       <optional-goods-add v-on="dialog.event.add" v-if="dialog.visible.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
     </el-dialog>
     <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
@@ -68,14 +68,14 @@
   import { searchNiGoods, updateGoodsState } from '../../services/GoodsManagementService';
   import optionalGoodsAdd from './OptionaGoodslAdd.vue';
   import baseGoodsDetail from './BaseGoodsDetail.vue';
-  import { statusArr } from "./GoodsCofig";
+  import { statusArr,event } from "./GoodsCofig";
   export default {
     components: {
-      optionalGoodsAdd, baseGoodsDetail
+      optionalGoodsAdd,baseGoodsDetail
     },
     data () {
       return {
-        statusArr,
+        statusArr,event,
         queryParams: {
           comboTypeId: 2,
           status:1,
@@ -88,15 +88,20 @@
         },
         dialog: {
           visible: {add: false, detail: false},
-          event: {add: {}, detail: {}}
+          event:{add:{},detail:{}}
         },
-        baseGoodsParams: {}
+        baseGoodsParams:{}
+
       }
     },
     created () {
       this.request();
       this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
         this.goodAddVisible(false);
+        refresh && this.request();
+      };
+      this.$data.dialog.event.detail[event.CLOSE_DIALOG] = (refresh) => {
+        this.detailTableVisible(false);
         refresh && this.request();
       };
     },
@@ -113,7 +118,7 @@
         })
       },
       goodAddVisible (visible) {
-        this.$data.dialog.visible.add = visible;
+        this.$data.dialog.visible.add = visible
       },
       openMessage(message, confirmText, doit) {
         this.$confirm(message, '提示', {
@@ -154,7 +159,8 @@
       pageCurrentChange(val) {
         this.queryParams.pageNum = val;
         this.request();
-      }
+      },
+
     }
   }
 </script>

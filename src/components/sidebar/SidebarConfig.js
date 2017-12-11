@@ -10,7 +10,7 @@ const menuData = [
   {title: '供应商管理', index: 'SupplierManagement', icon},
   {title: '分销商管理', index: 'DistributorManage', icon},
   {title: '用户管理',index: 'UserManagement',  icon},
-  {title: '模板',index: 'basetable',  icon}
+  // {title: '模板',index: 'basetable',  icon}
 ];
 
 

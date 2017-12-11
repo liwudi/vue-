@@ -51,30 +51,27 @@
           :total="resultData.total">
         </el-pagination>
       </div>
-      <el-dialog title="商品添加" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.add" v-if="dialog.visible.add">
-        <optional-goods-add v-on="dialog.event.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
+      <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add" :close-on-click-modal="false" :close-on-press-escape="false">
+        <optional-goods-add v-on="dialog.event.add"  v-if="dialog.visible.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
       </el-dialog>
-      <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
-        <baseGoods-detail v-on="dialog.event.detail" goodsType="base" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
-      </el-dialog>
+        <baseGoods-detail v-on="dialog.event.detail" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
+</el-dialog>
     </el-main>
 </template>
 
 <script>
-  const event = {
-    CLOSE_DIALOG: 'CLOSE_DIALOG'
-  };
   import { searchNiGoods, updateGoodsState } from '../../services/GoodsManagementService';
-  import optionalGoodsAdd from './OptionaGoodslAdd.vue';
+  import optionalGoodsAdd from './OptionaGoodslAdd.vue'
   import baseGoodsDetail from './BaseGoodsDetail.vue';
-  import { statusArr } from "./GoodsCofig";
+
+  import { statusArr,event } from "./GoodsCofig";
   export default {
     components: {
-      optionalGoodsAdd, baseGoodsDetail
+      optionalGoodsAdd,baseGoodsDetail
     },
     data () {
       return {
-        statusArr,
+        statusArr,event,
         queryParams:{
           comboTypeId:1,
           status:1,
@@ -87,9 +84,9 @@
         },
         dialog: {
           visible: {add: false, detail: false},
-          event: {add: {}, detail: {}}
+          event:{add:{},detail:{}}
         },
-        baseGoodsParams: {}
+        baseGoodsParams:{}
       }
     },
     created() {
@@ -98,18 +95,22 @@
         this.goodAddVisible(false);
         refresh && this.request();
       };
+      this.$data.dialog.event.detail[event.CLOSE_DIALOG] = (refresh) => {
+        this.detailTableVisible(false);
+        refresh && this.request();
+      };
     },
     methods: {
+      request () {
+        searchNiGoods(this.queryParams).then((result) => {
+           this.resultData = result;
+        });
+      },
       detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;
         this.$data.baseGoodsParams = {
           niGoodId: row.id
         };
-      },
-      request () {
-        searchNiGoods(this.queryParams).then((result) => {
-           this.resultData = result;
-        });
       },
       openMessage(message, confirmText, doit) {
         this.$confirm(message, '提示', {
@@ -144,7 +145,7 @@
         this.request();
       },
       goodAddVisible (visible) {
-        this.$data.dialog.visible.add = visible;
+        this.$data.dialog.visible.add = visible
       },
       pageSizeChange(val) {
         this.queryParams.pageSize = val;
@@ -153,7 +154,7 @@
       pageCurrentChange(val) {
         this.queryParams.pageNum = val;
         this.request();
-      }
+      },
     }
 
   }

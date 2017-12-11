@@ -16,7 +16,7 @@ function searchNiGoods(params) {
   )
 }
 /*
-*   供应商品列表
+*   供应商品列表 && 四维商品添加
 */
 function searchSupplierGoods( params ) {
   return RequestService.get(
