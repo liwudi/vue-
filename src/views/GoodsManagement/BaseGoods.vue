@@ -110,6 +110,7 @@
       detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;
         this.$data.baseGoodsParams = {
+          niGoodName: row.name,
           niGoodId: row.id
         };
       },
