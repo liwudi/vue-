@@ -4,7 +4,7 @@
     <el-table :data="detailData.list" stripe border>
       <el-table-column property="id" label="四维商品ID" align="center"></el-table-column>
       <el-table-column property="name" label="商品名称" align="center"></el-table-column>
-      <el-table-column property="distributor" label="分销商" align="center"></el-table-column>
+      <el-table-column property="distributorName" label="分销商" align="center"></el-table-column>
     </el-table>
     <el-pagination
       @size-change="pageSizeChange"
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import { searchRelationGoods } from '../../services/GoodsManagementService';
+  import { searchRelationGoods_sId } from '../../services/GoodsManagementService';
   export default {
     props: ['supplierParams'],
     data() {
@@ -37,14 +37,14 @@
     },
     methods: {
       request() {
-        this.$data.supplyGood = this.$props.supplierParams.name;
+        this.$data.supplyGood = this.$props.supplierParams.supplierGoodName;
         let params = {
           supplierGoodId: this.$props.supplierParams.supplierGoodId,
-          //supplierGoodId: 1, //TODO 此处为了显示查看测试数据
+          //supplierGoodId: "1", //TODO 此处为了显示查看测试数据
           pageNum: this.page.pageNum,
           pageSize: this.page.pageSize
         };
-        searchRelationGoods(params).then((data) => {
+        searchRelationGoods_sId(params).then((data) => {
           this.$data.detailData = data;
         });
       },

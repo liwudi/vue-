@@ -108,6 +108,7 @@
       detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;
         this.$data.supplierParams = {
+          supplierGoodName: row.name,
           supplierGoodId: row.id
         };
       },

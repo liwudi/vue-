@@ -64,10 +64,17 @@ function addSupplyGoods(params) {
 }
 
 /*
-*   基础商品、可选商品、供应商品查看详情
+*   基础商品、可选商品查看详情
 */
-function searchRelationGoods(params) {
-  return RequestService.get(makeUrl('/goods/manager/searchRelationGoods'), params);
+function searchRelationGoods_niId(params) {
+  return RequestService.get(makeUrl('/goods/manager/searchRelationGoods_niId'), params);
+}
+
+/*
+*   供应商品查看详情
+*/
+function searchRelationGoods_sId(params) {
+  return RequestService.get(makeUrl('/goods/manager/searchRelationGoods_sId'), params);
 }
 
 function updateGoodsState(params) {
@@ -76,5 +83,5 @@ function updateGoodsState(params) {
 
 
 export {
-  searchNiGoods, searchSupplierGoods, getAllDistributor, getAllSupplier, searchPackageType, searchRelationGoods, addSupplyGoods, addSupplierGoods, updateGoodsState
+  searchNiGoods, searchSupplierGoods, getAllDistributor, getAllSupplier, searchPackageType,  searchRelationGoods_niId, searchRelationGoods_sId, addSupplyGoods, addSupplierGoods, updateGoodsState
 }

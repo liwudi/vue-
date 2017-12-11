@@ -5,10 +5,10 @@
       <el-table-column property="id" label="供应商品ID" align="center"></el-table-column>
       <el-table-column property="name" label="商品名称" align="center"></el-table-column>
       <el-table-column property="totalFlow" label="商品规格" align="center"></el-table-column>
-      <el-table-column property="count" label="商品数量" align="center"></el-table-column>
+      <el-table-column property="supplierCount" label="商品数量" align="center"></el-table-column>
       <el-table-column property="type" label="商品类型" align="center"></el-table-column>
       <el-table-column property="price" label="商品价格" align="center"></el-table-column>
-      <el-table-column property="distributor" label="供应商" align="center"></el-table-column>
+      <el-table-column property="supplierName" label="供应商" align="center"></el-table-column>
     </el-table>
     <el-pagination
       @size-change="pageSizeChange"
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { searchRelationGoods } from '../../services/GoodsManagementService';
+  import { searchRelationGoods_niId } from '../../services/GoodsManagementService';
   export default {
     props: ['baseGoodsParams', 'goodsType'],
     data() {
@@ -42,15 +42,14 @@
     },
     methods: {
       request() {
-        this.$data.baseGood = this.$props.baseGoodsParams.name;
+        this.$data.baseGood = this.$props.baseGoodsParams.niGoodName;
         let params = {
           niGoodId: this.$props.baseGoodsParams.niGoodId,
           //niGoodId: 1,  //TODO 此处为了显示查看测试数据
           pageNum: this.page.pageNum,
           pageSize: this.page.pageSize
         };
-        searchRelationGoods(params).then((data) => {
-          console.log(data);
+        searchRelationGoods_niId(params).then((data) => {
           this.$data.detailData = data;
         });
       },
