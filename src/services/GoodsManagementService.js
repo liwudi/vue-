@@ -30,7 +30,7 @@ function searchSupplierGoods( params ) {
 */
 function getAllDistributor( ) {
   return RequestService.get(makeUrl("/biz/manager/getAllDistributor"))
-};
+}
 /*
 *   获取供应商列表
 */
@@ -43,7 +43,7 @@ function getAllSupplier() {
 *   获取商品类型
 */
 function searchPackageType(params) {
-  return RequestService.get(makeUrl("/goods/manager/searchPackageType"),params)
+  return RequestService.get(makeUrl("/goods/manager/searchPackageType"),params);
 }
 
 /*
@@ -56,137 +56,33 @@ function addSupplierGoods(params) {
   )
 }
 
-
-
-function addUser(params) {
-  /*return cs.post(makeUrl('addUser'), params).then((result) => {
-    console.info('addUser-then', result);
-    return result;
-  }).catch((e) => {
-    console.info('addUser-then', e)
-  });*/
-  return Promise.resolve();
+/*
+*   供应商商品增加
+*/
+function addSupplyGoods(params) {
+  return RequestService.post(makeUrl('/goods/manager/addSupplyGoods'), params);
 }
 
-function deleteUser(params) {
-  /*return cs.post(makeUrl('deleteUser'), params).then((result) => {
-   console.info('deleteUser-then', result);
-   return result;
-   }).catch((e) => {
-   console.info('deleteUser-then', e)
-   });*/
-  return Promise.resolve();
+/*
+*   基础商品查看详情
+*/
+function searchRelationGoods(params) {
+  return RequestService.get(makeUrl('/goods/manager/searchRelationGoods'), params);
 }
 
-function resetUserPassword(params) {
-  /*return cs.post(makeUrl('updateUser'), params).then((result) => {
-   console.info('updateUser-then', result);
-   return result;
-   }).catch((e) => {
-   console.info('updateUser-then', e)
-   });*/
-  return Promise.resolve();
+/*
+*   供应商查看详情
+*/
+function searchRelationSupplyGoods(params) {
+  return RequestService.get(makeUrl('/goods/manager/searchRelationSupplyGoods'), params);
 }
 
-function updateUser(params) {
-  /*return cs.post(makeUrl('updateUser'), params).then((result) => {
-   console.info('updateUser-then', result);
-   return result;
-   }).catch((e) => {
-   console.info('updateUser-then', e)
-   });*/
-  return Promise.resolve();
-}
 
-function getUser(params) {
-  /*return cs.post(makeUrl('updateUser'), params).then((result) => {
-   console.info('updateUser-then', result);
-   return result;
-   }).catch((e) => {
-   console.info('updateUser-then', e)
-   });*/
-  return Promise.resolve({
-    data: {
-      userId: 1,
-      userName: '王小虎',
-      loginName: 'wangxh',
-      sex: 1,
-      phone: '134234234234',
-      state: 1,
-      password: 123
-    }
-  });
-}
-function searchUser(params) {
-  /*return cs.post(makeUrl('searchUser'), params).then((result) => {
-   console.info('searchUser-then', result);
-   return result;
-   }).catch((e) => {
-   console.info('searchUser-then', e)
-   });*/
-  return Promise.resolve({
-    data: {
-      pageNum: 1,
-      pageSize: 10,
-      total: 50,
-      pages: 3,
-      list: [{
-        userId: 1,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
-      },{
-        userId: 2,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
-      },{
-        userId: 3,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
-      },{
-        userId: 4,
-        userName: '王小虎',
-        loginName: 'wangxh',
-        sex: 1,
-        phone: '134234234234',
-        state: 1,
-        password: 123
-      }]
-    }
-  });
-}
-
-function deleteSupplierGoods(params) {
-  /*return cs.post(makeUrl('/api-ni-flow/deleteSupplierGoods'), params).then((result) => {
-   console.log(result);
-   return result;
-   }).catch((e) => {
-   console.log(e)
-   });*/
-  return Promise.resolve();
-}
 function updateGoodsState(params) {
-  /*return cs.post(makeUrl('/api-ni-flow/updateGoodsState'), params).then((result) => {
-   console.log(result);
-   return result;
-   }).catch((e) => {
-   console.log(e)
-   });*/
-  return Promise.resolve();
+  return RequestService.get(makeUrl('/goods/manager/updateGoodsState'), params);
 }
 
 
 export {
-  searchNiGoods, searchSupplierGoods, getAllDistributor , getAllSupplier,searchPackageType , addUser, searchUser, deleteUser, resetUserPassword, updateUser, getUser, addSupplierGoods, deleteSupplierGoods, updateGoodsState,
+  searchNiGoods, searchSupplierGoods, getAllDistributor, getAllSupplier, searchPackageType, searchRelationGoods, searchRelationSupplyGoods, addSupplyGoods, addSupplierGoods, updateGoodsState
 }

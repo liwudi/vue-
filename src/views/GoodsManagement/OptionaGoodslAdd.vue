@@ -78,8 +78,8 @@
       <el-form-item label="商品关联"  v-if="relationGoods">
         <div v-if="options.length==0">无相关套餐</div>
         <div v-if="options.length>0"
-          v-for="(domain, index) in addParams.suppliers"
-          :key="index"
+             v-for="(domain, index) in addParams.suppliers"
+             :key="index"
         >
           <el-select  v-model="domain.supplierGoodId"  placeholder="请选择套餐">
             <el-option
@@ -161,11 +161,11 @@
           ...rules,
           cycle : [
             {required: true, message: '请选择周期值'},
-            //{ validator: cyclePass, trigger: 'change' }
+            { validator: cyclePass, trigger: 'change' }
           ],
           price : [
             {required: true, message: '请输入商品价格', trigger: 'change'},
-           // { validator: pricePass, trigger: 'change' }
+             { validator: pricePass, trigger: 'change' }
           ],
           salePrice : [
             //{ validator: salePricePass, trigger: 'change' }
@@ -174,84 +174,84 @@
       }
     },
     created(){
-        this.getSupplierList();
-        this.getDistributoList();
-        this.getGoodTypes();
+      this.getSupplierList();
+      this.getDistributoList();
+      this.getGoodTypes();
     },
     methods: {
       /*
       *   获取所有供应商
       * */
       getSupplierList(){
-          let vm = this;
-          getAllSupplier().then((res) => {
-            res.forEach(function (item) {
-              vm.suppliers.push({
-                id:item.id.toString(),
-                name:item.supplierName
-              })
-            });
+        let vm = this;
+        getAllSupplier().then((res) => {
+          res.forEach(function (item) {
+            vm.suppliers.push({
+              id:item.id.toString(),
+              name:item.supplierName
+            })
           });
+        });
       },
       /*
       *   获取所有分销商
       * */
       getDistributoList(){
-          let vm = this;
-          getAllDistributor().then((res) => {
-            res.forEach(function (item) {
-              vm.distributors.push({
-                id:item.id.toString(),
-                name:item.distributorName
-              })
-            });
-          })
+        let vm = this;
+        getAllDistributor().then((res) => {
+          res.forEach(function (item) {
+            vm.distributors.push({
+              id:item.id.toString(),
+              name:item.distributorName
+            })
+          });
+        })
       },
       /*
       *   获取商品类型
       */
       getGoodTypes(){
         let params = {
-          comboType:this.$props.goodAdd
-        },
-        vm = this;
+            comboType:this.$props.goodAdd
+          },
+          vm = this;
         searchPackageType(params).then((res) => {
-            res.forEach(function (item) {
-                vm.goodTypes.push({
-                    id:item.id.toString(),
-                    name:item.comboName
-                })
+          res.forEach(function (item) {
+            vm.goodTypes.push({
+              id:item.id.toString(),
+              name:item.comboName
             })
+          })
         })
       },
       supplierChange(){
-          this.searchRelationGoods();
+        this.searchRelationGoods();
       },
       totalFlowChange(){
-          this.searchRelationGoods();
+        this.searchRelationGoods();
       },
       typeChange(){
-          this.searchRelationGoods();
+        this.searchRelationGoods();
       },
       cycleChange(){
-          this.addParams.cycleValue = 1;
-          this.searchRelationGoods();
+        this.addParams.cycleValue = 1;
+        this.searchRelationGoods();
       },
       cycleValueChange(){
-          this.searchRelationGoods();
+        this.searchRelationGoods();
       },
       /*
       *   商品关联
       */
       searchRelationGoods(){
-          let obj = this.addParams;
-          obj.suppliers = [{
-              supplierCount: '',
-              supplierGoodId: ''
-          }];
-          if(obj.supplierId && obj.totalFlow && obj.type) {
-              this.relationGoods = true;
-          };
+        let obj = this.addParams;
+        obj.suppliers = [{
+          supplierCount: '',
+          supplierGoodId: ''
+        }];
+        if(obj.supplierId && obj.totalFlow && obj.type) {
+          this.relationGoods = true;
+        };
 //          let params = {
 //              supplierId:obj.supplierId,
 //              monthFlow:obj.totalFlow,
@@ -259,16 +259,16 @@
 //              cycle:obj.cycle,
 //              cycleVal:obj.cycleValue
 //          };
-          let params = {
-            supplierId:null,
-            monthFlow:null,
-            type:null,
-            cycle:null,
-            cycleVal:null
-          };
-          searchSupplierGoods(params).then((res) => {
-              this.options = res.list;
-          })
+        let params = {
+          supplierId:null,
+          monthFlow:null,
+          type:null,
+          cycle:null,
+          cycleVal:null
+        };
+        searchSupplierGoods(params).then((res) => {
+          this.options = res.list;
+        })
 
       },
       close (refresh=false) {
@@ -301,9 +301,9 @@
       request() {
         let params = this.$data.addParams;
         addSupplierGoods(params).then(() => {
-           this.openMessage();
+          this.openMessage();
         }).catch((err) => {
-            this.$message.error( err.message );
+          this.$message.error( err.message );
         })
       },
       onSubmit() {
@@ -311,15 +311,15 @@
         let vm = this;
         this.$refs[formName].validate((valid) => {
           if(valid){
-              if(vm.options.length>0){
-                  this.request();
-              }else{
-                  this.$alert("无相关套餐，请重新选择","提示",{
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                  })
-              }
+            if(vm.options.length>0){
+              this.request();
+            }else{
+              this.$alert("无相关套餐，请重新选择","提示",{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              })
+            }
           };
           return valid;
         });

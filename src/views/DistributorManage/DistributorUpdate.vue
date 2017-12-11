@@ -65,6 +65,7 @@
       request() {
         let params = this.$data.distributorUpdateForm;
         params.distributorId = this.$props.distributorId.id;
+        console.log(params);
         updateDistributor(params).then(() => {
           this.openMessage();
         }).catch((err)=>{
