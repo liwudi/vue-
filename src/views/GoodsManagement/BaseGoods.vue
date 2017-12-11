@@ -29,15 +29,15 @@
           <el-table-column label="关联商品" align="center" width="70">
             <template slot-scope="scope">
               <el-button-group>
-                <el-button size="mini" type="info" title="查看" >查看</el-button>
+                <el-button size="mini" type="info" title="查看" @click="goodDetailVisible(true)">查看</el-button>
               </el-button-group>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="70">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.state == 1" size="mini" type="info" title="启用" >启用</el-button>
-              <el-button v-if="scope.row.state == 2" size="mini" type="danger" title="停用" >停用</el-button>
-              <el-button v-if="scope.row.state == 3" size="mini" type="default" title="删除" >删除</el-button>
+              <el-button  size="mini" type="default" >
+                {{ scope.row.state == 1 ? "启用" : scope.row.state == 2 ? "停用" : "删除" }}
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -51,23 +51,26 @@
           :total="resultData.total">
         </el-pagination>
       </div>
-      <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add">
-        <optional-goods-add :closeView="closeAddView" v-if="dialog.visible.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
+      <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add" :close-on-click-modal="false" :close-on-press-escape="false">
+        <optional-goods-add v-on="dialog.event.add"  v-if="dialog.visible.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
       </el-dialog>
+
+
     </el-main>
 </template>
 
 <script>
   import {searchNiGoods, deleteUser, resetUserPassword} from '../../services/GoodsManagementService';
-  import optionalGoodsAdd from './OptionaGoodslAdd.vue'
-  import { statusArr } from "./GoodsCofig";
+  import optionalGoodsAdd from './OptionaGoodslAdd.vue';
+
+  import { statusArr,event } from "./GoodsCofig";
   export default {
     components: {
-      optionalGoodsAdd,
+      optionalGoodsAdd
     },
     data () {
       return {
-        statusArr,
+        statusArr,event,
         queryParams:{
           comboTypeId:1,
           status:1,
@@ -80,23 +83,37 @@
         },
         dialog: {
           visible: {add: false, detail: false},
+          event:{add:{},detail:{}}
         }
       }
     },
     created() {
         this.request();
+        this.$data.dialog.event.add[event.CLOSE_DIALOG] = (refresh) => {
+          this.goodAddVisible(false);
+          refresh && this.request();
+        };
+        this.$data.dialog.event.detail[event.CLOSE_DIALOG] = (refresh) => {
+          this.goodDetailVisible(false);
+          refresh && this.request();
+        };
     },
     methods: {
       request () {
         searchNiGoods(this.queryParams).then((result) => {
            this.resultData = result;
-        });
+        }).catch((err) => {
+            this.$message.error( err.message );
+        })
       },
       statusChange(){
         this.request();
       },
       goodAddVisible (visible) {
         this.$data.dialog.visible.add = visible
+      },
+      goodDetailVisible(visible){
+        this.$data.dialog.visible.detail = visible
       },
       pageSizeChange(val) {
         this.queryParams.pageSize = val;

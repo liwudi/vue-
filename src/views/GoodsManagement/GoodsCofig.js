@@ -3,6 +3,10 @@ const statusArr = [{ id:1, name:"启用"},{ id:2, name:"停用"},{ id:'', name:"
       cycle = [{key:2,value:'月'},{key:3,value:'年'}],
       cycleValue = [[1,2,3,4,5,6,7,8,9,10,11,12],[1,2,3]],
       totalFlows = [{ id:"-1", name:"无限流量"},{ id:"1", name:"流量设置"}];
+const event = {
+  CLOSE_DIALOG: 'CLOSE_DIALOG'
+};
+
 function getRules () {
   return {
     name: [
@@ -25,5 +29,5 @@ function getRules () {
 }
 
 export {
-  statusArr ,totalFlows ,cycle ,cycleValue , getRules
+  statusArr ,totalFlows ,cycle ,cycleValue , getRules,event
 }
