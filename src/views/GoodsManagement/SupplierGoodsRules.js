@@ -19,9 +19,6 @@ function getRules () {
     ],
     supplierId: [
       {required: true, message: '请选择供应商', trigger: 'change'}
-    ],
-    distributorId:[
-      { required: true, message: '请选择分销商', trigger: 'change'}
     ]
   };
 }
