@@ -13,17 +13,22 @@ function downloadTemplate() {
 }
 
 /*
+*   获取分销商列表
+*/
+function searchDistributor( ) {
+  return RequestService.get(makeUrl("/biz/manager/getAllDistributor"))
+}
+/*
+*   获取供应商列表
+*/
+function searchSupplier() {
+  return RequestService.get(makeUrl("/biz/manager/getAllSupplier"));
+}
+/*
 *   sim卡列表查询
 * */
 function querySimList(params) {
   return RequestService.get(makeUrl("/manager/sim/searchSimList"),params)
-};
-function searchSupplier() {
-  return RequestService.get(makeUrl("/biz/manager/searchSupplier"));
-};
-
-function searchDistributor() {
-  return RequestService.get(makeUrl("/biz/manager/searchDistributor"))
 };
 
 /*
