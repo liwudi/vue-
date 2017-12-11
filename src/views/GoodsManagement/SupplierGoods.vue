@@ -39,9 +39,6 @@
             <el-button size="mini" type="danger" title="操作" @click="goodsOperate(scope.row)">
               {{ scope.row.state ===1 ? '启用' : scope.row.state ===2 ? '停用' : '删除' }}
             </el-button>
-            <!--<el-button v-if="scope.row.state == 1" size="mini" type="info" title="启用" >启用</el-button>
-            <el-button v-if="scope.row.state == 2" size="mini" type="danger" title="停用" >停用</el-button>
-            <el-button v-if="scope.row.state == 3" size="mini" type="default" title="删除" >删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -111,10 +108,7 @@
       detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;
         this.$data.supplierParams = {
-          name: row.name,
-          supplierId: row.id,
-          cycle: row.cycle,
-          cycleValue: row.cycleValue
+          supplierGoodId: row.id
         };
       },
       request() {
@@ -133,39 +127,23 @@
       goodsOperate(row) {
         let params = {
           id: row.id,
-          type: row.type,
+          type: 3,
           state: row.state
         };
+        let operateWord;
         if (params.state === 1) {
-          this.openMessage('您确定要停用该商品吗？', '停用', ()=>{
-            updateGoodsState(params).then(() => {
-              this.$message({type: 'success', message: '操作成功!'});
-              params.state = 2;
-              console.log(params.state);
-              this.request();
-            }).catch((err)=>{
-              this.$message({type: 'error', message: err.message});
-            })
-          });
-        } else if (params.state === 2) {
-          this.openMessage('您确定要启用该商品吗？', '启用', ()=>{
-            updateGoodsState(params).then(() => {
-              this.$message({type: 'success', message: '操作成功!'});
-              params.state = 1;
-              this.request();
-            }).catch((err)=>{
-              this.$message({type: 'error', message: err.message});
-            })
-          });
+          operateWord = '停用';
+        }  else if (params.state === 2) {
+          operateWord = '启用';
         }
-        /*this.openMessage('您确定要停用该商品吗？', '停用',()=>{
+        this.openMessage('您确定要'+ operateWord +'该商品吗？', operateWord, ()=>{
           updateGoodsState(params).then(() => {
             this.$message({type: 'success', message: '操作成功!'});
             this.request();
           }).catch((err)=>{
             this.$message({type: 'error', message: err.message});
           })
-        });*/
+        });
       },
       statusChange(){
         this.request();

@@ -4,13 +4,13 @@
     <el-table :data="detailData.list" stripe border>
       <el-table-column property="id" label="四维商品ID" align="center"></el-table-column>
       <el-table-column property="name" label="商品名称" align="center"></el-table-column>
-      <el-table-column property="supplier" label="分销商" align="center"></el-table-column>
+      <el-table-column property="distributor" label="分销商" align="center"></el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-  import { searchRelationSupplyGoods } from '../../services/GoodsManagementService';
+  import { searchRelationGoods } from '../../services/GoodsManagementService';
   export default {
     props: ['supplierParams'],
     data() {
@@ -30,14 +30,12 @@
       request() {
         this.$data.supplyGood = this.$props.supplierParams.name;
         let params = {
-          supplierId: this.$props.supplierParams.supplierId,
-          cycle: this.$props.supplierParams.cycle,
-          cycleValue: this.$props.supplierParams.cycleValue,
+          supplierGoodId: this.$props.supplierParams.supplierGoodId,
+          //supplierGoodId: 1, //TODO 此处为了显示查看测试数据
           pageNum: this.page.pageNum,
           pageSize: this.page.pageSize
         };
-        searchRelationSupplyGoods(params).then((data) => {
-          console.log(data);
+        searchRelationGoods(params).then((data) => {
           this.$data.detailData = data;
         });
       }

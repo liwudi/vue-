@@ -35,9 +35,9 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="70">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.state == 1" size="mini" type="info" title="启用" >启用</el-button>
-              <el-button v-if="scope.row.state == 2" size="mini" type="danger" title="停用" >停用</el-button>
-              <el-button v-if="scope.row.state == 3" size="mini" type="default" title="删除" >删除</el-button>
+              <el-button size="mini" type="danger" title="操作" @click="goodsOperate(scope.row)">
+                {{ scope.row.state ===1 ? '启用' : scope.row.state ===2 ? '停用' : '删除' }}
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -55,7 +55,7 @@
         <optional-goods-add v-on="dialog.event.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
       </el-dialog>
       <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
-        <baseGoods-detail v-on="dialog.event.detail" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
+        <baseGoods-detail v-on="dialog.event.detail" goodsType="base" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
       </el-dialog>
     </el-main>
 </template>
@@ -64,7 +64,7 @@
   const event = {
     CLOSE_DIALOG: 'CLOSE_DIALOG'
   };
-  import { searchNiGoods } from '../../services/GoodsManagementService';
+  import { searchNiGoods, updateGoodsState } from '../../services/GoodsManagementService';
   import optionalGoodsAdd from './OptionaGoodslAdd.vue';
   import baseGoodsDetail from './BaseGoodsDetail.vue';
   import { statusArr } from "./GoodsCofig";
@@ -101,16 +101,43 @@
     },
     methods: {
       detailTableVisible(visible, row) {
-        console.log(row);
         this.$data.dialog.visible.detail = visible;
         this.$data.baseGoodsParams = {
-          supplierGoodId: row.id,
-          name: row.name
+          niGoodId: row.id
         };
       },
       request () {
         searchNiGoods(this.queryParams).then((result) => {
            this.resultData = result;
+        });
+      },
+      openMessage(message, confirmText, doit) {
+        this.$confirm(message, '提示', {
+          cancelButtonText: '取消',
+          confirmButtonText: confirmText
+        }).then(() => {
+          doit();
+        }).catch(() => {});
+      },
+      goodsOperate(row) {
+        let params = {
+          id: row.id,
+          type: 1,
+          state: row.state
+        };
+        let operateWord;
+        if (params.state === 1) {
+          operateWord = '停用';
+        }  else if (params.state === 2) {
+          operateWord = '启用';
+        }
+        this.openMessage('您确定要'+ operateWord +'该商品吗？', operateWord, ()=>{
+          updateGoodsState(params).then(() => {
+            this.$message({type: 'success', message: '操作成功!'});
+            this.request();
+          }).catch((err)=>{
+            this.$message({type: 'error', message: err.message});
+          })
         });
       },
       statusChange(){
