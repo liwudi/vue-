@@ -62,11 +62,8 @@
 </template>
 
 <script>
-  const event = {
-    CLOSE_DIALOG: 'CLOSE_DIALOG'
-  };
   import { searchNiGoods, updateGoodsState } from '../../services/GoodsManagementService';
-  import optionalGoodsAdd from './OptionaGoodslAdd.vue';
+  import optionalGoodsAdd from './OptionalGoodsAdd.vue';
   import baseGoodsDetail from './BaseGoodsDetail.vue';
   import { statusArr,event } from "./GoodsCofig";
   export default {

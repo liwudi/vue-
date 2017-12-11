@@ -54,14 +54,15 @@
       <el-dialog title="商品添加" top="10vh" :visible.sync="dialog.visible.add" :close-on-click-modal="false" :close-on-press-escape="false">
         <optional-goods-add v-on="dialog.event.add"  v-if="dialog.visible.add" :goodAdd="queryParams.comboTypeId"></optional-goods-add>
       </el-dialog>
-        <baseGoods-detail v-on="dialog.event.detail" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
-</el-dialog>
+      <el-dialog title="商品关联" top="10vh" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialog.visible.detail" v-if="dialog.visible.detail">
+        <baseGoods-detail v-on="dialog.event.detail" goodsType="base" :baseGoodsParams="baseGoodsParams"></baseGoods-detail>
+      </el-dialog>
     </el-main>
 </template>
 
 <script>
   import { searchNiGoods, updateGoodsState } from '../../services/GoodsManagementService';
-  import optionalGoodsAdd from './OptionaGoodslAdd.vue'
+  import optionalGoodsAdd from './OptionalGoodsAdd.vue'
   import baseGoodsDetail from './BaseGoodsDetail.vue';
 
   import { statusArr,event } from "./GoodsCofig";
