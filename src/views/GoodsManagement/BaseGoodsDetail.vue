@@ -10,6 +10,15 @@
       <el-table-column property="price" label="商品价格" align="center"></el-table-column>
       <el-table-column property="distributor" label="供应商" align="center"></el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="pageSizeChange"
+      @current-change="pageCurrentChange"
+      :current-page="page.pageNum"
+      :page-sizes="[10, 20]"
+      :page-size="page.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="detailData.total">
+    </el-pagination>
   </div>
 </template>
 
@@ -44,6 +53,14 @@
           console.log(data);
           this.$data.detailData = data;
         });
+      },
+      pageSizeChange(val) {
+        this.page.pageSize = val;
+        this.request();
+      },
+      pageCurrentChange(val) {
+        this.page.pageNum = val;
+        this.request();
       }
     }
   }
