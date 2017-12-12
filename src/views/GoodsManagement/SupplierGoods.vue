@@ -37,7 +37,7 @@
         <el-table-column label="操作" align="center" width="70">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" title="操作" @click="goodsOperate(scope.row)">
-              {{ scope.row.state ===1 ? '启用' : scope.row.state ===2 ? '停用' : '删除' }}
+              {{ scope.row.state ===1 ? '停用' : '启用' }}
             </el-button>
           </template>
         </el-table-column>
@@ -108,6 +108,7 @@
       detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;
         this.$data.supplierParams = {
+          supplierGoodName: row.name,
           supplierGoodId: row.id
         };
       },
@@ -128,13 +129,13 @@
         let params = {
           id: row.id,
           type: 3,
-          state: row.state
+          state: row.state === 1 ? 2 : 1
         };
         let operateWord;
         if (params.state === 1) {
-          operateWord = '停用';
-        }  else if (params.state === 2) {
           operateWord = '启用';
+        } else {
+          operateWord = '停用';
         }
         this.openMessage('您确定要'+ operateWord +'该商品吗？', operateWord, ()=>{
           updateGoodsState(params).then(() => {

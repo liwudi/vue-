@@ -34,7 +34,7 @@ let Config =  {
     router.replace('login');
   },
 
-  serviceBaseUrl : "http://192.168.144.33:8888/api-ni-flow"
+  serviceBaseUrl : "http://192.168.144.34:8888/api-ni-flow"
 }
 
 
