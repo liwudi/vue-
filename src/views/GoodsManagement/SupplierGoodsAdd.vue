@@ -113,7 +113,7 @@
             if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
                callback(new Error('只能输入数字,小数点后2位'));
             };
-            if(value > this.addParams.price){
+            if(value*1 > this.addParams.price*1){
                 callback(new Error("促销价格不能大于商品价格"));
             }else{
                 callback();
