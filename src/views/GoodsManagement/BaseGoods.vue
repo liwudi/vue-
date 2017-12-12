@@ -15,7 +15,7 @@
           <el-table-column align="center" prop="id" label="商品Id"></el-table-column>
           <el-table-column align="center" prop="name" label="商品名称"></el-table-column>
           <el-table-column align="center" prop="totalFlow" label="商品规格"></el-table-column>
-          <el-table-column align="center" prop="comboType" label="商品类型"></el-table-column>
+          <el-table-column align="center" prop="type" label="商品类型"></el-table-column>
           <el-table-column align="center" prop="cycleValue" label="周期值"></el-table-column>
           <el-table-column align="center" prop="cycle" label="周期">
               <template slot-scope="scope">
