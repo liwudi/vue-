@@ -164,12 +164,12 @@
         },
         getSupplier(){
             searchSupplier().then((result) => {
-              this.$data.suppliers = result.list;
+              this.$data.suppliers = result;
             });
         },
         getDistributor(){
           searchDistributor().then((result) => {
-            this.$data.distributors = result.list;
+              this.$data.distributors = result;
           });
         },
         onSubmit() {

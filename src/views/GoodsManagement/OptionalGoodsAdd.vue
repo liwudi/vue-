@@ -58,7 +58,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="促销价格" prop="salePrice">
-        <el-input v-model="addParams.salePrice" placeholder="请输入促销价格">
+        <el-input v-model="addParams.salePrice" :disabled="saleIs" placeholder="请输入促销价格">
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
@@ -114,26 +114,37 @@
     data() {
       var cyclePass = (rule, value, callback) => {
         if(!value){
-          return callback(new Error('请选择周期'));
-        }
-        if(!this.addParams.cycleValue){
-          return callback(new Error('请选择周期值'));
+            callback(new Error('请选择周期'));
+        }else{
+            callback();
         }
       };
       var pricePass = (rule, value, callback)=>{
         if(!value){
-          return callback(new Error('请输入商品价格'));
-        }
-        if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
-          return callback(new Error('只能输入数字,小数点后2位'))
+          this.saleIs = true;
+          callback(new Error("请输入商品价格"))
+        }else{
+          if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
+            this.saleIs = true;
+            callback(new Error("只能输入数字,小数点后2位"))
+          }else{
+            this.saleIs = false;
+            callback();
+          }
         }
       };
       var salePricePass = (rule, value, callback)=>{
-        if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
-          return callback(new Error('只能输入数字,小数点后2位'))
-        }
-        if(value > this.addParams.price){
-          return callback(new Error('促销价格不能大于商品价格'))
+        if(value){
+          if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
+            callback(new Error('只能输入数字,小数点后2位'));
+          };
+          if(value > this.addParams.price){
+            callback(new Error("促销价格不能大于商品价格"));
+          }else{
+            callback();
+          }
+        }else{
+          callback();
         }
       };
       return {
@@ -143,6 +154,7 @@
         suppliers:[],
         distributors:[],
         goodTypes:[],
+        saleIs:true,
         relationGoods:false,  // 商品列表默认不显示
         addParams: {
           name: '',
@@ -160,15 +172,13 @@
         rules: {
           ...rules,
           cycle : [
-            {required: true, message: '请选择周期值'},
             { validator: cyclePass, trigger: 'change' }
           ],
           price : [
-            {required: true, message: '请输入商品价格', trigger: 'change'},
              { validator: pricePass, trigger: 'change' }
           ],
           salePrice : [
-            //{ validator: salePricePass, trigger: 'change' }
+            { validator: salePricePass, trigger: 'change' }
           ]
         }
       }
@@ -252,19 +262,12 @@
         if(obj.supplierId && obj.totalFlow && obj.type) {
           this.relationGoods = true;
         };
-//          let params = {
-//              supplierId:obj.supplierId,
-//              monthFlow:obj.totalFlow,
-//              type:obj.type,
-//              cycle:obj.cycle,
-//              cycleVal:obj.cycleValue
-//          };
         let params = {
-          supplierId:null,
-          monthFlow:null,
-          type:null,
-          cycle:null,
-          cycleVal:null
+            supplierId:obj.supplierId,
+            monthFlow:obj.totalFlow,
+            type:obj.type,
+            cycle:obj.cycle,
+            cycleVal:obj.cycleValue
         };
         searchSupplierGoods(params).then((res) => {
           this.options = res.list;
@@ -282,7 +285,6 @@
           confirmButtonText: '确定',
           callback: action => {
             this.close();
-
           }
         });
       },
