@@ -1,11 +1,11 @@
 <template>
   <el-main>
     <el-form ref="userForm" :rules="rules" :model="userForm" label-width="80px" size="medium">
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
+      <el-form-item label="用户名" prop="loginName">
+        <el-input v-model="userForm.loginName" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="姓名" prop="loginName">
-        <el-input v-model="userForm.loginName" placeholder="请输入姓名"></el-input>
+      <el-form-item label="姓名" prop="userName">
+        <el-input v-model="userForm.userName" placeholder="请输入姓名"></el-input>
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="userForm.sex" placeholder="请选择性别">
@@ -65,7 +65,11 @@
         let params = this.$data.userForm;
         addUser(params).then(() => {
           this.openMessage();
-        });
+        }).catch((rs)=>{
+          if(rs.code==806){
+            this.$message({type: 'warning', message: "用户名不能重复"});
+          }
+        })
       },
       openMessage() {
         this.$alert('用户创建成功，密码为默认密码！', '提示', {

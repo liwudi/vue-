@@ -7,22 +7,14 @@ function makeUrl(path) {
 function addSupplier(params) {
   return CommonService.post(makeUrl('/biz/manager/addSupplier'), params)
 }
-function deleteSupplier(supplierIds) {
-  return CommonService.get(makeUrl('/biz/manager/deleteSupplier'), supplierIds).then((result) => {
-    return result;
-  }).catch((err) => {
-    return err
-  });
+function deleteSupplier(params) {
+  return CommonService.get(makeUrl('/biz/manager/deleteSupplier'), params)
 }
 function updateSupplier(params) {
   return CommonService.post(makeUrl('/biz/manager/updateSupplier'), params)
 }
 function getSupplier(params) {
-  return CommonService.get(makeUrl('/biz/manager/searchSupplier'), params).then((result) => {
-    return result;
-  }).catch((err) => {
-    return err
-  });
+  return CommonService.get(makeUrl('/biz/manager/searchSupplier'), params)
 }
 export {
   addSupplier, deleteSupplier, updateSupplier, getSupplier
