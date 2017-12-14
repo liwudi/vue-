@@ -34,8 +34,14 @@ function querySimList(params) {
 /*
 *   导入
 * */
-function batchAddSims( ) {
-    return config.serviceBaseUrl+"/manager/sim/batchAddSims";
+function batchAddSims(file) {
+    // return config.serviceBaseUrl+"/manager/sim/batchAddSims";
+  return RequestService.post(
+    makeUrl('/manager/sim/batchAddSims'),
+    {
+      file:file
+    },null,true
+  )
 };
 
 /*
