@@ -156,7 +156,7 @@
       },
       //删除按钮
       distributorDelete(row) {
-        this.openMessage('您确定要删除该分销商吗？', '删除',()=>{
+        this.openMessage('您确定要删除该分销商吗？', '删除', ()=>{
           deleteDistributor({distributorIds: row.id}).then(() => {
             this.$message({type: 'success', message: '操作成功!'});
             this.request();
@@ -171,4 +171,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped rel="stylesheet/scss">
+  .tpl-form-inline .el-input {
+    width: 200px;
+  }
 </style>
