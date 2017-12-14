@@ -43,7 +43,7 @@
         </div>
 
         <el-table stripe border :data="resultData.list">
-            <el-table-column :prop="orderId" label="订单号" align="center">
+            <el-table-column prop="orderId" label="订单号" align="center">
                 <template slot-scope="scope" v-if="scope.row.id">{{ scope.row.id }}</template>
             </el-table-column>
             <el-table-column prop="iccId" label="ICCID" align="center"></el-table-column>
@@ -97,6 +97,7 @@
       }
     },
     created(){
+        this.defaultDate();
         this.getDistributorList();
         this.request();
     },
@@ -106,9 +107,21 @@
               this.resultData = result;
          })
       },
+      defaultDate(){
+          let date = new Date(),
+            year = date.getFullYear(),
+            month = date.getMonth()+1;
+
+          let startDate = year+"-"+month+"-01 00:00:00";
+          let endDate = date.getTime();
+
+          this.startEndDateTime = [startDate,endDate];
+          this.queryParams.timeStart = new Date(startDate).getTime()
+          this.queryParams.timeEnd = new Date(endDate).getTime()
+      },
       getDistributorList(){
           searchDistributor().then((result) => {
-              this.distributors = result.list;
+              this.distributors = result
           })
       },
       distributorChange(){
@@ -118,11 +131,28 @@
           this.request();
       },
       dateTimeChange(){
-          let startEndDateTime = this.startEndDateTime;
-          this.queryParams.timeStart = startEndDateTime ? startEndDateTime[0].getTime() : '';
-          this.queryParams.timeEnd = startEndDateTime ? startEndDateTime[1].getTime() : '';
-      },
+          let date = new Date(),
+              year = date.getFullYear(),
+              month = date.getMonth()+1,
+              day = date.getDate(),
+              h = date.getHours(),
+              min = date.getMinutes(),
+              sec = date.getSeconds();
+          let minDate = new Date((year-1)+"-"+month+"-"+day+" "+h+":"+min+":"+sec).getTime();
+          let maxDate = date.getTime();
 
+          let startEndDateTime = this.startEndDateTime;
+          if(startEndDateTime[0].getTime() < minDate || startEndDateTime[1].getTime() > maxDate  ){
+              this.$message("查询时间最大范围为一年，请重新选择");
+              this.defaultDate();
+              this.request();
+          }else{
+              this.queryParams.timeStart = startEndDateTime[0].getTime();
+              this.queryParams.timeEnd = startEndDateTime[1].getTime();
+              this.request();
+          }
+
+      },
       onSubmit(){
           let formName = this.$data.formName;
           this.$refs[formName].validate((valid) => {
@@ -131,12 +161,10 @@
           });
       },
       reset(){
-        this.startEndDateTime = null;
-        this.queryParams = {
-            type:"",
-            distributorId:"",
-            pageNum:1,
-        };
+        this.queryParams.type = '';
+        this.queryParams.distributorId = '';
+        this.queryParams.pageNum = 1;
+        this.defaultDate();
         this.request();
       },
       getDownloadUrl(){

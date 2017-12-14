@@ -18,7 +18,7 @@ function searchBillForDistributor(params) {
 *   分销商列表查询
 * */
 function searchDistributor(){
-  return RequestService.get(makeUrl('/biz/manager/searchDistributor'));
+  return RequestService.get(makeUrl('/biz/manager/getAllDistributor'));
 }
 /**
  * 分销商对账下载
