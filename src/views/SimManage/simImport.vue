@@ -1,65 +1,63 @@
 <template>
-  <el-main>
-    <el-form :model="simImportForm" >
-      <el-upload
-        ref="upload"
-        :action="getImportUrl()"
-        :on-change="changeFn"
-        :on-success="successFn"
-        :on-error="errorFn"
-        :auto-upload="false"
-        :show-file-list="false">
-        <el-button size="small" type="text">点击这里上传文件</el-button>
-        <div style="color: #000;" >{{ file.name }}</div>
-      </el-upload>
-      <el-form-item>
-        <el-button type="primary" :disabled="importOkBtn" @click="submitUpload">确 定</el-button>
-        <el-button @click="cancelForm">取 消</el-button>
-        <a style="margin-left: 5px;" :href="getDownloadUrl()" download="" target="_blank" >
-           <el-button>下载模板</el-button>
-        </a>
-      </el-form-item>
-    </el-form>
-  </el-main>
+  <div>
+    <div class="filebox">
+      <input style="font-size: 16px" type="file" @change="changeFn" accept=".xls,.xlsx">
+    </div>
+    <div>
+      <el-button type="primary" :disabled="importOkBtn" @click="submitUpload">确 定</el-button>
+      <el-button @click="cancelForm">取 消</el-button>
+      <a style="margin-left: 5px;" :href="getDownloadUrl()" download="" target="_blank">
+        <el-button>下载模板</el-button>
+      </a>
+    </div>
+  </div>
 </template>
 
 <script>
-  import { batchAddSims , downloadTemplate } from  '../../services/SimManageService';
-  import { event } from './SimConfig';
+  import { batchAddSims, downloadTemplate } from '../../services/SimManageService'
+  import { event } from './SimConfig'
+
   export default {
     data () {
       return {
-        simImportForm:{},
-        file:{},
-        importOkBtn:true
+        simImportForm: {},
+        importOkBtn: true,
+        simfile: null
       }
     },
-    methods:{
-      cancelForm() {
-        this.close();
+    methods: {
+      cancelForm () {
+        this.close()
       },
-      close (refresh=false) {
-        this.$emit(event.CLOSE_DIALOG, refresh);
+      close (refresh = false) {
+        this.$emit(event.CLOSE_DIALOG, refresh)
       },
-      changeFn(file){
-        this.$data.file = file;
-        this.importOkBtn = false;
+      changeFn (e) {
+        let files = e.target.files || e.dataTransfer.files
+        if (!files.length)
+          return
+        this.simfile = files[0]
+        this.importOkBtn = false
       },
-      successFn( res, file, fileList ){
-          this.$message.success("上传成功");
-          this.close();
+      successFn () {
+        this.$message.success('上传成功')
+        this.close(true)
       },
-      errorFn( err, file, fileList ){
-          this.$message.success( err.message );
+      errorFn (err) {
+        this.$message.error(err.message)
       },
-      getImportUrl(){
-          return  batchAddSims();
+      getDownloadUrl () {
+        return downloadTemplate()
       },
-      getDownloadUrl(){
-          return downloadTemplate();
-      },
-      submitUpload() {
-          this.$refs.upload.submit();
+      submitUpload () {
+        if (!this.simfile) return false;
+        batchAddSims(this.simfile)
+          .then(()=>{
+            this.successFn()
+          })
+          .catch((err)=>{
+            this.errorFn(err)
+          })
       }
 
     }
@@ -68,5 +66,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped rel="stylesheet/scss">
-
+  .filebox {
+    padding: 0 0 20px 0;
+  }
 </style>

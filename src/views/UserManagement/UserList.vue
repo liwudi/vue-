@@ -3,13 +3,13 @@
     <div class="tpl-title">用户管理</div>
     <div class="tpl-mg-t">
       <el-form ref="userForm" :inline="true" :rules="rules" :model="userForm" class="tpl-form-inline" size="medium">
-        <el-form-item label="用户名" prop="userName">
-          <el-input v-model="userForm.userName" placeholder="请输入用户名"></el-input>
+        <el-form-item label="用户名" >
+          <el-input v-model="userForm.loginName" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="loginName">
-          <el-input v-model="userForm.loginName" placeholder="请输入姓名"></el-input>
+        <el-form-item label="姓名" >
+          <el-input v-model="userForm.userName" placeholder="请输入姓名"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
+        <el-form-item label="手机号" >
           <el-input v-model="userForm.phone" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="性别">
@@ -37,11 +37,11 @@
         <el-table-column label="序号" align="center" width="96">
           <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
-        <el-table-column align="center" prop="userName" label="用户名"></el-table-column>
-        <el-table-column align="center" prop="loginName" label="姓名"></el-table-column>
+        <el-table-column align="center" prop="loginName" label="用户名"></el-table-column>
+        <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
         <el-table-column align="center" prop="phone" label="手机号"></el-table-column>
         <el-table-column align="center" prop="sex" label="性别">
-          <template slot-scope="scope">{{scope.row.sex ? scope.row.sex === 1 ? '男' : '女'  : '未知'}}</template>
+          <template slot-scope="scope" >{{scope.row.sex ? scope.row.sex === 1 ? '男' : '女'  : '未知'}}</template>
         </el-table-column>
         <el-table-column align="center" prop="state" label="用户状态">
           <template slot-scope="scope">{{scope.row.state ? scope.row.state === 1 ? '可用' : '停用'  : '未知'}}</template>
@@ -49,9 +49,9 @@
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" title="修改" @click="userUpdateVisible(true, scope.row)">编辑</el-button>
-              <el-button size="mini" type="danger" title="删除" @click="userDelete(scope.row)">停用</el-button>
-              <el-button size="mini" type="default" title="密码重置" @click="userPasswordReset(scope.row)">重置密码</el-button>
+              <el-button size="mini" type="info" title="" @click="userUpdateVisible(true, scope.row)">编辑</el-button>
+              <el-button size="mini" type="danger" title="" @click="userDelete(scope.row)">停用</el-button>
+              <el-button size="mini" type="default" title="" @click="userPasswordReset(scope.row)">重置密码</el-button>
             </el-button-group>
           </template>
         </el-table-column>

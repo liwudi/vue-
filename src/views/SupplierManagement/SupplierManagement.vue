@@ -30,10 +30,8 @@
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button size="mini" type="info" @click="updateFormVisible(true, scope.row)" ><i
-                class="el-icon-edit"></i></el-button>
-              <el-button size="mini" type="danger" @click="supplierDelete(scope.$index, scope.row)"><i
-                class="el-icon-delete"></i></el-button>
+              <el-button size="mini" type="info" @click="updateFormVisible(true, scope.row)" ><i class="el-icon-edit"></i></el-button>
+              <el-button size="mini" type="danger" @click="supplierDelete(scope.row)"><i class="el-icon-delete"></i></el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -42,7 +40,7 @@
         @size-change="pageSizeChange"
         @current-change="pageCurrentChange"
         :current-page="page.pageNum"
-        :page-sizes="[10, 20,30,40]"
+        :page-sizes="[10, 20]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="page.total">
@@ -126,24 +124,16 @@
         this.$data.id = Object.assign({},id);
         this.$data.dialog.visible.update = visible;
       },
-      openMessage(message, confirmText) {
+      openMessage(message, confirmText,doit) {
         this.$confirm(message, '提示', {
           cancelButtonText: '取消',
           confirmButtonText: confirmText
         }).then(() => {
-          this.$message({type: 'success', message: '操作成功!'});
-          this.request();
+          doit();
         }).catch(() => {
-          this.$message({type: 'info', message: '已取消操作'});
         });
       },
-      //删除
-      supplierDelete(index, row) {
-        console.log(index, row);
-        deleteSupplier({supplierIds: row.id}).then(() => {
-          this.openMessage('您确定要删除该供应商吗？', '删除');
-        });
-      },
+
       //列表
       request() {
         let params = this.$data.supplierQuery;
@@ -153,6 +143,18 @@
           this.$data.page = result;
 
         });
+      },
+      //删除
+      supplierDelete( row) {
+        this.openMessage('您确定要删除该供应商吗？', '删除',()=>{
+          deleteSupplier({supplierIds: row.id}).then(() => {
+            this.$message({type: 'success', message: '操作成功!'});
+            this.request();
+          }).catch((err)=>{
+            this.$message({type: 'error', message: err.message});
+          })
+        });
+
       },
       //页码
       pageSizeChange(val) {
