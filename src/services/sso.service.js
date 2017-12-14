@@ -61,6 +61,21 @@ export default {
     return RequestService.get(
       makeUrl('/manager/user/logout')
     )
+  },
+  /** 2017/12/14
+   *功能: 修改密码
+   *@param opts
+   *return
+   **/
+  updatePassword: function (opts) {
+    return RequestService.post(
+      makeUrl('/manager/user/updatePassword'),
+      {
+        userId:opts.userId,
+        oldPassword:opts.oldPassword,
+        newPassword:opts.newPassword
+      }
+    )
   }
 
 
