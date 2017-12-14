@@ -17,7 +17,11 @@
         </el-table-column>
         <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
         <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
-        <el-table-column prop="totalFlow" label="商品规格" align="center"></el-table-column>
+        <el-table-column prop="totalFlow" label="商品规格" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.totalFlow === -1 ? '无线流量' : scope.row.totalFlow +'M' }}
+          </template>
+        </el-table-column>
         <el-table-column prop="type" label="商品类型" align="center"></el-table-column>
         <el-table-column prop="cycleValue" label="周期值" align="center"></el-table-column>
         <el-table-column prop="cycle" label="周期" align="center">

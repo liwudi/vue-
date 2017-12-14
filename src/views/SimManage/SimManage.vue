@@ -48,6 +48,9 @@
       <el-table
         :data="resultData.list"
         stripe border>
+        <el-table-column label="序号" width="96" align="center">
+          <template slot-scope="scope">{{ scope.$index + 1 }}</template>
+        </el-table-column>
         <el-table-column prop="iccId" label="ICCID" align="center"></el-table-column>
         <el-table-column prop="distributorName" label="分销商" align="center"></el-table-column>
         <el-table-column prop="supplierName" label="供应商" align="center"></el-table-column>
@@ -79,7 +82,7 @@
           @current-change="handleCurrentChange"
           :current-page="queryParmas.pageNum"
           :page-sizes="[10,20]"
-          :page-size="queryParmas.pageSize"
+          :page-size="100"
           layout="total, sizes, prev, pager, next, jumper"
           :total="resultData.total">
         </el-pagination>
@@ -120,7 +123,7 @@
           supplierId: 'all',
           distributorId: 'all',
           iccId:"",
-          pageNum : 1 ,
+          pageNum : 1,
           pageSize: 10
         },
         resultData:{
@@ -233,6 +236,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped rel="stylesheet/scss">
-
-
 </style>

@@ -62,7 +62,7 @@
           <template slot="append">元</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="商品介绍" prop="desc">
+      <el-form-item label="商品介绍" prop="message">
         <el-input type="textarea" :rows="2" v-model="addParams.message" placeholder="请输入商品介绍"></el-input>
       </el-form-item>
       <el-form-item label="分销商" prop="distributorId">

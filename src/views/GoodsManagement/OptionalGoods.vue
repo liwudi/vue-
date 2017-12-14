@@ -12,9 +12,16 @@
     <el-button type="primary" @click="goodAddVisible(true)" size="medium">添加套餐</el-button>
     <div class="tpl-mg-t">
       <el-table :data="resultData.list" stripe border>
+        <el-table-column label="序号" width="96" align="center">
+          <template slot-scope="scope">{{ scope.$index + 1 }}</template>
+        </el-table-column>
         <el-table-column align="center" prop="id" label="商品Id"></el-table-column>
         <el-table-column align="center" prop="name" label="商品名称"></el-table-column>
-        <el-table-column align="center" prop="totalFlow" label="商品规格"></el-table-column>
+        <el-table-column align="center" prop="totalFlow" label="商品规格">
+          <template slot-scope="scope">
+            {{ scope.row.totalFlow === -1 ? '无线流量' : scope.row.totalFlow +'M' }}
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="type" label="商品类型"></el-table-column>
         <el-table-column align="center" prop="cycleValue" label="周期值"></el-table-column>
         <el-table-column align="center" prop="cycle" label="周期">

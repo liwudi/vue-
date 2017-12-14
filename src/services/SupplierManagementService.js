@@ -5,20 +5,20 @@ function makeUrl(path) {
 }
 
 function addSupplier(params) {
-  return CommonService.post(makeUrl('/biz/manager/addSupplier'), params)
+  return CommonService.post(makeUrl('/manager/biz/addSupplier'), params)
 }
 function deleteSupplier(supplierIds) {
-  return CommonService.get(makeUrl('/biz/manager/deleteSupplier'), supplierIds).then((result) => {
+  return CommonService.get(makeUrl('/manager/biz/deleteSupplier'), supplierIds).then((result) => {
     return result;
   }).catch((err) => {
     return err
   });
 }
 function updateSupplier(params) {
-  return CommonService.post(makeUrl('/biz/manager/updateSupplier'), params)
+  return CommonService.post(makeUrl('/manager/biz/updateSupplier'), params)
 }
 function getSupplier(params) {
-  return CommonService.get(makeUrl('/biz/manager/searchSupplier'), params).then((result) => {
+  return CommonService.get(makeUrl('/manager/biz/searchSupplier'), params).then((result) => {
     return result;
   }).catch((err) => {
     return err

@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-form  :model="simImportForm" >
+    <el-form :model="simImportForm" >
       <el-upload
         ref="upload"
         :action="getImportUrl()"
@@ -9,7 +9,7 @@
         :on-error="errorFn"
         :auto-upload="false"
         :show-file-list="false">
-        <el-button  size="small" type="text">点击这里上传文件</el-button>
+        <el-button size="small" type="text">点击这里上传文件</el-button>
         <div style="color: #000;" >{{ file.name }}</div>
       </el-upload>
       <el-form-item>
@@ -45,11 +45,11 @@
         this.$data.file = file;
         this.importOkBtn = false;
       },
-      successFn( res, file, fileList){
+      successFn( res, file, fileList ){
           this.$message.success("上传成功");
           this.close();
       },
-      errorFn( err, file, fileList){
+      errorFn( err, file, fileList ){
           this.$message.success( err.message );
       },
       getImportUrl(){

@@ -27,7 +27,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="周期值/周期"  prop="cycle">
+      <el-form-item label="周期值/周期" prop="cycle">
         <el-select v-model="addParams.cycle" @change="cycleChange" placeholder="请选择周期值">
           <el-option
             v-for="item in cycle"
@@ -45,7 +45,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品价格"  prop="price">
+      <el-form-item label="商品价格" prop="price">
         <el-input v-model="addParams.price" placeholder="请输入商品价格">
           <template slot="append">元</template>
         </el-input>
@@ -90,19 +90,19 @@
       let cyclePass = (rule, value, callback) => {
           if (!value) {
               callback(new Error('请选择周期'));
-          }else{
+          } else {
               callback();
           }
       };
       let pricePass = (rule, value, callback) => {
-          if(!value){
+          if (!value) {
               this.saleIs = true;
               callback(new Error("请输入商品价格"))
-          }else{
-              if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
+          } else {
+              if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
                   this.saleIs = true;
                   callback(new Error("只能输入数字,小数点后2位"))
-              }else{
+              } else {
                   this.saleIs = false;
                   callback();
               }
@@ -110,15 +110,15 @@
       };
       let salePricePass = (rule, value, callback) => {
         if(value){
-            if(!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)){
+            if (!String(value).match(/^([1-9]\d*|0)(\.\d{1,2})?$/)) {
                callback(new Error('只能输入数字,小数点后2位'));
-            };
-            if(value*1 > this.addParams.price*1){
+            }
+            if (value*1 > this.addParams.price*1) {
                 callback(new Error("促销价格不能大于商品价格"));
-            }else{
+            } else {
                 callback();
             }
-        }else{
+        } else {
             callback();
         }
       };
@@ -127,7 +127,7 @@
         totalFlows, cycle, cycleValue,
         goodTypes: [],
         suppliers: [],
-        saleIs:true,  // 促销价格禁止
+        saleIs: true,  // 促销价格禁止
         addParams: {
           id: '',
           name: '',
@@ -143,13 +143,15 @@
         rules: {
           ...rules,
           cycle: [
-            { validator: cyclePass, trigger: 'change' }
+            {required: true, message: '', trigger: 'change'},
+            {validator: cyclePass, trigger: 'change'}
           ],
           price: [
-              { validator:pricePass,trigger: 'change'}
+            {required: true, message: '请选择商品价格', trigger: 'change'},
+            {validator:pricePass, trigger: 'change'}
           ],
           salePrice: [
-              {validator: salePricePass, trigger: 'change'}
+            {validator: salePricePass, trigger: 'change'}
           ]
         }
       }
