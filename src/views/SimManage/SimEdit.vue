@@ -60,7 +60,9 @@
                       vm.$data.simEditForm.date = item.basicExpirationDate.time;
                   };
               });
-          });
+          }).catch((err) => {
+              this.$message.error(err.message)
+          })
       },
       mealChange() {
           let id =  this.simEditForm.comboId;

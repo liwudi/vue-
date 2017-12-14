@@ -163,17 +163,23 @@
           let params = this.$data.queryParmas;
           querySimList(params).then((result) => {
               this.$data.resultData = result;
+          }).catch((err) => {
+              this.$message.error(err.message);
           })
         },
         getSupplier(){
             searchSupplier().then((result) => {
               this.$data.suppliers = result;
-            });
+            }).catch((err) => {
+              this.$message.error(err.message);
+            })
         },
         getDistributor(){
           searchDistributor().then((result) => {
               this.$data.distributors = result;
-          });
+          }).catch((err) => {
+            this.$message.error(err.message);
+          })
         },
         onSubmit() {
           let formName = this.$data.formName;

@@ -109,6 +109,8 @@
       request() {
         detailSim({ iccId:this.$props.detailIccid }).then((result) => {
             this.resultData = result;
+        }).catch((err) => {
+          this.$message.error(err.message)
         });
         let params = {
             iccId : this.$props.detailIccid ,
@@ -118,6 +120,8 @@
         searchSimCombo(params).then((result) => {
             this.page.total = result.total ;
             this.simCombo = result.list ;
+        }).catch((err) => {
+          this.$message.error(err.message)
         })
       },
       cancelForm (refresh=false){

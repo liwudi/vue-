@@ -111,9 +111,11 @@
     methods: {
       request () {
         searchNiGoods(this.queryParams).then((result) => {
-          console.log(result);
            this.resultData = result;
-        });
+        }).catch((err) => {
+            this.$message.error(err.message);
+            this.resultData=[]
+        })
       },
       detailTableVisible(visible, row) {
         this.$data.dialog.visible.detail = visible;

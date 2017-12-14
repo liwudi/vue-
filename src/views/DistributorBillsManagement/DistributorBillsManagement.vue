@@ -125,6 +125,8 @@
       getDistributorList(){
           searchDistributor().then((result) => {
               this.distributors = result
+          }).catch((err) => {
+            this.$message.error(err.message)
           })
       },
       distributorChange(){
