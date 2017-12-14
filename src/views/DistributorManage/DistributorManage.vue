@@ -171,4 +171,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped rel="stylesheet/scss">
+  .tpl-form-inline .el-input {
+    width: 150px;
+  }
 </style>
