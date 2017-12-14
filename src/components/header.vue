@@ -5,35 +5,72 @@
       <el-dropdown trigger="click" @command="handleCommand">
               <span class="el-dropdown-link">
                     {{name}}
+                <i  class="el-icon-caret-bottom"></i>
                 </span>
+
         <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="UpdatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item command="loginout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <el-dialog title="修改密码" width="65%" :visible.sync="dialog.visible.add" :close-on-click-modal="false" :close-on-press-escape="false" v-if="dialog.visible.add">
+      <update-password v-on="dialog.event.add"></update-password>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  const event = {
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
+  };
+
   import commonService from '../services/commonService'
   import ssoService from '../services/sso.service'
-
+  import updatePassword from '../views/UpdatePassword/UpdatePassword.vue'
   export default {
+    components: {
+      updatePassword
+    },
     data () {
       return {
-        name: ''
+        dialog: {
+          visible: {add: false},
+          event: {add: {}}
+        },
+        name: '',
+        userId:'',
+
       }
     },
+    created() {
+      this.$data.dialog.event.add[event.CLOSE_DIALOG] = () => {
+        this.addFormVisible(false);
+      };
+    },
     mounted () {
-      this.name = commonService.getUserInfo().userName || ''
+      this.name = commonService.getUserInfo().userName || '',
+        this.userId = commonService.getUserInfo().id
     },
     methods: {
+
+
+
       handleCommand (command) {
         switch (command) {
           case 'loginout' :
             this.loginOut()
+            break;
+          case 'UpdatePassword':
+            this.addFormVisible(true)
+            break;
         }
       },
+
+      addFormVisible(visible) {
+        this.$data.dialog.visible.add = visible;
+      },
+
       openMessage(message, confirmText, doit) {
         this.$confirm(message, '提示', {
           cancelButtonText: '取消',
