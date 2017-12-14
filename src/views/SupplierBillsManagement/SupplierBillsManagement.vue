@@ -14,9 +14,10 @@
           <el-form-item label="供应商">
             <el-select v-model="queryParams.SupplierId" placeholder="请选择分销商" @change="supplierChange">
               <el-option v-for="item in wrap" :key="item.id" :label="item.name" :value="item.id"></el-option>
-              <el-option v-for="item in suppliers" :key="item.id"
-                         :label="item.supplerName" :value="item.id"
-              >
+              <el-option v-for="item in suppliers"
+                         :key="item.id"
+                         :label="item.supplierName"
+                         :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
@@ -97,7 +98,7 @@
     methods:{
       getSupplierList(){
         searchSupplier().then((result) => {
-              this.suppliers = result.list;
+              this.suppliers = result;
         })
       },
       request(){
@@ -161,7 +162,7 @@
         this.queryParams.pageNum = 1;
         this.defaultDate();
         this.request();
-        
+
       },
       handleSizeChange(val){
         this.queryParams.pageSize = val;

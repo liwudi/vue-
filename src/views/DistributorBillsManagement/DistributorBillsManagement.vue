@@ -105,6 +105,9 @@
       request(){
          searchBillForDistributor(this.queryParams).then((result) => {
               this.resultData = result;
+         }).catch((err) => {
+             this.$message.error(err.message);
+             this.resultData = [];
          })
       },
       defaultDate(){

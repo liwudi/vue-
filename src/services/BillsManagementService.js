@@ -46,7 +46,7 @@ function searchBillForSupplier (params) {
 *   供应商列表查询
 */
 function searchSupplier() {
-  return RequestService.get(makeUrl('/biz/manager/searchSupplier'))
+  return RequestService.get(makeUrl('/biz/manager/getAllSupplier'))
 }
 
 /**
