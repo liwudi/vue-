@@ -7,7 +7,6 @@
                     {{name}}
                 <i  class="el-icon-caret-bottom"></i>
                 </span>
-
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="UpdatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item command="loginout">退出</el-dropdown-item>
