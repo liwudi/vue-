@@ -34,18 +34,29 @@
             this.loginOut()
         }
       },
+      openMessage(message, confirmText, doit) {
+        this.$confirm(message, '提示', {
+          cancelButtonText: '取消',
+          confirmButtonText: confirmText
+        }).then(() => {
+          doit();
+        }).catch(() => {
+        });
+      },
       loginOut () {
-        ssoService.loginOut()
-          .then(()=>{
-            this.$message({type: 'success', message: '退出成功'});
-            window.localStorage.clear();
-            setTimeout(()=>{
-              this.$router.replace('login');
-            },500)
-          })
-          .catch((err)=>{
-            this.$message({type: 'warning', message: err.message});
-          })
+        this.openMessage('您确定要退出吗？', '确定', ()=>{
+          ssoService.loginOut()
+            .then(()=>{
+              this.$message({type: 'success', message: '退出成功'});
+              window.localStorage.clear();
+              setTimeout(()=>{
+                this.$router.replace('login');
+              },500)
+            })
+            .catch((err)=>{
+              this.$message({type: 'warning', message: err.message});
+            })
+        })
       }
     }
   }
@@ -71,6 +82,7 @@
       margin-top: 3px;
       .el-dropdown {
         color: $font-color;
+        cursor: pointer;
       }
     }
   }
