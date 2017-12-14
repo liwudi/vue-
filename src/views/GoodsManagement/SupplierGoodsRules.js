@@ -14,7 +14,7 @@ function getRules () {
     type: [
       {required: true, message: '请选择商品类型', trigger: 'change'}
     ],
-    desc: [
+    message: [
       {max: 100, message: '商品介绍最大字符长度为100', trigger: 'change'}
     ],
     supplierId: [

@@ -18,7 +18,7 @@ function searchBillForDistributor(params) {
 *   分销商列表查询
 * */
 function searchDistributor(){
-  return RequestService.get(makeUrl('/biz/manager/getAllDistributor'));
+  return RequestService.get(makeUrl('/manager/biz/searchDistributor'));
 }
 /**
  * 分销商对账下载
@@ -46,7 +46,7 @@ function searchBillForSupplier (params) {
 *   供应商列表查询
 */
 function searchSupplier() {
-  return RequestService.get(makeUrl('/biz/manager/getAllSupplier'))
+  return RequestService.get(makeUrl('/manager/biz/searchSupplier'))
 }
 
 /**

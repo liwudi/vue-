@@ -11,7 +11,7 @@ function makeUrl (path) {
 */
 function searchNiGoods(params) {
   return RequestService.get(
-    makeUrl('/goods/manager/searchNiGoods'),
+    makeUrl('/manager/goods/searchNiGoods'),
     params
   )
 }
@@ -20,7 +20,7 @@ function searchNiGoods(params) {
 */
 function searchSupplierGoods( params ) {
   return RequestService.get(
-    makeUrl('/goods/manager/searchSupplierGoods'),
+    makeUrl('/manager/goods/searchSupplierGoods'),
     params
   )
 }
@@ -29,13 +29,13 @@ function searchSupplierGoods( params ) {
 *   获取分销商列表
 */
 function getAllDistributor( ) {
-  return RequestService.get(makeUrl("/biz/manager/getAllDistributor"))
+  return RequestService.get(makeUrl("/manager/biz/getAllDistributor"))
 }
 /*
 *   获取供应商列表
 */
 function getAllSupplier() {
-  return RequestService.get(makeUrl("/biz/manager/getAllSupplier"));
+  return RequestService.get(makeUrl("/manager/biz/getAllSupplier"));
 }
 
 
@@ -43,7 +43,7 @@ function getAllSupplier() {
 *   获取商品类型
 */
 function searchPackageType(params) {
-  return RequestService.get(makeUrl("/goods/manager/searchPackageType"),params);
+  return RequestService.get(makeUrl("/manager/goods/searchPackageType"),params);
 }
 
 /*
@@ -51,7 +51,7 @@ function searchPackageType(params) {
 */
 function addSupplierGoods(params) {
   return RequestService.post(
-    makeUrl('/goods/manager/addNiGoods'),
+    makeUrl('/manager/goods/addNiGoods'),
     params
   )
 }
@@ -60,25 +60,25 @@ function addSupplierGoods(params) {
 *   供应商商品增加
 */
 function addSupplyGoods(params) {
-  return RequestService.post(makeUrl('/goods/manager/addSupplyGoods'), params);
+  return RequestService.post(makeUrl('/manager/goods/addSupplyGoods'), params);
 }
 
 /*
 *   基础商品、可选商品查看详情
 */
 function searchRelationGoods_niId(params) {
-  return RequestService.get(makeUrl('/goods/manager/searchRelationGoods_niId'), params);
+  return RequestService.get(makeUrl('/manager/goods/searchRelationGoods_niId'), params);
 }
 
 /*
 *   供应商品查看详情
 */
 function searchRelationGoods_sId(params) {
-  return RequestService.get(makeUrl('/goods/manager/searchRelationGoods_sId'), params);
+  return RequestService.get(makeUrl('/manager/goods/searchRelationGoods_sId'), params);
 }
 
 function updateGoodsState(params) {
-  return RequestService.get(makeUrl('/goods/manager/updateGoodsState'), params);
+  return RequestService.get(makeUrl('/manager/goods/updateGoodsState'), params);
 }
 
 
